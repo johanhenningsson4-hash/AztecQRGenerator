@@ -1,0 +1,181 @@
+# AztecQRGenerator
+
+A .NET Framework application for generating both QR codes and Aztec codes from Base64-encoded data using the ZXing library.
+
+## Features
+
+- **Dual Barcode Support**: Generate both QR codes and Aztec codes
+- **Base64 Input**: Accepts Base64-encoded strings as input
+- **GUI Mode**: Windows Forms interface for interactive use
+- **Command-Line Mode**: Batch processing support via command-line arguments
+- **PNG Output**: Generates high-quality PNG images with timestamps
+- **Configurable**: Adjustable pixel density and error correction levels
+
+## Requirements
+
+- .NET Framework 4.7.2 or higher
+- Windows operating system
+- ZXing.Net library (included via NuGet)
+
+## Installation
+
+### Building from Source
+
+1. Clone the repository:
+```bash
+git clone https://github.com/johanhenningsson4-hash/AztecQRGenerator.git
+cd AztecQRGenerator
+```
+
+2. Open `AztecQRGenerator.sln` in Visual Studio 2017 or later
+
+3. Restore NuGet packages:
+   - Right-click on the solution in Solution Explorer
+   - Select "Restore NuGet Packages"
+
+4. Build the solution:
+   - Press `F6` or select Build > Build Solution
+   - The executable will be in `bin\Debug\` or `bin\Release\`
+
+## Usage
+
+### GUI Mode
+
+Simply run the executable without arguments to launch the Windows Forms interface:
+
+```bash
+EMVReader.exe
+```
+
+### Command-Line Mode
+
+Generate barcodes from the command line:
+
+```bash
+EMVReader.exe <type> <data> <outputfile> [size] [errorCorrection]
+```
+
+#### Parameters:
+
+- `type`: Barcode type - `QR` or `AZTEC`
+- `data`: Base64-encoded string containing the data to encode
+- `outputfile`: Output PNG file path (currently used for reference, auto-generates timestamped files)
+- `size`: (Optional) Pixel density for the barcode (default: 200)
+- `errorCorrection`: (Optional) Error correction level (default: 2)
+
+#### Examples:
+
+**Generate a QR Code:**
+```bash
+EMVReader.exe QR "SGVsbG8gV29ybGQh" output.png 300 2
+```
+
+**Generate an Aztec Code:**
+```bash
+EMVReader.exe AZTEC "SGVsbG8gV29ybGQh" output.png 250 2
+```
+
+## Output Files
+
+Generated files are automatically timestamped with the format:
+- QR Codes: `QRCode_yyyyMMddHHmmssfff.png` and `QRCode_Scaled_yyyyMMddHHmmssfff.png`
+- Aztec Codes: `AztecCode_yyyyMMddHHmmssfff.png` and `AztecCode_Scaled_yyyyMMddHHmmssfff.png`
+
+## Project Structure
+
+```
+AztecQRGenerator/
+??? Program.cs              # Main entry point
+??? QRGenerator.cs          # QR code generation logic
+??? AztecGenerator.cs       # Aztec code generation logic
+??? AztecQR.cs             # Windows Forms UI
+??? AztecQR.Designer.cs    # UI designer code
+??? Properties/             # Assembly information
+??? packages.config         # NuGet packages
+??? AztecQRGenerator.csproj # Project file
+```
+
+## Dependencies
+
+- **ZXing.Net** (v0.16.11): Multi-format 1D/2D barcode image processing library
+  - Package: `ZXing.Net`
+  - License: Apache License 2.0
+
+## Technical Details
+
+- **Language**: C# 7.3
+- **Framework**: .NET Framework 4.7.2
+- **Encoding**: ISO-8859-1 for barcode content
+- **Image Format**: PNG
+- **Color Scheme**: Black on white background
+
+## Development
+
+### Key Classes
+
+#### `QRGenerator`
+- Generates QR codes from Base64-encoded strings
+- Uses `QRCodeWriter` from ZXing library
+- Outputs PNG images with configurable dimensions
+
+#### `AztecGenerator`
+- Generates Aztec codes from Base64-encoded strings
+- Uses `AztecWriter` from ZXing library
+- Outputs PNG images with configurable dimensions
+
+#### `Program`
+- Main entry point with dual-mode support
+- Handles command-line argument parsing
+- Manages GUI application lifecycle
+
+## Building for Different Platforms
+
+The project supports multiple build configurations:
+- **Debug/Release**: Standard configurations
+- **Platform Targets**: AnyCPU, x86, x64
+
+To build for a specific platform:
+```bash
+msbuild AztecQRGenerator.csproj /p:Configuration=Release /p:Platform=x64
+```
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit pull requests or open issues for bugs and feature requests.
+
+## License
+
+Copyright (C) Johan Henningsson
+
+## Author
+
+Johan Henningsson
+
+## Version History
+
+- **1.0.6.0** - Current version with QR and Aztec code support
+
+## Known Limitations
+
+- Currently generates two output files per barcode (standard and scaled versions have same dimensions)
+- Output filename parameter in CLI is for reference only; actual filenames are auto-generated with timestamps
+- GUI functionality is currently minimal (form exists but logic not implemented)
+
+## Future Enhancements
+
+- Add GUI controls for interactive barcode generation
+- Implement different scaling options for the "scaled" output version
+- Add support for custom color schemes
+- Implement barcode reading/scanning functionality
+- Add more barcode formats (Code128, EAN, etc.)
+- Add batch processing from file input
+
+## Support
+
+For issues, questions, or contributions, please visit:
+https://github.com/johanhenningsson4-hash/AztecQRGenerator
+
+## Acknowledgments
+
+- ZXing.Net library contributors
+- Original ZXing project team
