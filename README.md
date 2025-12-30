@@ -438,8 +438,7 @@ finally
 
 ## Known Issues
 
-- The `outputfile` parameter in command-line mode is currently not used; files are saved with auto-generated timestamped names
-- Both generators create two files (original and scaled) with the same content when using file-saving methods
+- Both generators create two files (original and scaled) with the same content when using the legacy file-saving methods (`GenerateQRBitmap` and `GenerateAztecBitmap`)
 
 ## Recent Updates
 
