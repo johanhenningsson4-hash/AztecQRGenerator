@@ -99,7 +99,7 @@ namespace AztecQR
                     Console.WriteLine(usage);
                     Console.WriteLine("  type: QR or AZTEC");
                     Console.WriteLine("  data: Base64 encoded string");
-                    Console.WriteLine("  outputfile: Output PNG file path");
+                    Console.WriteLine("  outputfile: Output file path (supports .png, .jpg, .bmp)");
                     Console.WriteLine("  size: Pixel density (optional, default: 200)");
                     Console.WriteLine("  errorCorrection: Error correction level (optional, default: 2)");
                     return 1;
@@ -131,30 +131,36 @@ namespace AztecQR
                     }
                 }
 
-                logger.Info($"Parameters - Type: {type}, Size: {size}, Error Correction: {errorCorrection}");
+                // Determine image format from file extension
+                System.Drawing.Imaging.ImageFormat format = GetImageFormatFromExtension(outputFile);
+                string formatName = GetFormatName(format);
+
+                logger.Info($"Parameters - Type: {type}, Output: {outputFile}, Format: {formatName}, Size: {size}, Error Correction: {errorCorrection}");
 
                 bool success = false;
                 switch (type)
                 {
                     case "QR":
-                        logger.Info("Generating QR code");
+                        logger.Info($"Generating QR code to file: {outputFile}");
+                        Console.WriteLine($"Generating QR Code ({formatName})...");
                         var qrGen = new QRGenerator();
-                        success = qrGen.GenerateQRBitmap(1, data, errorCorrection, size);
+                        success = qrGen.GenerateQRCodeToFile(data, errorCorrection, size, outputFile, format);
                         if (success)
                         {
-                            Console.WriteLine("QR Code generated successfully");
-                            logger.Info("QR Code generation completed successfully");
+                            Console.WriteLine($"QR Code saved successfully: {outputFile}");
+                            logger.Info($"QR Code generation completed successfully: {outputFile}");
                         }
                         break;
 
                     case "AZTEC":
-                        logger.Info("Generating Aztec code");
+                        logger.Info($"Generating Aztec code to file: {outputFile}");
+                        Console.WriteLine($"Generating Aztec Code ({formatName})...");
                         var aztecGen = new AztecGenerator();
-                        success = aztecGen.GenerateAztecBitmap(1, data, errorCorrection, size);
+                        success = aztecGen.GenerateAztecCodeToFile(data, errorCorrection, size, outputFile, format);
                         if (success)
                         {
-                            Console.WriteLine("Aztec Code generated successfully");
-                            logger.Info("Aztec Code generation completed successfully");
+                            Console.WriteLine($"Aztec Code saved successfully: {outputFile}");
+                            logger.Info($"Aztec Code generation completed successfully: {outputFile}");
                         }
                         break;
 
@@ -197,6 +203,43 @@ namespace AztecQR
                 Console.WriteLine("Check the log file for more details.");
                 return 99;
             }
+        }
+
+        /// <summary>
+        /// Determines the image format from file extension
+        /// </summary>
+        private static System.Drawing.Imaging.ImageFormat GetImageFormatFromExtension(string filePath)
+        {
+            string extension = System.IO.Path.GetExtension(filePath).ToLowerInvariant();
+            
+            switch (extension)
+            {
+                case ".jpg":
+                case ".jpeg":
+                    logger.Info("Output format detected: JPEG");
+                    return System.Drawing.Imaging.ImageFormat.Jpeg;
+                
+                case ".bmp":
+                    logger.Info("Output format detected: BMP");
+                    return System.Drawing.Imaging.ImageFormat.Bmp;
+                
+                case ".png":
+                default:
+                    logger.Info("Output format detected: PNG (default)");
+                    return System.Drawing.Imaging.ImageFormat.Png;
+            }
+        }
+
+        /// <summary>
+        /// Gets a friendly name for the image format
+        /// </summary>
+        private static string GetFormatName(System.Drawing.Imaging.ImageFormat format)
+        {
+            if (format.Equals(System.Drawing.Imaging.ImageFormat.Jpeg))
+                return "JPEG";
+            if (format.Equals(System.Drawing.Imaging.ImageFormat.Bmp))
+                return "BMP";
+            return "PNG";
         }
     }
 }

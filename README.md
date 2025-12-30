@@ -6,9 +6,11 @@ A .NET Framework-based Windows Forms application and library for generating QR c
 
 - **QR Code Generation**: Generate QR codes from Base64-encoded data
 - **Aztec Code Generation**: Generate Aztec codes from Base64-encoded data
+- **Multiple Image Formats**: Support for PNG, JPEG, and BMP output formats
 - **Flexible API**:
   - Return as `Bitmap` objects for in-memory use
   - Save directly to files with automatic naming
+  - Save to files with custom format selection
 - **Dual Mode Operation**: 
   - GUI mode for interactive use with live preview
   - Command-line mode for batch processing and automation
@@ -110,7 +112,60 @@ pictureBox.Image = aztecBitmap;
 // aztecBitmap.Dispose();
 ```
 
-#### Generate and Save to File
+#### Generate and Save to File with Format Selection
+
+**QR Code - Save as PNG, JPEG, or BMP:**
+```csharp
+using AztecQR;
+using System.Drawing.Imaging;
+
+var qrGenerator = new QRGenerator();
+
+// Save as PNG (recommended for barcodes)
+bool success = qrGenerator.GenerateQRCodeToFile(
+    qrstring: "SGVsbG8gV29ybGQh",
+    lCorrection: 2,
+    lPixelDensity: 300,
+    filePath: "qrcode.png",
+    format: ImageFormat.Png
+);
+
+// Save as JPEG (smaller file, lower quality - not recommended for barcodes)
+success = qrGenerator.GenerateQRCodeToFile(
+    qrstring: "SGVsbG8gV29ybGQh",
+    lCorrection: 2,
+    lPixelDensity: 300,
+    filePath: "qrcode.jpg",
+    format: ImageFormat.Jpeg
+);
+
+// Save as BMP (lossless but large file size)
+success = qrGenerator.GenerateQRCodeToFile(
+    qrstring: "SGVsbG8gV29ybGQh",
+    lCorrection: 2,
+    lPixelDensity: 300,
+    filePath: "qrcode.bmp",
+    format: ImageFormat.Bmp
+);
+```
+
+**Aztec Code - Save with Format:**
+```csharp
+using AztecQR;
+using System.Drawing.Imaging;
+
+var aztecGenerator = new AztecGenerator();
+
+bool success = aztecGenerator.GenerateAztecCodeToFile(
+    aztecstring: "SGVsbG8gV29ybGQh",
+    lCorrection: 2,
+    lPixelDensity: 300,
+    filePath: "azteccode.png",
+    format: ImageFormat.Png
+);
+```
+
+#### Generate and Save to File (Legacy Method)
 
 ```csharp
 var qrGenerator = new QRGenerator();
@@ -125,6 +180,7 @@ bool success = qrGenerator.GenerateQRBitmap(
 ```
 
 **See [USAGE_EXAMPLES.md](USAGE_EXAMPLES.md) for more detailed examples and best practices.**
+**See [IMAGE_FORMAT_GUIDE.md](IMAGE_FORMAT_GUIDE.md) for comprehensive format selection guidance.**
 
 ### Command-Line Mode
 
@@ -173,10 +229,17 @@ AztecQRGenerator.exe AZTEC "SGVsbG8gV29ybGQ=" output.png 250 2
 - Throws: `ArgumentException`, `InvalidOperationException`
 - Use this for in-memory generation without file I/O
 
+**`GenerateQRCodeToFile(string qrstring, int lCorrection, int lPixelDensity, string filePath, ImageFormat format)`** ? NEW
+- Returns: `bool` - True if successful
+- Parameters:
+  - `format`: `ImageFormat.Png`, `ImageFormat.Jpeg`, or `ImageFormat.Bmp`
+- Throws: `ArgumentException`, `ArgumentNullException`, `IOException`, `InvalidOperationException`
+- Use this to save directly to file with format selection
+
 **`GenerateQRBitmap(int lTaNmbrqr, string qrstring, int lCorrection, int lPixelDensity)`**
 - Returns: `bool` - True if successful
 - Throws: `ArgumentException`, `IOException`, `InvalidOperationException`
-- Automatically saves two PNG files with timestamps
+- Automatically saves two PNG files with timestamps (legacy method)
 
 ### AztecGenerator Class
 
@@ -187,10 +250,17 @@ AztecQRGenerator.exe AZTEC "SGVsbG8gV29ybGQ=" output.png 250 2
 - Throws: `ArgumentException`, `InvalidOperationException`
 - Use this for in-memory generation without file I/O
 
+**`GenerateAztecCodeToFile(string aztecstring, int lCorrection, int lPixelDensity, string filePath, ImageFormat format)`** ? NEW
+- Returns: `bool` - True if successful
+- Parameters:
+  - `format`: `ImageFormat.Png`, `ImageFormat.Jpeg`, or `ImageFormat.Bmp`
+- Throws: `ArgumentException`, `ArgumentNullException`, `IOException`, `InvalidOperationException`
+- Use this to save directly to file with format selection
+
 **`GenerateAztecBitmap(int lTaNmbrqr, string aztecstring, int lCorrection, int lPixelDensity)`**
 - Returns: `bool` - True if successful
 - Throws: `ArgumentException`, `IOException`, `InvalidOperationException`
-- Automatically saves two PNG files with timestamps
+- Automatically saves two PNG files with timestamps (legacy method)
 
 ### Parameters
 
@@ -200,6 +270,19 @@ AztecQRGenerator.exe AZTEC "SGVsbG8gV29ybGQ=" output.png 250 2
 - **lPixelDensity**: Size of the generated code in pixels
   - Must be greater than 0
   - Typical values: 200-500 pixels
+- **filePath**: Full or relative path for output file (including extension)
+- **format**: Image format from `System.Drawing.Imaging.ImageFormat`
+  - `ImageFormat.Png` - Recommended for barcodes (lossless, moderate size)
+  - `ImageFormat.Jpeg` - Smaller files but lossy (not recommended for barcodes)
+  - `ImageFormat.Bmp` - Lossless but very large files
+
+### Image Format Recommendations
+
+| Format | File Size | Quality | Recommended For |
+|--------|-----------|---------|-----------------|
+| PNG | Moderate | Excellent | ? QR/Aztec codes (recommended) |
+| JPEG | Small | Fair | ?? Not recommended (compression artifacts) |
+| BMP | Very Large | Excellent | Legacy systems only |
 
 ## Logging
 
@@ -360,7 +443,14 @@ finally
 
 ## Recent Updates
 
-### Version 1.1 (Latest)
+### Version 1.2 (Latest)
+- ? Added support for multiple image formats (PNG, JPEG, BMP)
+- ? Added `GenerateQRCodeToFile()` method with format selection
+- ? Added `GenerateAztecCodeToFile()` method with format selection
+- ? Enhanced flexibility for different output requirements
+- ? Comprehensive format selection guide added
+
+### Version 1.1
 - ? Added `GenerateQRCodeAsBitmap()` method for in-memory QR generation
 - ? Added `GenerateAztecCodeAsBitmap()` method for in-memory Aztec generation
 - ? Refactored internal code for better reusability
@@ -386,6 +476,7 @@ finally
 ## Documentation
 
 - **[USAGE_EXAMPLES.md](USAGE_EXAMPLES.md)** - Comprehensive code examples and usage patterns
+- **[IMAGE_FORMAT_GUIDE.md](IMAGE_FORMAT_GUIDE.md)** - Detailed guide for image format selection
 - **[IMPLEMENTATION_SUMMARY.md](IMPLEMENTATION_SUMMARY.md)** - Technical implementation details and architecture
 
 ## Support

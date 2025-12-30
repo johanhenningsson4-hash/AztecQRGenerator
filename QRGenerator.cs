@@ -111,6 +111,53 @@ namespace AztecQR
             }
         }
 
+        /// <summary>
+        /// Generates a QR code and saves it to a file with the specified format
+        /// </summary>
+        /// <param name="qrstring">Base64 encoded string to encode</param>
+        /// <param name="lCorrection">Error correction level</param>
+        /// <param name="lPixelDensity">Size of the QR code in pixels</param>
+        /// <param name="filePath">Output file path</param>
+        /// <param name="format">Image format (PNG, JPEG, or BMP)</param>
+        /// <returns>True if successful</returns>
+        public bool GenerateQRCodeToFile(string qrstring, int lCorrection, int lPixelDensity, string filePath, ImageFormat format)
+        {
+            logger.LogMethodEntry("QRGenerator", "GenerateQRCodeToFile", "Base64 data", lCorrection, lPixelDensity, filePath, format.ToString());
+
+            try
+            {
+                if (string.IsNullOrWhiteSpace(filePath))
+                {
+                    logger.Error("File path is null or empty");
+                    throw new ArgumentException("File path cannot be null or empty", nameof(filePath));
+                }
+
+                if (format == null)
+                {
+                    logger.Error("Image format is null");
+                    throw new ArgumentNullException(nameof(format), "Image format cannot be null");
+                }
+
+                logger.Info($"Generating QR code to file: {filePath}, Format: {format}");
+
+                // Generate the QR code as bitmap
+                using (Bitmap bitmap = GenerateQRCodeAsBitmap(qrstring, lCorrection, lPixelDensity))
+                {
+                    SaveBitmap(bitmap, filePath, format);
+                    logger.Info($"QR code saved successfully to: {filePath}");
+                }
+
+                logger.LogMethodExit("QRGenerator", "GenerateQRCodeToFile", true);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                logger.Error($"QR code file generation failed", ex);
+                logger.LogMethodExit("QRGenerator", "GenerateQRCodeToFile", false);
+                throw;
+            }
+        }
+
         public bool GenerateQRBitmap(int lTaNmbrqr, string qrstring, int lCorrection, int lPixelDensity)
         {
             logger.LogMethodEntry("QRGenerator", "GenerateQRBitmap", lTaNmbrqr, "Base64 data", lCorrection, lPixelDensity);
@@ -127,10 +174,10 @@ namespace AztecQR
 
                     try
                     {
-                        SaveBitmapAsPng(bitmap, fileName);
+                        SaveBitmap(bitmap, fileName, ImageFormat.Png);
                         logger.Info($"QR code saved successfully: {fileName}");
 
-                        SaveBitmapAsPng(bitmap, scaledFileName);
+                        SaveBitmap(bitmap, scaledFileName, ImageFormat.Png);
                         logger.Info($"Scaled QR code saved successfully: {scaledFileName}");
                     }
                     catch (Exception ex)
@@ -206,7 +253,7 @@ namespace AztecQR
             {
                 using (var bmp = ConvertBitMatrixToBitmap(matrix))
                 {
-                    SaveBitmapAsPng(bmp, filePath);
+                    SaveBitmap(bmp, filePath, ImageFormat.Png);
                 }
             }
             catch (Exception ex)
@@ -217,11 +264,14 @@ namespace AztecQR
         }
 
         /// <summary>
-        /// Saves a Bitmap to a PNG file
+        /// Saves a Bitmap to a file with the specified format
         /// </summary>
-        private void SaveBitmapAsPng(Bitmap bitmap, string filePath)
+        /// <param name="bitmap">Bitmap to save</param>
+        /// <param name="filePath">Output file path</param>
+        /// <param name="format">Image format (PNG, JPEG, or BMP)</param>
+        private void SaveBitmap(Bitmap bitmap, string filePath, ImageFormat format)
         {
-            logger.Debug($"Saving Bitmap to: {filePath}");
+            logger.Debug($"Saving Bitmap to: {filePath}, Format: {format}");
 
             if (bitmap == null)
             {
@@ -233,6 +283,11 @@ namespace AztecQR
                 throw new ArgumentException("File path cannot be null or empty", nameof(filePath));
             }
 
+            if (format == null)
+            {
+                throw new ArgumentNullException(nameof(format), "Image format cannot be null");
+            }
+
             try
             {
                 string directory = Path.GetDirectoryName(filePath);
@@ -242,14 +297,22 @@ namespace AztecQR
                     Directory.CreateDirectory(directory);
                 }
 
-                bitmap.Save(filePath, ImageFormat.Png);
-                logger.Debug($"Image saved successfully: {filePath} ({bitmap.Width}x{bitmap.Height})");
+                bitmap.Save(filePath, format);
+                logger.Debug($"Image saved successfully: {filePath} ({bitmap.Width}x{bitmap.Height}, Format: {format})");
             }
             catch (Exception ex)
             {
                 logger.Error($"Failed to save image to {filePath}", ex);
                 throw;
             }
+        }
+
+        /// <summary>
+        /// Saves a Bitmap to a PNG file (deprecated - use SaveBitmap instead)
+        /// </summary>
+        private void SaveBitmapAsPng(Bitmap bitmap, string filePath)
+        {
+            SaveBitmap(bitmap, filePath, ImageFormat.Png);
         }
     }
 }
