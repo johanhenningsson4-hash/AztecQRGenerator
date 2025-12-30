@@ -129,6 +129,8 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="DOCUMENTATION_REVIEW.md" />
+    <None Include="FINAL_STATUS_REPORT.md" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -169,4 +171,3 @@
   </Target>
   -->
 </Project>
-
