@@ -20,9 +20,16 @@ namespace AztecQR
     {
         private readonly Logger logger = Logger.Instance;
 
-        public bool GenerateQRBitmap(int lTaNmbrqr, string qrstring, int lCorrection, int lPixelDensity)
+        /// <summary>
+        /// Generates a QR code and returns it as a Bitmap object
+        /// </summary>
+        /// <param name="qrstring">Base64 encoded string to encode</param>
+        /// <param name="lCorrection">Error correction level</param>
+        /// <param name="lPixelDensity">Size of the QR code in pixels</param>
+        /// <returns>Bitmap containing the QR code</returns>
+        public Bitmap GenerateQRCodeAsBitmap(string qrstring, int lCorrection, int lPixelDensity)
         {
-            logger.LogMethodEntry("QRGenerator", "GenerateQRBitmap", lTaNmbrqr, "Base64 data", lCorrection, lPixelDensity);
+            logger.LogMethodEntry("QRGenerator", "GenerateQRCodeAsBitmap", "Base64 data", lCorrection, lPixelDensity);
 
             try
             {
@@ -45,7 +52,7 @@ namespace AztecQR
                     lCorrection = 2;
                 }
 
-                logger.Info($"Generating QR code - ID: {lTaNmbrqr}, Size: {lPixelDensity}, Correction: {lCorrection}");
+                logger.Info($"Generating QR code as Bitmap - Size: {lPixelDensity}, Correction: {lCorrection}");
 
                 // Decode Base64 string
                 byte[] data;
@@ -89,23 +96,48 @@ namespace AztecQR
                     throw new InvalidOperationException("Failed to generate QR code matrix", ex);
                 }
 
-                // Save as PNG
-                string timestamp = DateTime.Now.ToString("yyyyMMddHHmmssfff");
-                string fileName = $"QRCode_{timestamp}.png";
-                string scaledFileName = $"QRCode_Scaled_{timestamp}.png";
+                // Convert BitMatrix to Bitmap
+                Bitmap bitmap = ConvertBitMatrixToBitmap(matrix);
+                logger.Info("QR code Bitmap created successfully");
+                logger.LogMethodExit("QRGenerator", "GenerateQRCodeAsBitmap", true);
+                
+                return bitmap;
+            }
+            catch (Exception ex)
+            {
+                logger.Error($"QR code bitmap generation failed", ex);
+                logger.LogMethodExit("QRGenerator", "GenerateQRCodeAsBitmap", false);
+                throw;
+            }
+        }
 
-                try
-                {
-                    SaveBitMatrixAsPng(matrix, fileName);
-                    logger.Info($"QR code saved successfully: {fileName}");
+        public bool GenerateQRBitmap(int lTaNmbrqr, string qrstring, int lCorrection, int lPixelDensity)
+        {
+            logger.LogMethodEntry("QRGenerator", "GenerateQRBitmap", lTaNmbrqr, "Base64 data", lCorrection, lPixelDensity);
 
-                    SaveBitMatrixAsPng(matrix, scaledFileName);
-                    logger.Info($"Scaled QR code saved successfully: {scaledFileName}");
-                }
-                catch (Exception ex)
+            try
+            {
+                // Generate the QR code as bitmap
+                using (Bitmap bitmap = GenerateQRCodeAsBitmap(qrstring, lCorrection, lPixelDensity))
                 {
-                    logger.Error($"Failed to save QR code to file", ex);
-                    throw new IOException("Failed to save QR code image", ex);
+                    // Save as PNG
+                    string timestamp = DateTime.Now.ToString("yyyyMMddHHmmssfff");
+                    string fileName = $"QRCode_{timestamp}.png";
+                    string scaledFileName = $"QRCode_Scaled_{timestamp}.png";
+
+                    try
+                    {
+                        SaveBitmapAsPng(bitmap, fileName);
+                        logger.Info($"QR code saved successfully: {fileName}");
+
+                        SaveBitmapAsPng(bitmap, scaledFileName);
+                        logger.Info($"Scaled QR code saved successfully: {scaledFileName}");
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.Error($"Failed to save QR code to file", ex);
+                        throw new IOException("Failed to save QR code image", ex);
+                    }
                 }
 
                 logger.LogMethodExit("QRGenerator", "GenerateQRBitmap", true);
@@ -115,6 +147,43 @@ namespace AztecQR
             {
                 logger.Error($"QR code generation failed for ID: {lTaNmbrqr}", ex);
                 logger.LogMethodExit("QRGenerator", "GenerateQRBitmap", false);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Converts a BitMatrix to a Bitmap object
+        /// </summary>
+        private Bitmap ConvertBitMatrixToBitmap(BitMatrix matrix)
+        {
+            if (matrix == null)
+            {
+                throw new ArgumentNullException(nameof(matrix), "BitMatrix cannot be null");
+            }
+
+            logger.Debug($"Converting BitMatrix to Bitmap - Size: {matrix.Width}x{matrix.Height}");
+
+            int width = matrix.Width;
+            int height = matrix.Height;
+            Bitmap bmp = new Bitmap(width, height);
+
+            try
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    for (int y = 0; y < height; y++)
+                    {
+                        bmp.SetPixel(x, y, matrix[x, y] ? Color.Black : Color.White);
+                    }
+                }
+
+                logger.Debug("BitMatrix converted to Bitmap successfully");
+                return bmp;
+            }
+            catch (Exception ex)
+            {
+                logger.Error("Failed to convert BitMatrix to Bitmap", ex);
+                bmp.Dispose();
                 throw;
             }
         }
@@ -135,29 +204,46 @@ namespace AztecQR
 
             try
             {
-                int width = matrix.Width;
-                int height = matrix.Height;
-
-                using (var bmp = new Bitmap(width, height))
+                using (var bmp = ConvertBitMatrixToBitmap(matrix))
                 {
-                    for (int x = 0; x < width; x++)
-                    {
-                        for (int y = 0; y < height; y++)
-                        {
-                            bmp.SetPixel(x, y, matrix[x, y] ? Color.Black : Color.White);
-                        }
-                    }
-
-                    string directory = Path.GetDirectoryName(filePath);
-                    if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
-                    {
-                        logger.Info($"Creating directory: {directory}");
-                        Directory.CreateDirectory(directory);
-                    }
-
-                    bmp.Save(filePath, ImageFormat.Png);
-                    logger.Debug($"Image saved successfully: {filePath} ({width}x{height})");
+                    SaveBitmapAsPng(bmp, filePath);
                 }
+            }
+            catch (Exception ex)
+            {
+                logger.Error($"Failed to save image to {filePath}", ex);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Saves a Bitmap to a PNG file
+        /// </summary>
+        private void SaveBitmapAsPng(Bitmap bitmap, string filePath)
+        {
+            logger.Debug($"Saving Bitmap to: {filePath}");
+
+            if (bitmap == null)
+            {
+                throw new ArgumentNullException(nameof(bitmap), "Bitmap cannot be null");
+            }
+
+            if (string.IsNullOrWhiteSpace(filePath))
+            {
+                throw new ArgumentException("File path cannot be null or empty", nameof(filePath));
+            }
+
+            try
+            {
+                string directory = Path.GetDirectoryName(filePath);
+                if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
+                {
+                    logger.Info($"Creating directory: {directory}");
+                    Directory.CreateDirectory(directory);
+                }
+
+                bitmap.Save(filePath, ImageFormat.Png);
+                logger.Debug($"Image saved successfully: {filePath} ({bitmap.Width}x{bitmap.Height})");
             }
             catch (Exception ex)
             {
