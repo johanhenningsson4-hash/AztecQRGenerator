@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AztecQRGenerator.Core</name>
+    </assembly>
+    <members>
+        <member name="T:AztecQR.IconCreator">
+            <summary>
+            Utility class to create a project icon
+            Run this once to generate icon.png
+            </summary>
+        </member>
+        <member name="M:AztecQR.QRGenerator.GenerateQRCodeAsBitmap(System.String,System.Int32,System.Int32)">
+            <summary>
+            Generates a QR code and returns it as a Bitmap object
+            </summary>
+            <param name="qrstring">Base64 encoded string to encode</param>
+            <param name="lCorrection">Error correction level</param>
+            <param name="lPixelDensity">Size of the QR code in pixels</param>
+            <returns>Bitmap containing the QR code</returns>
+        </member>
+        <member name="M:AztecQR.QRGenerator.GenerateQRCodeToFile(System.String,System.Int32,System.Int32,System.String,System.Drawing.Imaging.ImageFormat)">
+            <summary>
+            Generates a QR code and saves it to a file with the specified format
+            </summary>
+            <param name="qrstring">Base64 encoded string to encode</param>
+            <param name="lCorrection">Error correction level</param>
+            <param name="lPixelDensity">Size of the QR code in pixels</param>
+            <param name="filePath">Output file path</param>
+            <param name="format">Image format (PNG, JPEG, or BMP)</param>
+            <returns>True if successful</returns>
+        </member>
+        <member name="M:AztecQR.QRGenerator.ConvertBitMatrixToBitmap(ZXing.Common.BitMatrix)">
+            <summary>
+            Converts a BitMatrix to a Bitmap object
+            </summary>
+        </member>
+        <member name="M:AztecQR.QRGenerator.SaveBitmap(System.Drawing.Bitmap,System.String,System.Drawing.Imaging.ImageFormat)">
+            <summary>
+            Saves a Bitmap to a file with the specified format
+            </summary>
+            <param name="bitmap">Bitmap to save</param>
+            <param name="filePath">Output file path</param>
+            <param name="format">Image format (PNG, JPEG, or BMP)</param>
+        </member>
+        <member name="M:AztecQR.QRGenerator.SaveBitmapAsPng(System.Drawing.Bitmap,System.String)">
+            <summary>
+            Saves a Bitmap to a PNG file (deprecated - use SaveBitmap instead)
+            </summary>
+        </member>
+        <member name="M:AztecQR.AztecGenerator.GenerateAztecCodeAsBitmap(System.String,System.Int32,System.Int32)">
+            <summary>
+            Generates an Aztec code and returns it as a Bitmap object
+            </summary>
+            <param name="aztecstring">Base64 encoded string to encode</param>
+            <param name="lCorrection">Error correction level</param>
+            <param name="lPixelDensity">Size of the Aztec code in pixels</param>
+            <returns>Bitmap containing the Aztec code</returns>
+        </member>
+        <member name="M:AztecQR.AztecGenerator.GenerateAztecCodeToFile(System.String,System.Int32,System.Int32,System.String,System.Drawing.Imaging.ImageFormat)">
+            <summary>
+            Generates an Aztec code and saves it to a file with the specified format
+            </summary>
+            <param name="aztecstring">Base64 encoded string to encode</param>
+            <param name="lCorrection">Error correction level</param>
+            <param name="lPixelDensity">Size of the Aztec code in pixels</param>
+            <param name="filePath">Output file path</param>
+            <param name="format">Image format (PNG, JPEG, or BMP)</param>
+            <returns>True if successful</returns>
+        </member>
+        <member name="M:AztecQR.AztecGenerator.ConvertBitMatrixToBitmap(ZXing.Common.BitMatrix)">
+            <summary>
+            Converts a BitMatrix to a Bitmap object
+            </summary>
+        </member>
+        <member name="M:AztecQR.AztecGenerator.SaveBitmap(System.Drawing.Bitmap,System.String,System.Drawing.Imaging.ImageFormat)">
+            <summary>
+            Saves a Bitmap to a file with the specified format
+            </summary>
+            <param name="bitmap">Bitmap to save</param>
+            <param name="filePath">Output file path</param>
+            <param name="format">Image format (PNG, JPEG, or BMP)</param>
+        </member>
+        <member name="M:AztecQR.AztecGenerator.SaveBitmapAsPng(System.Drawing.Bitmap,System.String)">
+            <summary>
+            Saves a Bitmap to a PNG file (deprecated - use SaveBitmap instead)
+            </summary>
+        </member>
+    </members>
+</doc>

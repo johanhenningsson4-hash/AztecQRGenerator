@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -7,8 +8,8 @@
     <ProjectGuid>{36C17DE2-A271-47FC-989A-CA2165BF3639}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EMVReader</RootNamespace>
-    <AssemblyName>EMVReader</AssemblyName>
+    <RootNamespace>AztecQRGenerator</RootNamespace>
+    <AssemblyName>AztecQRGenerator</AssemblyName>
     <ApplicationIcon>
     </ApplicationIcon>
     <FileUpgradeFlags>
@@ -116,6 +117,7 @@
     <Compile Include="AztecQR.Designer.cs">
       <DependentUpon>AztecQR.cs</DependentUpon>
     </Compile>
+    <!-- REMOVED: Duplicate Core project files -->
     <Compile Include="Examples\FormatTestExample.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="AztecQR.resx">
@@ -150,6 +152,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <None Include="QUICK_REFERENCE.md" />
+    <None Include="FIX_DUPLICATE_ERRORS.md" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
@@ -167,6 +170,9 @@
       <ProductName>.NET Framework 3.5</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="AztecQRGenerator.Core\icon-instructions.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
