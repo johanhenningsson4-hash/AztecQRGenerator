@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<coreProperties xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.openxmlformats.org/package/2006/metadata/core-properties">
+  <dc:creator>Johan Henningsson</dc:creator>
+  <dc:description>A .NET Framework library for generating QR codes and Aztec codes from Base64-encoded data. Supports multiple image formats (PNG, JPEG, BMP) with configurable size and error correction levels. Built on ZXing.Net with ISO-8859-1 encoding support.</dc:description>
+  <dc:identifier>AztecQRGenerator.Core</dc:identifier>
+  <version>1.2.2</version>
+  <keywords>qrcode aztec barcode generator zxing base64 image png jpeg bmp iso-8859-1</keywords>
+  <lastModifiedBy>NuGet, Version=7.0.1.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35;Microsoft Windows NT 10.0.19045.0;.NET Framework 4.7.2</lastModifiedBy>
+</coreProperties>
