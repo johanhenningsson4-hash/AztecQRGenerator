@@ -159,9 +159,9 @@ namespace AztecQR
             }
         }
 
-        public bool GenerateQRBitmap(int lTaNmbrqr, string qrstring, int lCorrection, int lPixelDensity)
+        public bool GenerateQRBitmap(string qrstring, int lCorrection, int lPixelDensity)
         {
-            logger.LogMethodEntry("QRGenerator", "GenerateQRBitmap", lTaNmbrqr, "Base64 data", lCorrection, lPixelDensity);
+            logger.LogMethodEntry("QRGenerator", "GenerateQRBitmap", "Base64 data", lCorrection, lPixelDensity);
 
             try
             {
@@ -193,7 +193,7 @@ namespace AztecQR
             }
             catch (Exception ex)
             {
-                logger.Error($"QR code generation failed for ID: {lTaNmbrqr}", ex);
+                logger.Error($"QR code generation failed", ex);
                 logger.LogMethodExit("QRGenerator", "GenerateQRBitmap", false);
                 throw;
             }

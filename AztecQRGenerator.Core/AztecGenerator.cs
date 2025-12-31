@@ -159,9 +159,9 @@ namespace AztecQR
             }
         }
 
-        public bool GenerateAztecBitmap(int lTaNmbrqr, string aztecstring, int lCorrection, int lPixelDensity)
+        public bool GenerateAztecBitmap(string aztecstring, int lCorrection, int lPixelDensity)
         {
-            logger.LogMethodEntry("AztecGenerator", "GenerateAztecBitmap", lTaNmbrqr, "Base64 data", lCorrection, lPixelDensity);
+            logger.LogMethodEntry("AztecGenerator", "GenerateAztecBitmap", "Base64 data", lCorrection, lPixelDensity);
 
             try
             {
@@ -193,7 +193,7 @@ namespace AztecQR
             }
             catch (Exception ex)
             {
-                logger.Error($"Aztec code generation failed for ID: {lTaNmbrqr}", ex);
+                logger.Error($"Aztec code generation failed", ex);
                 logger.LogMethodExit("AztecGenerator", "GenerateAztecBitmap", false);
                 throw;
             }
