@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8F7A5D7E-2B3C-4E9F-A1D6-3C8E9F7B5D4A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AztecQR</RootNamespace>
+    <AssemblyName>AztecQRGenerator.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <LangVersion>7.3</LangVersion>
+    <Deterministic>true</Deterministic>
+    
+    <!-- NuGet Package Properties -->
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>AztecQRGenerator.Core</PackageId>
+    <Version>1.2.0</Version>
+    <Authors>Johan Henningsson</Authors>
+    <Company>Johan Henningsson</Company>
+    <Product>AztecQRGenerator.Core</Product>
+    <Description>A .NET Framework library for generating QR codes and Aztec codes from Base64-encoded data. Supports multiple image formats (PNG, JPEG, BMP) with configurable size and error correction levels. Built on ZXing.Net with ISO-8859-1 encoding support.</Description>
+    <Copyright>Copyright © 2025 Johan Olof Henningsson</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/johanhenningsson4-hash/AztecQRGenerator</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/johanhenningsson4-hash/AztecQRGenerator</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>qrcode aztec barcode generator zxing base64 image png jpeg bmp iso-8859-1</PackageTags>
+    <PackageReleaseNotes>
+Version 1.2.0:
+- Added support for multiple image formats (PNG, JPEG, BMP)
+- Added GenerateQRCodeToFile() and GenerateAztecCodeToFile() with format selection
+- Added GenerateQRCodeAsBitmap() and GenerateAztecCodeAsBitmap() for in-memory generation
+- Comprehensive logging support
+- Full backward compatibility maintained
+    </PackageReleaseNotes>
+    <PackageReadmeFile>NUGET_README.md</PackageReadmeFile>
+    <PackageIcon Condition="Exists('icon.png')">icon.png</PackageIcon>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\AztecQRGenerator.Core.xml</DocumentationFile>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="ZXing.Net" Version="0.16.9" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Compile Include="QRGenerator.cs" />
+    <Compile Include="AztecGenerator.cs" />
+    <Compile Include="Logger.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <None Include="NUGET_README.md" Pack="true" PackagePath="\" />
+    <None Include="icon.png" Pack="true" PackagePath="\" Condition="Exists('icon.png')" />
+  </ItemGroup>
+  
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
