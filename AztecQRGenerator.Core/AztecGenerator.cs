@@ -13,6 +13,7 @@ using System.Text;
 using ZXing;
 using ZXing.Aztec;
 using ZXing.Common;
+using System.Runtime.InteropServices;
 
 namespace AztecQR
 {
@@ -212,16 +213,41 @@ namespace AztecQR
 
             int width = matrix.Width;
             int height = matrix.Height;
-            Bitmap bmp = new Bitmap(width, height);
+            Bitmap bmp = new Bitmap(width, height, PixelFormat.Format24bppRgb);
 
             try
             {
-                for (int x = 0; x < width; x++)
+                BitmapData bmpData = bmp.LockBits(
+                    new Rectangle(0, 0, width, height),
+                    ImageLockMode.WriteOnly,
+                    PixelFormat.Format24bppRgb);
+
+                try
                 {
+                    int stride = bmpData.Stride;
+                    IntPtr ptr = bmpData.Scan0;
+                    int bytes = Math.Abs(stride) * height;
+                    byte[] rgbValues = new byte[bytes];
+
                     for (int y = 0; y < height; y++)
                     {
-                        bmp.SetPixel(x, y, matrix[x, y] ? Color.Black : Color.White);
+                        int rowStart = y * stride;
+                        for (int x = 0; x < width; x++)
+                        {
+                            int pixelIndex = rowStart + (x * 3);
+                            byte colorValue = matrix[x, y] ? (byte)0 : (byte)255;
+                            
+                            rgbValues[pixelIndex] = colorValue;     // Blue
+                            rgbValues[pixelIndex + 1] = colorValue; // Green
+                            rgbValues[pixelIndex + 2] = colorValue; // Red
+                        }
                     }
+
+                    Marshal.Copy(rgbValues, 0, ptr, bytes);
+                }
+                finally
+                {
+                    bmp.UnlockBits(bmpData);
                 }
 
                 logger.Debug("BitMatrix converted to Bitmap successfully");
