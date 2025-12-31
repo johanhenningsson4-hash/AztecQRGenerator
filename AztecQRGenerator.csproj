@@ -113,6 +113,10 @@
     <Compile Include="AztecQR.Designer.cs">
       <DependentUpon>AztecQR.cs</DependentUpon>
     </Compile>
+    <Compile Include="AztecQRGenerator.Core\AztecGenerator.cs" />
+    <Compile Include="AztecQRGenerator.Core\Logger.cs" />
+    <Compile Include="AztecQRGenerator.Core\Properties\AssemblyInfo.cs" />
+    <Compile Include="AztecQRGenerator.Core\QRGenerator.cs" />
     <Compile Include="Examples\FormatTestExample.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QRGenerator.cs" />
@@ -130,6 +134,11 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="AztecQRGenerator.Core\AztecQRGenerator.Core.csproj" />
+    <None Include="AztecQRGenerator.Core\NUGET_PUBLISHING_GUIDE.md" />
+    <None Include="AztecQRGenerator.Core\NUGET_README.md" />
+    <None Include="AztecQRGenerator.Core\README.md" />
+    <None Include="AztecQRGenerator.Core\SETUP_COMPLETE.md" />
     <None Include="DOCUMENTATION_REVIEW.md" />
     <None Include="FINAL_STATUS_REPORT.md" />
     <None Include="FORMAT_SUPPORT_SUMMARY.md" />
@@ -166,6 +175,9 @@
       <ProductName>.NET Framework 3.5</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="AztecQRGenerator.Core\icon-instructions.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

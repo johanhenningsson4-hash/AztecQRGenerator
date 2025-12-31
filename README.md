@@ -32,6 +32,29 @@ A .NET Framework-based Windows Forms application and library for generating QR c
 
 ## Installation
 
+### As a NuGet Package (Recommended for Developers)
+
+The core library is available as a NuGet package for easy integration into your projects:
+
+```bash
+# Package Manager Console
+Install-Package AztecQRGenerator.Core
+
+# .NET CLI
+dotnet add package AztecQRGenerator.Core
+```
+
+**Package Features:**
+- QR and Aztec code generation
+- Multiple image format support (PNG, JPEG, BMP)
+- In-memory bitmap generation
+- Comprehensive error handling and logging
+- No GUI dependencies - pure library
+
+See the [AztecQRGenerator.Core](AztecQRGenerator.Core/) directory for more information.
+
+### As a Standalone Application
+
 1. Clone the repository:
    ```bash
    git clone https://github.com/johanhenningsson4-hash/AztecQRGenerator.git
@@ -354,6 +377,12 @@ AztecQRGenerator/
 ??? AztecQR.resx          # Form resources
 ??? Properties/           # Assembly and resource files
 ??? Logs/                 # Auto-generated log files (created at runtime)
+??? AztecQRGenerator.Core/ # NuGet package project (class library)
+?   ??? QRGenerator.cs    # Core generator (no GUI)
+?   ??? AztecGenerator.cs # Core generator (no GUI)
+?   ??? Logger.cs         # Core logger
+?   ??? NUGET_README.md   # Package documentation
+?   ??? NUGET_PUBLISHING_GUIDE.md # Publishing instructions
 ??? README.md             # This file
 ??? LICENSE               # MIT License
 ??? USAGE_EXAMPLES.md     # Detailed usage examples
@@ -401,6 +430,15 @@ Johan Henningsson
 ## Contributing
 
 Contributions are welcome! Please feel free to submit pull requests or open issues for bugs and feature requests.
+
+### Project Components
+
+1. **AztecQRGenerator** - Windows Forms application with GUI and CLI
+2. **AztecQRGenerator.Core** - NuGet package library (no GUI dependencies)
+
+### Building the NuGet Package
+
+See [AztecQRGenerator.Core/NUGET_PUBLISHING_GUIDE.md](AztecQRGenerator.Core/NUGET_PUBLISHING_GUIDE.md) for instructions on building and publishing the NuGet package.
 
 ## Troubleshooting
 
