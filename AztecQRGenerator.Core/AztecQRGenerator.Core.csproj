@@ -84,6 +84,8 @@ Version 1.2.0:
     <None Include="icon.png" Pack="true" PackagePath="\" Condition="Exists('icon.png')" />
     <None Include="PUBLISHING_SUMMARY.md" />
     <None Include="QUICK_PUBLISH_GUIDE.md" />
+    <None Include="QUICK_README_SUCCESS.md" />
+    <None Include="README_ADDED_SUCCESS.md" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
