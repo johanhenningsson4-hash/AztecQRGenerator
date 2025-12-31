@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>AztecQRGenerator.Core</id>
+    <version>1.2.2</version>
+    <title>AztecQRGenerator.Core</title>
+    <authors>Johan Henningsson</authors>
+    <owners>Johan Henningsson</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <projectUrl>https://github.com/johanhenningsson4-hash/AztecQRGenerator</projectUrl>
+    <icon>icon.png</icon>
+    <readme>NUGET_README.md</readme>
+    <description>A .NET Framework library for generating QR codes and Aztec codes from Base64-encoded data. Supports multiple image formats (PNG, JPEG, BMP) with configurable size and error correction levels. Built on ZXing.Net with ISO-8859-1 encoding support.</description>
+    <releaseNotes>
+Version 1.2.2:
+- Added README to NuGet package for better discoverability
+- Fixed package metadata for improved NuGet.org display
+
+Version 1.2.1:
+- Removed unused lTaNmbrqr parameter from GenerateAztecBitmap() and GenerateQRBitmap() methods
+- Code cleanup and consistency improvements
+
+Version 1.2.0:
+- Added support for multiple image formats (PNG, JPEG, BMP)
+- Added GenerateQRCodeToFile() and GenerateAztecCodeToFile() with format selection
+- Added GenerateQRCodeAsBitmap() and GenerateAztecCodeAsBitmap() for in-memory generation
+- Comprehensive logging support
+- Full backward compatibility maintained
+    </releaseNotes>
+    <copyright>Copyright © 2025 Johan Olof Henningsson</copyright>
+    <tags>qrcode aztec barcode generator zxing base64 image png jpeg bmp iso-8859-1</tags>
+    <repository type="git" url="https://github.com/johanhenningsson4-hash/AztecQRGenerator" />
+    <dependencies>
+      <group targetFramework="net472">
+        <dependency id="ZXing.Net" version="0.16.9" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <!-- Main assembly -->
+    <file src="bin\Release\AztecQRGenerator.Core.dll" target="lib\net472" />
+    <file src="bin\Release\AztecQRGenerator.Core.xml" target="lib\net472" />
+    
+    <!-- README and Icon -->
+    <file src="NUGET_README.md" target="" />
+    <file src="icon.png" target="" />
+    
+    <!-- Dependencies will be automatically resolved -->
+  </files>
+</package>
