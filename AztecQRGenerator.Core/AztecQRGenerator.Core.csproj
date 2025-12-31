@@ -73,10 +73,12 @@ Version 1.2.0:
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="AztecQRGenerator.Core.nuspec" />
     <None Include="AztecQRGenerator.Core\Create-Icon.ps1" />
     <None Include="AztecQRGenerator.Core\create_icon.bat" />
     <None Include="AztecQRGenerator.Core\ICON_README.md" />
     <None Include="CHANGELOG.md" />
+    <None Include="GIT_PUSH_STATUS.md" />
     <None Include="NUGET_PUBLISHING_CHECKLIST.md" />
     <None Include="NUGET_README.md" Pack="true" PackagePath="\" />
     <None Include="icon.png" Pack="true" PackagePath="\" Condition="Exists('icon.png')" />
