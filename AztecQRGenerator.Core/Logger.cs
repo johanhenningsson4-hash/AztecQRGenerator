@@ -28,12 +28,91 @@ namespace AztecQR
 
         private Logger()
         {
-            string logDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs");
-            if (!Directory.Exists(logDirectory))
+            // Try multiple safe locations in order of preference
+            string logDirectory = null;
+            
+            // Option 1: User's AppData (most reliable)
+            try
             {
-                Directory.CreateDirectory(logDirectory);
+                logDirectory = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                    "AztecQRGenerator",
+                    "Logs"
+                );
+                
+                if (!Directory.Exists(logDirectory))
+                {
+                    Directory.CreateDirectory(logDirectory);
+                }
+                
+                logFilePath = Path.Combine(logDirectory, $"AztecQR_{DateTime.Now:yyyyMMdd}.log");
+                
+                // Test write access
+                File.AppendAllText(logFilePath, $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] Logger initialized in AppData{Environment.NewLine}");
+                return;
             }
-            logFilePath = Path.Combine(logDirectory, $"AztecQR_{DateTime.Now:yyyyMMdd}.log");
+            catch
+            {
+                // AppData failed, try next option
+            }
+
+            // Option 2: User's Documents folder
+            try
+            {
+                logDirectory = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                    "AztecQRGenerator",
+                    "Logs"
+                );
+                
+                if (!Directory.Exists(logDirectory))
+                {
+                    Directory.CreateDirectory(logDirectory);
+                }
+                
+                logFilePath = Path.Combine(logDirectory, $"AztecQR_{DateTime.Now:yyyyMMdd}.log");
+                
+                // Test write access
+                File.AppendAllText(logFilePath, $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] Logger initialized in Documents{Environment.NewLine}");
+                return;
+            }
+            catch
+            {
+                // Documents failed, try next option
+            }
+
+            // Option 3: Temp folder with subdirectory
+            try
+            {
+                logDirectory = Path.Combine(Path.GetTempPath(), "AztecQRGenerator", "Logs");
+                
+                if (!Directory.Exists(logDirectory))
+                {
+                    Directory.CreateDirectory(logDirectory);
+                }
+                
+                logFilePath = Path.Combine(logDirectory, $"AztecQR_{DateTime.Now:yyyyMMdd}.log");
+                
+                // Test write access
+                File.AppendAllText(logFilePath, $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] Logger initialized in Temp{Environment.NewLine}");
+                return;
+            }
+            catch
+            {
+                // Temp folder failed, use final fallback
+            }
+
+            // Option 4: Direct temp file (last resort)
+            try
+            {
+                logFilePath = Path.Combine(Path.GetTempPath(), $"AztecQR_{DateTime.Now:yyyyMMdd}.log");
+                File.AppendAllText(logFilePath, $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] Logger initialized in Temp (fallback){Environment.NewLine}");
+            }
+            catch
+            {
+                // Even temp file failed - use null file path (logging will be disabled)
+                logFilePath = null;
+            }
         }
 
         public static Logger Instance => instance.Value;
@@ -66,6 +145,12 @@ namespace AztecQR
         private void Log(LogLevel level, string message, Exception ex)
         {
             if (level < minimumLogLevel)
+            {
+                return;
+            }
+
+            // If no valid log file path, fail silently
+            if (string.IsNullOrEmpty(logFilePath))
             {
                 return;
             }
@@ -106,6 +191,11 @@ namespace AztecQR
 
         private void RotateLogIfNeeded()
         {
+            if (string.IsNullOrEmpty(logFilePath))
+            {
+                return;
+            }
+
             try
             {
                 if (File.Exists(logFilePath))
@@ -135,6 +225,14 @@ namespace AztecQR
         public void LogMethodExit(string className, string methodName, bool success = true)
         {
             Debug($"Exiting {className}.{methodName} - Success: {success}");
+        }
+
+        /// <summary>
+        /// Gets the current log file path
+        /// </summary>
+        public string GetLogFilePath()
+        {
+            return logFilePath ?? "Logging disabled (no writable location found)";
         }
     }
 }

@@ -317,14 +317,55 @@ namespace AztecQR
             try
             {
                 string directory = Path.GetDirectoryName(filePath);
-                if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
+                
+                // If path is relative or no directory specified, use Documents folder
+                if (string.IsNullOrEmpty(directory) || !Path.IsPathRooted(filePath))
                 {
-                    logger.Info($"Creating directory: {directory}");
-                    Directory.CreateDirectory(directory);
+                    string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                    string outputDir = Path.Combine(documentsPath, "AztecQRGenerator", "Output");
+                    
+                    if (!Directory.Exists(outputDir))
+                    {
+                        logger.Info($"Creating output directory: {outputDir}");
+                        Directory.CreateDirectory(outputDir);
+                    }
+                    
+                    string fileName = Path.GetFileName(filePath);
+                    filePath = Path.Combine(outputDir, fileName);
+                    logger.Info($"Using safe output path: {filePath}");
+                }
+                else if (!Directory.Exists(directory))
+                {
+                    try
+                    {
+                        logger.Info($"Creating directory: {directory}");
+                        Directory.CreateDirectory(directory);
+                    }
+                    catch (UnauthorizedAccessException)
+                    {
+                        // If we don't have permission, fall back to Documents
+                        logger.Warning($"No write access to {directory}, using Documents folder");
+                        string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                        string outputDir = Path.Combine(documentsPath, "AztecQRGenerator", "Output");
+                        
+                        if (!Directory.Exists(outputDir))
+                        {
+                            Directory.CreateDirectory(outputDir);
+                        }
+                        
+                        string fileName = Path.GetFileName(filePath);
+                        filePath = Path.Combine(outputDir, fileName);
+                        logger.Info($"Using fallback path: {filePath}");
+                    }
                 }
 
                 bitmap.Save(filePath, format);
-                logger.Debug($"Image saved successfully: {filePath} ({bitmap.Width}x{bitmap.Height}, Format: {format})");
+                logger.Info($"Image saved successfully: {filePath} ({bitmap.Width}x{bitmap.Height}, Format: {format})");
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                logger.Error($"Access denied when saving to {filePath}", ex);
+                throw new IOException($"Access denied. File will be saved to Documents folder instead. Check log for details.", ex);
             }
             catch (Exception ex)
             {
