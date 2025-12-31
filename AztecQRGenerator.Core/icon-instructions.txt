@@ -1,0 +1,18 @@
+# Icon Placeholder
+
+To create a package icon for NuGet:
+
+1. Create a 128x128 PNG image with your QR/Aztec code design
+2. Save it as `icon.png` in the AztecQRGenerator.Core folder
+3. The icon will be automatically included in the NuGet package
+
+You can use any image editor like:
+- Paint.NET
+- GIMP
+- Photoshop
+- Online tools like Canva
+
+Recommended icon design:
+- Simple QR code pattern
+- Black and white or brand colors
+- Clear and recognizable at small sizes
