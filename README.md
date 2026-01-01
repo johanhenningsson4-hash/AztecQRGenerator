@@ -193,9 +193,8 @@ bool success = aztecGenerator.GenerateAztecCodeToFile(
 ```csharp
 var qrGenerator = new QRGenerator();
 
-// Generates and saves two PNG files automatically with timestamp
+// Generates and saves a single PNG file with timestamp
 bool success = qrGenerator.GenerateQRBitmap(
-    lTaNmbrqr: 1,
     qrstring: "SGVsbG8gV29ybGQh",
     lCorrection: 2,
     lPixelDensity: 300
@@ -259,10 +258,10 @@ AztecQRGenerator.exe AZTEC "SGVsbG8gV29ybGQ=" output.png 250 2
 - Throws: `ArgumentException`, `ArgumentNullException`, `IOException`, `InvalidOperationException`
 - Use this to save directly to file with format selection
 
-**`GenerateQRBitmap(int lTaNmbrqr, string qrstring, int lCorrection, int lPixelDensity)`**
+**`GenerateQRBitmap(string qrstring, int lCorrection, int lPixelDensity)`**
 - Returns: `bool` - True if successful
 - Throws: `ArgumentException`, `IOException`, `InvalidOperationException`
-- Automatically saves two PNG files with timestamps (legacy method)
+- Saves a single PNG file with timestamp in the Documents folder
 
 ### AztecGenerator Class
 
@@ -280,10 +279,10 @@ AztecQRGenerator.exe AZTEC "SGVsbG8gV29ybGQ=" output.png 250 2
 - Throws: `ArgumentException`, `ArgumentNullException`, `IOException`, `InvalidOperationException`
 - Use this to save directly to file with format selection
 
-**`GenerateAztecBitmap(int lTaNmbrqr, string aztecstring, int lCorrection, int lPixelDensity)`**
+**`GenerateAztecBitmap(string aztecstring, int lCorrection, int lPixelDensity)`**
 - Returns: `bool` - True if successful
 - Throws: `ArgumentException`, `IOException`, `InvalidOperationException`
-- Automatically saves two PNG files with timestamps (legacy method)
+- Saves a single PNG file with timestamp in the Documents folder
 
 ### Parameters
 
@@ -356,13 +355,14 @@ The application includes comprehensive error handling:
 
 ## Output Files
 
-When using file-saving methods, the application generates two PNG files for each code:
-- `QRCode_{timestamp}.png` or `AztecCode_{timestamp}.png` - Original size
-- `QRCode_Scaled_{timestamp}.png` or `AztecCode_Scaled_{timestamp}.png` - Scaled version
+When using the `GenerateQRBitmap()` or `GenerateAztecBitmap()` methods, a single PNG file is created:
+- `QRCode_{timestamp}.png` or `AztecCode_{timestamp}.png`
 
 Timestamps are formatted as: `yyyyMMddHHmmssfff`
 
-When using bitmap-returning methods, no files are created automatically - you have full control.
+Files are saved to the Documents folder by default: `Documents\AztecQRGenerator\Output\`
+
+When using bitmap-returning methods (`GenerateQRCodeAsBitmap()`, `GenerateAztecCodeAsBitmap()`), no files are created automatically - you have full control.
 
 ## Project Structure
 
@@ -448,7 +448,7 @@ If you encounter any issues, check the log files in the `Logs` directory for det
 ### Common Issues
 
 1. **Invalid Base64 String**: Ensure your input data is properly Base64-encoded
-2. **File Access Denied**: Check write permissions in the application directory
+2. **File Access Denied**: Check write permissions. Files are saved to `Documents\AztecQRGenerator\Output\` by default
 3. **Invalid Parameters**: Review the command-line syntax and parameter values
 4. **Memory Issues**: When using bitmap methods, ensure you dispose of bitmaps properly
 
@@ -474,13 +474,15 @@ finally
 }
 ```
 
-## Known Issues
-
-- Both generators create two files (original and scaled) with the same content when using the legacy file-saving methods (`GenerateQRBitmap` and `GenerateAztecBitmap`)
-
 ## Recent Updates
 
-### Version 1.2 (Latest)
+### Version 1.2.3 (Latest) - January 2026
+- ?? **Bug Fix:** Removed duplicate file save operations in `GenerateQRBitmap()` and `GenerateAztecBitmap()`
+- ? Now generates only **one file** instead of two identical files
+- ? Improved efficiency and reduced disk I/O by 50%
+- ?? Available on NuGet: `Install-Package AztecQRGenerator.Core -Version 1.2.3`
+
+### Version 1.2
 - ? Added support for multiple image formats (PNG, JPEG, BMP)
 - ? Added `GenerateQRCodeToFile()` method with format selection
 - ? Added `GenerateAztecCodeToFile()` method with format selection
