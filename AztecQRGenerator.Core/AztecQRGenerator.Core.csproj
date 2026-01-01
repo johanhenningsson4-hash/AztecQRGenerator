@@ -80,8 +80,9 @@ Version 1.2.0:
   <ItemGroup>
     <None Include="AztecQRGenerator.Core.nuspec" />
     <None Include="AztecQRGenerator.Core.Tests\AztecQRGenerator.Core.Tests.csproj" />
-    <None Include="AztecQRGenerator.Core.Tests\packages.config" />
     <None Include="AztecQRGenerator.Core.Tests\README.md" />
+    <None Include="AztecQRGenerator.Core.Tests\SUMMARY.md" />
+    <None Include="AztecQRGenerator.Core.Tests\TEST_RESULTS.md" />
     <None Include="AztecQRGenerator.Core\Create-Icon.ps1" />
     <None Include="AztecQRGenerator.Core\create_icon.bat" />
     <None Include="AztecQRGenerator.Core\ICON_README.md" />
