@@ -154,6 +154,7 @@
     <Compile Include="Program.cs" />
     <None Include="QUICK_REFERENCE.md" />
     <None Include="FIX_DUPLICATE_ERRORS.md" />
+    <None Include="README_UPDATE_SUMMARY.md" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
