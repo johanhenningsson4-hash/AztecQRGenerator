@@ -143,6 +143,7 @@
     <None Include="IMAGE_FORMAT_GUIDE.md" />
     <None Include="IMAGE_FORMAT_IMPLEMENTATION_COMPLETE.md" />
     <None Include="packages.config" />
+    <None Include="PROJECT_SYNC_STATUS.md" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
