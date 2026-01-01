@@ -1,0 +1,99 @@
+# GitHub Release Description - Copy This
+
+## ?? What's New in v1.3.0
+
+### ?? No Administrator Privileges Required!
+The biggest improvement - **AztecQRGenerator now runs with standard user permissions**. No more "Access Denied" errors!
+
+### ?? Smart File Locations
+Files are now saved to user-friendly, always-accessible locations:
+- **Logs**: `%LocalAppData%\AztecQRGenerator\Logs\`
+- **Output**: `%UserProfile%\Documents\AztecQRGenerator\Output\`
+
+### ? Key Features
+- ? **No admin rights needed** - Works with standard user account
+- ? **Safe default locations** - Uses Windows best practices
+- ? **Automatic fallback** - Redirects if permission denied
+- ? **Enhanced CLI mode** - Honors output file parameter
+- ? **Better error messages** - Clear indication of file locations
+
+---
+
+## ?? Installation
+
+1. **Download** `AztecQRGenerator_v1.3.0.zip` below
+2. **Extract** to any folder (no installation required)
+3. **Run** `AztecQRGenerator.exe`
+4. **No administrator privileges needed!**
+
+---
+
+## ?? Quick Start
+
+### GUI Mode
+```bash
+AztecQRGenerator.exe
+```
+
+### CLI Mode
+```bash
+# Generate QR code to specific location
+AztecQRGenerator.exe QR "SGVsbG8gV29ybGQh" output.png 300 2
+
+# Generate Aztec code
+AztecQRGenerator.exe AZTEC "SGVsbG8gV29ybGQh" output.png 300 2
+
+# Supports PNG, JPEG, and BMP formats
+AztecQRGenerator.exe QR "data" output.jpg 400 5
+```
+
+---
+
+## ?? Bug Fixes
+
+- ? Fixed application requiring administrator privileges
+- ? Fixed "Access Denied" errors when creating log files
+- ? Fixed file save failures in protected directories
+- ? Fixed unclear error messages about file locations
+
+---
+
+## ?? Documentation
+
+- [Release Notes](https://github.com/johanhenningsson4-hash/AztecQRGenerator/blob/main/RELEASE_NOTES_v1.3.0.md)
+- [Changelog](https://github.com/johanhenningsson4-hash/AztecQRGenerator/blob/main/CHANGELOG.md)
+- [Permission Fix Details](https://github.com/johanhenningsson4-hash/AztecQRGenerator/blob/main/PERMISSION_FIX_SUMMARY.md)
+- [Usage Examples](https://github.com/johanhenningsson4-hash/AztecQRGenerator/blob/main/USAGE_EXAMPLES.md)
+
+---
+
+## ?? Version Comparison
+
+| Feature | v1.2.0 | v1.3.0 |
+|---------|--------|--------|
+| Multi-format support | ? | ? |
+| In-memory generation | ? | ? |
+| Admin required | ? Yes | ? No |
+| Log location | App dir | AppData |
+| Permission errors | Common | None |
+
+---
+
+## ?? File Locations
+
+Press `Win + R` and type:
+
+**Logs**: `%LocalAppData%\AztecQRGenerator\Logs`  
+**Output**: `%UserProfile%\Documents\AztecQRGenerator\Output`
+
+---
+
+## ? Requirements
+
+- Windows 7 or later
+- .NET Framework 4.7.2 or higher
+- **No administrator privileges required!**
+
+---
+
+**No more permission headaches! ??**

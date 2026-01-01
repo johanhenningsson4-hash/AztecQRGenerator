@@ -63,9 +63,14 @@ Version 1.2.0:
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="ZXing.Net" Version="0.16.9" />
+    <PackageReference Include="ZXing.Net" Version="0.16.11" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AztecQRGenerator.Core.Tests\AztecGeneratorTests.cs" />
+    <Compile Include="AztecQRGenerator.Core.Tests\LoggerTests.cs" />
+    <Compile Include="AztecQRGenerator.Core.Tests\Properties\AssemblyInfo.cs" />
+    <Compile Include="AztecQRGenerator.Core.Tests\QRGeneratorTests.cs" />
+    <Compile Include="AztecQRGenerator.Core.Tests\TestHelpers.cs" />
     <Compile Include="AztecQRGenerator.Core\CreateIcon.cs" />
     <Compile Include="QRGenerator.cs" />
     <Compile Include="AztecGenerator.cs" />
@@ -74,6 +79,9 @@ Version 1.2.0:
   </ItemGroup>
   <ItemGroup>
     <None Include="AztecQRGenerator.Core.nuspec" />
+    <None Include="AztecQRGenerator.Core.Tests\AztecQRGenerator.Core.Tests.csproj" />
+    <None Include="AztecQRGenerator.Core.Tests\packages.config" />
+    <None Include="AztecQRGenerator.Core.Tests\README.md" />
     <None Include="AztecQRGenerator.Core\Create-Icon.ps1" />
     <None Include="AztecQRGenerator.Core\create_icon.bat" />
     <None Include="AztecQRGenerator.Core\ICON_README.md" />
