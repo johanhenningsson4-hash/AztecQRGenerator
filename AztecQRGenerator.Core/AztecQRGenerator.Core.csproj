@@ -16,7 +16,7 @@
     <!-- NuGet Package Properties -->
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageId>AztecQRGenerator.Core</PackageId>
-    <Version>1.2.0</Version>
+    <Version>1.2.2</Version>
     <Authors>Johan Henningsson</Authors>
     <Company>Johan Henningsson</Company>
     <Product>AztecQRGenerator.Core</Product>
@@ -28,6 +28,11 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>qrcode aztec barcode generator zxing base64 image png jpeg bmp iso-8859-1</PackageTags>
     <PackageReleaseNotes>
+Version 1.2.2:
+- Fixed: Removed duplicate file save operations in GenerateQRBitmap() and GenerateAztecBitmap()
+- Now generates only one file instead of two identical files
+- Improved efficiency and reduced disk I/O
+
 Version 1.2.0:
 - Added support for multiple image formats (PNG, JPEG, BMP)
 - Added GenerateQRCodeToFile() and GenerateAztecCodeToFile() with format selection
@@ -66,12 +71,6 @@ Version 1.2.0:
     <PackageReference Include="ZXing.Net" Version="0.16.11" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AztecQRGenerator.Core.Tests\AztecGeneratorTests.cs" />
-    <Compile Include="AztecQRGenerator.Core.Tests\LoggerTests.cs" />
-    <Compile Include="AztecQRGenerator.Core.Tests\Properties\AssemblyInfo.cs" />
-    <Compile Include="AztecQRGenerator.Core.Tests\QRGeneratorTests.cs" />
-    <Compile Include="AztecQRGenerator.Core.Tests\TestHelpers.cs" />
-    <Compile Include="AztecQRGenerator.Core\CreateIcon.cs" />
     <Compile Include="QRGenerator.cs" />
     <Compile Include="AztecGenerator.cs" />
     <Compile Include="Logger.cs" />
