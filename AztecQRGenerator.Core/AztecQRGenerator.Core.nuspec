@@ -28,7 +28,7 @@ Version 1.2.0:
 - Comprehensive logging support
 - Full backward compatibility maintained
     </releaseNotes>
-    <copyright>Copyright � 2025 Johan Olof Henningsson</copyright>
+    <copyright>Copyright © 2026 Johan Olof Henningsson</copyright>
     <tags>qrcode aztec barcode generator zxing base64 image png jpeg bmp iso-8859-1</tags>
     <repository type="git" url="https://github.com/johanhenningsson4-hash/AztecQRGenerator" />
     <dependencies>

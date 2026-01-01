@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Johan Henningsson")]
 [assembly: AssemblyProduct("AztecQRGenerator")]
-[assembly: AssemblyCopyright("Copyright © Johan Olof Henningsson 2025")]
+[assembly: AssemblyCopyright("Copyright © Johan Olof Henningsson 2026")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

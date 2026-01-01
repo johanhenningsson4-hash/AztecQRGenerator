@@ -22,7 +22,7 @@
     <Company>Johan Henningsson</Company>
     <Product>AztecQRGenerator.Core</Product>
     <Description>A .NET Framework library for generating QR codes and Aztec codes from Base64-encoded data. Supports multiple image formats (PNG, JPEG, BMP) with configurable size and error correction levels. Built on ZXing.Net with ISO-8859-1 encoding support.</Description>
-    <Copyright>Copyright � 2025 Johan Olof Henningsson</Copyright>
+    <Copyright>Copyright © 2026 Johan Olof Henningsson</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/johanhenningsson4-hash/AztecQRGenerator</PackageProjectUrl>
     <RepositoryUrl>https://github.com/johanhenningsson4-hash/AztecQRGenerator</RepositoryUrl>

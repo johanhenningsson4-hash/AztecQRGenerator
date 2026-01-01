@@ -421,7 +421,7 @@ AztecQRGenerator/
 
 MIT License - See [LICENSE](LICENSE) file for details
 
-Copyright (c) 2025 Johan Olof Henningsson
+Copyright (c) 2026 Johan Olof Henningsson
 
 ## Author
 
