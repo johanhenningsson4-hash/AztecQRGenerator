@@ -171,15 +171,11 @@ namespace AztecQR
                     // Save as PNG
                     string timestamp = DateTime.Now.ToString("yyyyMMddHHmmssfff");
                     string fileName = $"AztecCode_{timestamp}.png";
-                    string scaledFileName = $"AztecCode_Scaled_{timestamp}.png";
 
                     try
                     {
                         SaveBitmap(bitmap, fileName, ImageFormat.Png);
                         logger.Info($"Aztec code saved successfully: {fileName}");
-
-                        SaveBitmap(bitmap, scaledFileName, ImageFormat.Png);
-                        logger.Info($"Scaled Aztec code saved successfully: {scaledFileName}");
                     }
                     catch (Exception ex)
                     {

@@ -171,15 +171,11 @@ namespace AztecQR
                     // Save as PNG
                     string timestamp = DateTime.Now.ToString("yyyyMMddHHmmssfff");
                     string fileName = $"QRCode_{timestamp}.png";
-                    string scaledFileName = $"QRCode_Scaled_{timestamp}.png";
 
                     try
                     {
                         SaveBitmap(bitmap, fileName, ImageFormat.Png);
                         logger.Info($"QR code saved successfully: {fileName}");
-
-                        SaveBitmap(bitmap, scaledFileName, ImageFormat.Png);
-                        logger.Info($"Scaled QR code saved successfully: {scaledFileName}");
                     }
                     catch (Exception ex)
                     {
