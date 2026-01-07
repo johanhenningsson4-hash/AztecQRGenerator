@@ -136,6 +136,8 @@
     </Compile>
     <None Include="app.config" />
     <None Include="AztecQRGenerator.Core\RELEASE_V1.2.3_SUCCESS.md" />
+    <None Include="CODE_CLEANUP_COMPLETE.md" />
+    <None Include="CODE_CLEANUP_SUMMARY.md" />
     <None Include="COPYRIGHT_UPDATE_2026.md" />
     <None Include="DOCUMENTATION_REVIEW.md" />
     <None Include="FINAL_STATUS_REPORT.md" />
