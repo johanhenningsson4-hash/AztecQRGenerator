@@ -49,7 +49,6 @@ var qrGenerator = new QRGenerator();
 string base64Data = "SGVsbG8gV29ybGQh";
 
 bool success = qrGenerator.GenerateQRBitmap(
-    lTaNmbrqr: 1,
     qrstring: base64Data,
     lCorrection: 2,
     lPixelDensity: 300
@@ -108,7 +107,6 @@ var aztecGenerator = new AztecGenerator();
 string base64Data = "SGVsbG8gV29ybGQh";
 
 bool success = aztecGenerator.GenerateAztecBitmap(
-    lTaNmbrqr: 1,
     aztecstring: base64Data,
     lCorrection: 2,
     lPixelDensity: 300
@@ -133,12 +131,12 @@ if (success)
   - Memory efficient (caller controls disposal)
 
 ### Methods that Save to File (Existing)
-- `QRGenerator.GenerateQRBitmap()` - Returns bool, saves 2 PNG files
-- `AztecGenerator.GenerateAztecBitmap()` - Returns bool, saves 2 PNG files
+- `QRGenerator.GenerateQRBitmap()` - Returns bool, saves 1 PNG file
+- `AztecGenerator.GenerateAztecBitmap()` - Returns bool, saves 1 PNG file
 - **Advantages:**
   - Simple batch processing
   - Automatic file naming with timestamp
-  - Creates backup copies automatically
+  - Saves to Documents folder automatically
 
 ## Full Example: Using in Windows Forms
 
@@ -274,4 +272,3 @@ using (Bitmap bitmap = generator.GenerateQRCodeAsBitmap(data, 2, 300))
 {
     // Use bitmap...
 }
-```
