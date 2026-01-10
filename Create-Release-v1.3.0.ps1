@@ -266,12 +266,21 @@ See RELEASE_NOTES_v$version.md for full details.
 if (-not $DryRun) {
     $existingTag = git tag -l "v$version"
     if ($existingTag) {
-        Write-Host "  ?? Tag v$version already exists!" -ForegroundColor Yellow
+        Write-Host "  ?? Tag v$version already exists locally!" -ForegroundColor Yellow
         $deleteTag = Read-Host "    Delete and recreate? (Y/N)"
         if ($deleteTag -eq "Y" -or $deleteTag -eq "y") {
+            # Delete local tag
             git tag -d "v$version"
-            git push origin ":refs/tags/v$version" 2>$null
-            Write-Host "    Old tag deleted" -ForegroundColor Gray
+            Write-Host "    Local tag deleted" -ForegroundColor Gray
+            
+            # Try to delete remote tag (ignore errors if it doesn't exist)
+            Write-Host "    Checking remote tag..." -ForegroundColor Gray
+            try {
+                git push origin ":refs/tags/v$version" 2>&1 | Out-Null
+                Write-Host "    Remote tag deleted" -ForegroundColor Gray
+            } catch {
+                Write-Host "    Remote tag doesn't exist (OK)" -ForegroundColor Gray
+            }
         } else {
             Write-Host "  Skipping tag creation" -ForegroundColor Yellow
             $skipTag = $true
