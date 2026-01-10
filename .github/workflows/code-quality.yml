@@ -19,10 +19,10 @@ jobs:
         fetch-depth: 0  # Full history for better analysis
         
     - name: Setup .NET Framework
-      uses: microsoft/setup-msbuild@v1.3
+      uses: microsoft/setup-msbuild@v2
       
     - name: Setup NuGet
-      uses: NuGet/setup-nuget@v1
+      uses: NuGet/setup-nuget@v2
       
     - name: Restore NuGet packages
       run: nuget restore AztecQRGenerator.sln
@@ -45,7 +45,7 @@ jobs:
       if: github.event_name != 'schedule'
       
     - name: Upload security results
-      uses: github/codeql-action/upload-sarif@v2
+      uses: github/codeql-action/upload-sarif@v3
       if: always()
       with:
         sarif_file: .gdn/msdo.sarif
