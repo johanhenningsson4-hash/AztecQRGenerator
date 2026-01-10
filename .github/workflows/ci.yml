@@ -48,7 +48,7 @@ jobs:
       with:
         name: NUnit Tests
         path: TestResults.xml
-        reporter: junit
+        reporter: nunit
         fail-on-error: false
         
     - name: Upload build artifacts
