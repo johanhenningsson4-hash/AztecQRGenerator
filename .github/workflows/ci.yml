@@ -30,7 +30,7 @@ jobs:
     - name: Run tests
       run: |
         nuget install NUnit.ConsoleRunner -Version 3.16.3 -OutputDirectory testrunner
-        .\testrunner\NUnit.ConsoleRunner.3.16.3\tools\nunit3-console.exe AztecQRGenerator.Tests\bin\Release\AztecQRGenerator.Tests.dll --result=TestResults.xml
+        .\testrunner\NUnit.ConsoleRunner.3.16.3\tools\nunit3-console.exe AztecQRGenerator.Tests\bin\Release\AztecQRGenerator.Tests.dll --result=TestResults.xml;format=nunit3
       continue-on-error: false
       
     - name: Upload test results
@@ -48,7 +48,7 @@ jobs:
       with:
         name: NUnit Tests
         path: TestResults.xml
-        reporter: nunit
+        reporter: dotnet-nunit
         fail-on-error: false
         
     - name: Upload build artifacts
