@@ -4,7 +4,7 @@ using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
-
+using NUnit.Framework;
 namespace AztecQRGenerator.Tests
 {
     [TestFixture]
@@ -353,5 +353,15 @@ namespace AztecQRGenerator.Tests
         }
 
         #endregion
+
+        [Test]
+        public void MyTest()
+        {
+            // Arrange
+            object obj = new object();
+
+            // Act & Assert
+            //Assert.IsNotNull(obj);
+        }
     }
 }
