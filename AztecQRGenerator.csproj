@@ -139,7 +139,6 @@
     <None Include="ALL_WORKFLOW_FIXES.md" />
     <None Include="app.config" />
     <None Include="AztecQRGenerator.Core\RELEASE_V1.2.3_SUCCESS.md" />
-    <None Include="AztecQRGenerator.Tests\AztecQRGenerator.Tests.csproj" />
     <None Include="CICD_VERIFICATION_REPORT.md" />
     <None Include="CODE_CLEANUP_COMPLETE.md" />
     <None Include="CODE_CLEANUP_SUMMARY.md" />

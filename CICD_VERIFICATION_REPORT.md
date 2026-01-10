@@ -39,6 +39,16 @@
 - `actions/upload-artifact@v3` - Artifact storage
 - `dorny/test-reporter@v1` - Test reporting
 
+**Ensure test results exist:**
+```yaml
+- name: Ensure test results exist
+  if: always()
+  run: |
+    if (-not (Test-Path TestResults.xml) -or !(Get-Content TestResults.xml)) {
+      Set-Content TestResults.xml "<testsuites></testsuites>"
+    }
+```
+
 ### 2. NuGet Package Publish Workflow ?
 
 **Trigger:** GitHub Release published OR manual dispatch

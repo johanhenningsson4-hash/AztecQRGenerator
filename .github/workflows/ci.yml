@@ -30,9 +30,16 @@ jobs:
     - name: Run tests
       run: |
         nuget install NUnit.ConsoleRunner -Version 3.16.3 -OutputDirectory testrunner
-        .\testrunner\NUnit.ConsoleRunner.3.16.3\tools\nunit3-console.exe AztecQRGenerator.Tests\bin\Release\AztecQRGenerator.Tests.dll --result=TestResults.xml;format=nunit3
+        .\testrunner\NUnit.ConsoleRunner.3.16.3\tools\nunit3-console.exe AztecQRGenerator.Tests\bin\Release\AztecQRGenerator.Tests.dll --result=TestResults.xml,format=nunit3
       continue-on-error: false
       
+    - name: Ensure test results exist
+      if: always()
+      run: |
+        if (-not (Test-Path TestResults.xml) -or !(Get-Content TestResults.xml)) {
+          Set-Content TestResults.xml "<testsuites></testsuites>"
+        }
+
     - name: Upload test results
       uses: actions/upload-artifact@v4
       if: always()
