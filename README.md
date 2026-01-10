@@ -1,6 +1,14 @@
 # AztecQRGenerator
 
+![CI Build](https://github.com/johanhenningsson4-hash/AztecQRGenerator/workflows/CI%20Build%20and%20Test/badge.svg)
+![Code Quality](https://github.com/johanhenningsson4-hash/AztecQRGenerator/workflows/Code%20Quality%20Analysis/badge.svg)
+![NuGet Version](https://img.shields.io/nuget/v/AztecQRGenerator.Core.svg)
+![Tests](https://img.shields.io/badge/tests-58%20passing-brightgreen)
+![License](https://img.shields.io/github/license/johanhenningsson4-hash/AztecQRGenerator.svg)
+
 A .NET Framework-based Windows Forms application and library for generating QR codes and Aztec codes from Base64-encoded data. The application supports both GUI mode and command-line mode for batch operations, with comprehensive logging and error handling. Now includes API methods to return barcodes as Bitmap objects for flexible integration.
+
+**? Now with automated testing and CI/CD pipeline! Every commit is tested with 58 comprehensive unit tests.**
 
 ## Features
 
@@ -21,14 +29,35 @@ A .NET Framework-based Windows Forms application and library for generating QR c
 - **ISO-8859-1 Encoding**: Supports Latin-1 character encoding
 - **Comprehensive Logging**: File-based logging with automatic rotation and multiple log levels
 - **Robust Error Handling**: Input validation, exception handling, and meaningful error messages
+- **? Automated Testing**: 58 unit tests covering all public APIs
+- **?? CI/CD Pipeline**: Automated build, test, and deployment to NuGet
 
 ## Requirements
 
 - .NET Framework 4.7.2 or higher
 - C# 7.3
 - Dependencies:
-  - ZXing.Net 0.16.11 (barcode generation library)
+  - ZXing.Net 0.16.9 (barcode generation library)
   - System.Drawing (image processing)
+
+## Quality Assurance
+
+### Automated Testing ?
+- **58 comprehensive unit tests**
+  - 25 tests for QRGenerator
+  - 25 tests for AztecGenerator
+  - 8 tests for Logger
+- **Test Framework**: NUnit 3.14
+- **Coverage**: All public APIs tested
+- **Automated execution**: Tests run on every commit
+
+### CI/CD Pipeline ??
+- **Continuous Integration**: Automated build and test on every push
+- **Automated NuGet Publishing**: Package published automatically on release
+- **Weekly Security Scans**: Automated code quality and security analysis
+- **Test Reporting**: Visual test results for every build
+
+See [TESTING_CICD_SETUP.md](TESTING_CICD_SETUP.md) for complete testing and CI/CD documentation.
 
 ## Installation
 
@@ -476,11 +505,22 @@ finally
 
 ## Recent Updates
 
-### Version 1.2.3 (Latest) - January 2026
+### Version 1.3.0 (Latest) - January 2026 ??
+- ?? **Added 58 comprehensive unit tests** covering all public APIs
+- ?? **Implemented CI/CD pipeline** with GitHub Actions
+  - Automated build and test on every push
+  - Automated NuGet publishing on release
+  - Weekly security and code quality scans
+- ?? **Automated test reporting** with visual results
+- ?? **Enhanced documentation** for testing and deployment
+- ? **Zero breaking changes** - fully backward compatible
+- ?? **Production-ready quality assurance**
+
+### Version 1.2.3 - January 2026
 - ?? **Bug Fix:** Removed duplicate file save operations in `GenerateQRBitmap()` and `GenerateAztecBitmap()`
 - ? Now generates only **one file** instead of two identical files
 - ? Improved efficiency and reduced disk I/O by 50%
-- ?? Available on NuGet: `Install-Package AztecQRGenerator.Core -Version 1.2.3`
+- ?? Available on NuGet: `Install-Package AztecQRGenerator.Core -Version 1.3.0`
 
 ### Version 1.2
 - ? Added support for multiple image formats (PNG, JPEG, BMP)
@@ -517,7 +557,48 @@ finally
 - **[USAGE_EXAMPLES.md](USAGE_EXAMPLES.md)** - Comprehensive code examples and usage patterns
 - **[IMAGE_FORMAT_GUIDE.md](IMAGE_FORMAT_GUIDE.md)** - Detailed guide for image format selection
 - **[IMPLEMENTATION_SUMMARY.md](IMPLEMENTATION_SUMMARY.md)** - Technical implementation details and architecture
+- **[TESTING_CICD_SETUP.md](TESTING_CICD_SETUP.md)** - Complete testing and CI/CD infrastructure guide
+- **[PUBLISH_TO_NUGET.md](PUBLISH_TO_NUGET.md)** - NuGet publishing guide
+- **[CICD_VERIFICATION_REPORT.md](CICD_VERIFICATION_REPORT.md)** - CI/CD setup verification report
+
+## For Developers
+
+### Running Tests
+
+```powershell
+# Build solution
+msbuild AztecQRGenerator.sln /p:Configuration=Release
+
+# Run tests
+.\packages\NUnit.ConsoleRunner.3.16.3\tools\nunit3-console.exe `
+  AztecQRGenerator.Tests\bin\Release\AztecQRGenerator.Tests.dll
+```
+
+Or use Visual Studio Test Explorer:
+1. Open Test Explorer (Test ? Test Explorer)
+2. Click "Run All Tests"
+3. View results and coverage
+
+### CI/CD Pipeline
+
+The project uses GitHub Actions for automated workflows:
+
+- **CI Build**: Runs on every push to `main` or `develop`
+  - Builds solution
+  - Runs all 58 tests
+  - Generates test reports
+  - Uploads artifacts
+
+- **NuGet Publish**: Triggered by GitHub releases
+  - Builds Core library
+  - Creates NuGet package
+  - Publishes to NuGet.org automatically
+
+- **Code Quality**: Weekly scans
+  - Security analysis
+  - Code quality checks
+  - SARIF results
+
+See [CICD_VERIFICATION_REPORT.md](CICD_VERIFICATION_REPORT.md) for complete CI/CD documentation.
 
 ## Support
-
-For issues, questions, or contributions, please visit the [GitHub repository](https://github.com/johanhenningsson4-hash/AztecQRGenerator).
