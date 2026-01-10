@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<test-run id="0" runstate="Runnable" testcasecount="0" result="Failed" label="Invalid" total="0" passed="0" failed="0" warnings="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.16.3.0" clr-version="4.0.30319.42000" start-time="2026-01-10 09:36:00Z" end-time="2026-01-10 09:36:03Z" duration="2.209050">
+  <command-line><![CDATA["C:\Jobb\AztecQRGenerator\packages\NUnit.ConsoleRunner.3.16.3\tools\nunit3-console.exe" AztecQRGenerator.Tests\bin\Release\AztecQRGenerator.Tests.dll --result=TestResults.xml]]></command-line>
+  <test-suite type="Assembly" id="1-1" name="AztecQRGenerator.Tests.dll" fullname="C:\Jobb\AztecQRGenerator\AztecQRGenerator.Tests\bin\Release\AztecQRGenerator.Tests.dll" testcasecount="0" runstate="NotRunnable" result="Failed" label="Invalid">
+    <properties>
+      <property name="_SKIPREASON" value="File not found: C:\Jobb\AztecQRGenerator\AztecQRGenerator.Tests\bin\Release\AztecQRGenerator.Tests.dll" />
+    </properties>
+    <reason>
+      <message>File not found: C:\Jobb\AztecQRGenerator\AztecQRGenerator.Tests\bin\Release\AztecQRGenerator.Tests.dll</message>
+    </reason>
+  </test-suite>
+</test-run>

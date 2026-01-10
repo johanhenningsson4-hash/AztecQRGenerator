@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>AztecQRGenerator.Core</id>
-    <version>1.2.3</version>
+    <version>1.3.0</version>
     <title>AztecQRGenerator.Core</title>
     <authors>Johan Henningsson</authors>
     <owners>Johan Henningsson</owners>
@@ -13,7 +13,7 @@
     <readme>NUGET_README.md</readme>
     <description>A .NET Framework library for generating QR codes and Aztec codes from Base64-encoded data. Supports multiple image formats (PNG, JPEG, BMP) with configurable size and error correction levels. Built on ZXing.Net with ISO-8859-1 encoding support.</description>
     <releaseNotes>
-Version 1.2.3:
+Version 1.3.0:
 - Fixed: Removed duplicate file save operations in GenerateQRBitmap() and GenerateAztecBitmap()
 - Now generates only one file instead of two identical files
 

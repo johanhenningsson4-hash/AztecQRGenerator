@@ -17,7 +17,7 @@
     <!-- NuGet Package Properties -->
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageId>AztecQRGenerator.Core</PackageId>
-    <Version>1.2.3</Version>
+    <Version>1.3.0</Version>
     <Authors>Johan Henningsson</Authors>
     <Company>Johan Henningsson</Company>
     <Product>AztecQRGenerator.Core</Product>
@@ -29,7 +29,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>qrcode aztec barcode generator zxing base64 image png jpeg bmp iso-8859-1</PackageTags>
     <PackageReleaseNotes>
-Version 1.2.3:
+Version 1.3.0:
 - Fixed: Removed duplicate file save operations in GenerateQRBitmap() and GenerateAztecBitmap()
 - Now generates only one file instead of two identical files
 - Improved efficiency and reduced disk I/O

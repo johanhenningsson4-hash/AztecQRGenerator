@@ -1,0 +1,51 @@
+name: Code Quality Analysis
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    - cron: '0 0 * * 0'  # Weekly on Sunday
+
+jobs:
+  code-quality:
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Full history for better analysis
+        
+    - name: Setup .NET Framework
+      uses: microsoft/setup-msbuild@v1.3
+      
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v1
+      
+    - name: Restore NuGet packages
+      run: nuget restore AztecQRGenerator.sln
+      
+    - name: Build solution
+      run: msbuild AztecQRGenerator.sln /p:Configuration=Release /p:Platform="Any CPU"
+      
+    - name: Run code analysis
+      run: |
+        echo "Running code analysis..."
+        # Add code analysis tools here (e.g., SonarQube, CodeQL)
+        
+    - name: Check code formatting
+      run: |
+        echo "Checking code formatting..."
+        # Add formatting checks here
+        
+    - name: Security scan
+      uses: microsoft/security-devops-action@v1
+      if: github.event_name != 'schedule'
+      
+    - name: Upload security results
+      uses: github/codeql-action/upload-sarif@v2
+      if: always()
+      with:
+        sarif_file: .gdn/msdo.sarif

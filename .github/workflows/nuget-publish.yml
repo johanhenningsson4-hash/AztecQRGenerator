@@ -1,0 +1,49 @@
+name: NuGet Package Publish
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Package version (e.g., 1.2.4)'
+        required: true
+        type: string
+
+jobs:
+  publish-nuget:
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup .NET Framework
+      uses: microsoft/setup-msbuild@v1.3
+      
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v1
+      
+    - name: Restore NuGet packages
+      run: nuget restore AztecQRGenerator.Core\AztecQRGenerator.Core.csproj
+      
+    - name: Build Core library
+      run: msbuild AztecQRGenerator.Core\AztecQRGenerator.Core.csproj /p:Configuration=Release
+      
+    - name: Create NuGet package
+      run: |
+        cd AztecQRGenerator.Core
+        nuget pack AztecQRGenerator.Core.nuspec -Properties Configuration=Release
+        
+    - name: Push to NuGet.org
+      env:
+        NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+      run: |
+        cd AztecQRGenerator.Core
+        nuget push *.nupkg -ApiKey $env:NUGET_API_KEY -Source https://api.nuget.org/v3/index.json -SkipDuplicate
+        
+    - name: Upload package artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: nuget-package
+        path: AztecQRGenerator.Core/*.nupkg

@@ -1,19 +1,18 @@
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("AztecQRGenerator.Core")]
-[assembly: AssemblyDescription("A .NET Framework library for generating QR codes and Aztec codes from Base64-encoded data")]
+[assembly: AssemblyTitle("AztecQRGenerator.Tests")]
+[assembly: AssemblyDescription("Unit tests for AztecQRGenerator")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Johan Henningsson")]
-[assembly: AssemblyProduct("AztecQRGenerator.Core")]
+[assembly: AssemblyProduct("AztecQRGenerator.Tests")]
 [assembly: AssemblyCopyright("Copyright © 2026 Johan Olof Henningsson")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 [assembly: ComVisible(false)]
 
-[assembly: Guid("8F7A5D7E-2B3C-4E9F-A1D6-3C8E9F7B5D4A")]
+[assembly: Guid("8e7a6d8f-3c4b-4f9e-a2d7-4c9f8e7b6d5a")]
 
 [assembly: AssemblyVersion("1.3.0.0")]
 [assembly: AssemblyFileVersion("1.3.0.0")]
