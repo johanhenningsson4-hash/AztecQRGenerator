@@ -36,7 +36,7 @@
 - `actions/checkout@v4` - Latest
 - `microsoft/setup-msbuild@v1.3` - .NET Framework support
 - `NuGet/setup-nuget@v1` - NuGet CLI
-- `actions/upload-artifact@v3` - Artifact storage
+- `actions/upload-artifact@v4` - Artifact storage
 - `dorny/test-reporter@v1` - Test reporting
 
 **Ensure test results exist:**

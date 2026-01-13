@@ -2,7 +2,7 @@
 
 ## Issue Fixed
 
-**Problem:** Workflows using deprecated `actions/upload-artifact@v3`
+**Problem:** Workflows using deprecated `actions/upload-artifact@v4`
 **Error Message:** "This request has been automatically failed because it uses a deprecated version of actions/upload-artifact: v3"
 
 ## ? What Was Updated
@@ -196,7 +196,7 @@ All updates are backward-compatible. If issues occur, the script can be re-run.
 ## ? Summary
 
 ### Before Fix
-- ? Using deprecated actions/upload-artifact@v3
+- ? Using deprecated actions/upload-artifact@v4
 - ?? Deprecation warnings in Actions
 - ?? Risk of future failures
 

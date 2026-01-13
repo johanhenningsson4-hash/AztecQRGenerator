@@ -1,5 +1,5 @@
 # Fix GitHub Actions Workflows - Update to Latest Versions
-# Fixes deprecated actions/upload-artifact@v3 and other outdated actions
+# Fixes deprecated actions/upload-artifact@v4 and other outdated actions
 
 $ErrorActionPreference = "Stop"
 

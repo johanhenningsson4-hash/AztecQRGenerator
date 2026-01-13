@@ -40,7 +40,7 @@ Path does not exist: .gdn/msdo.sarif
 
 **Warning:**
 ```
-actions/upload-artifact@v3 is deprecated
+actions/upload-artifact@v4 is deprecated
 ```
 
 **Fix Applied:**
@@ -98,7 +98,7 @@ git push origin main
 
 ```yaml
 # Before (Errors)
-- uses: actions/upload-artifact@v3  # ? Deprecated
+- uses: actions/upload-artifact@v4  # ? Deprecated
   with:
     reporter: java-junit  # ? Wrong format
 
@@ -135,7 +135,7 @@ git push origin main
 
 ```yaml
 # Before
-- uses: actions/upload-artifact@v3  # ? Deprecated
+- uses: actions/upload-artifact@v4  # ? Deprecated
 - uses: microsoft/setup-msbuild@v1.3  # ? Old
 
 # After (Fixed)
