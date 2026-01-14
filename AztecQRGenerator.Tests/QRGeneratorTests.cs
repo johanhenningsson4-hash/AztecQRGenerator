@@ -4,7 +4,7 @@ using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
-using NUnit.Framework;
+
 namespace AztecQRGenerator.Tests
 {
     [TestFixture]
