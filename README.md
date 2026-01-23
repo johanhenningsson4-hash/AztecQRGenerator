@@ -10,6 +10,7 @@ A .NET Framework 4.7.2 library for generating QR codes and Aztec codes from Base
 - ISO-8859-1 encoding for full Latin-1 support
 - Thread-safe logging
 - .NET Framework 4.7.2 compatible
+- **Logging activated by default**
 
 ## Quick Start
 
@@ -58,6 +59,7 @@ bool success = generator.GenerateAztecCodeToFile(
 - Logger is a thread-safe singleton
 - Logs are written to `{AppData}/AztecQRGenerator/Logs/AztecQR_yyyyMMdd.log`
 - Set log level: `Logger.Instance.SetMinimumLogLevel(LogLevel.Debug);`
+- **Logging is activated by default at Debug level**
 
 ## License
 MIT License
