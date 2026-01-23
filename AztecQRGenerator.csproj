@@ -152,17 +152,13 @@
     <None Include="app.config" />
     <None Include="AztecQRGenerator.Core\RELEASE_V1.2.3_SUCCESS.md" />
     <None Include="CICD_VERIFICATION_REPORT.md" />
-    <None Include="CODE_CLEANUP_COMPLETE.md" />
     <None Include="CODE_CLEANUP_SUMMARY.md" />
     <None Include="Complete-NuGet-Publish.ps1" />
     <None Include="COPYRIGHT_UPDATE_2026.md" />
-    <None Include="Create-Release-v1.2.4.ps1" />
-    <None Include="Create-Release-v1.3.0.ps1" />
     <None Include="DOCUMENTATION_REVIEW.md" />
     <None Include="FASTEST_RELEASE.md" />
     <None Include="Final-Push-CICD.ps1" />
     <None Include="FINAL_STATUS_REPORT.md" />
-    <None Include="Fix-CI-Test-Reporter.ps1" />
     <None Include="Fix-Workflow-Versions.ps1" />
     <None Include="FORMAT_SUPPORT_SUMMARY.md" />
     <None Include="GITHUB_RELEASE_GUIDE_v1.2.4.md" />
