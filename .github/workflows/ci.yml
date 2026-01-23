@@ -27,43 +27,9 @@ jobs:
     - name: Build solution
       run: msbuild AztecQRGenerator.sln /p:Configuration=Release /p:Platform="Any CPU"
       
-    - name: Run tests
+    - name: Run NUnit tests
       run: |
         nuget install NUnit.ConsoleRunner -Version 3.16.3 -OutputDirectory testrunner
         .\testrunner\NUnit.ConsoleRunner.3.16.3\tools\nunit3-console.exe AztecQRGenerator.Tests\bin\Release\AztecQRGenerator.Tests.dll --result=TestResults.xml,format=nunit3
       continue-on-error: false
       
-    - name: Ensure test results exist
-      if: always()
-      run: |
-        if (-not (Test-Path TestResults.xml) -or !(Get-Content TestResults.xml)) {
-          Set-Content TestResults.xml "<testsuites></testsuites>"
-        }
-
-    - name: Upload test results
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: test-results
-        path: TestResults.xml
-        if-no-files-found: warn
-        
-    - name: Publish test report
-      uses: dorny/test-reporter@v1
-      if: always()
-      continue-on-error: true
-      with:
-        name: NUnit Tests
-        path: TestResults.xml
-        reporter: java-junit
-        fail-on-error: false
-        
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v4
-      if: success()
-      with:
-        name: build-artifacts
-        path: |
-          bin/Release/
-          AztecQRGenerator.Core/bin/Release/
-        if-no-files-found: warn
