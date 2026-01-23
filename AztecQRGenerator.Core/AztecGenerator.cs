@@ -23,6 +23,12 @@ namespace AztecQR
     public class AztecGenerator
     {
         private readonly Logger logger = Logger.Instance;
+        
+        public AztecGenerator()
+        {
+            // Ensure logging is activated by default
+            logger.SetMinimumLogLevel(LogLevel.Debug);
+        }
 
         /// <summary>
         /// Generates an Aztec code and returns it as a Bitmap object.
