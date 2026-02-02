@@ -1,7 +1,6 @@
 <Project>
   <PropertyGroup>
-    <!-- Suppress missing XML comment warnings across projects; prefer adding XML docs for public APIs. -->
-    <NoWarn>$(NoWarn);1591</NoWarn>
+    <!-- XML comment warnings are enabled; ensure public APIs have XML documentation. -->
   </PropertyGroup>
 
   <ItemGroup>

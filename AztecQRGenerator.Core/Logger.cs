@@ -13,11 +13,18 @@ namespace AztecQR
     /// <summary>
     /// Log levels for the application logger.
     /// </summary>
+    /// <remarks>
+    /// Used by <see cref="Logger"/> to filter log output by severity.
+    /// </remarks>
     public enum LogLevel
     {
+        /// <summary>Detailed diagnostic information for developers.</summary>
         Debug,
+        /// <summary>Informational messages that track the general flow of the application.</summary>
         Info,
+        /// <summary>Indicates a potential problem or important situation that is not an error.</summary>
         Warning,
+        /// <summary>An error that has caused an operation to fail.</summary>
         Error
     }
 

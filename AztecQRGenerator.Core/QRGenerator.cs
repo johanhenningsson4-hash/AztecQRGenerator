@@ -18,7 +18,6 @@ using System.Runtime.InteropServices;
 namespace AztecQR
 {
     /// <summary>
-    /// <summary>
     /// Provides methods for generating QR codes as bitmaps or files.
     /// </summary>
     public class QRGenerator
