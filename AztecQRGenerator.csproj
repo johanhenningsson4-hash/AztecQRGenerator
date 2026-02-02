@@ -160,6 +160,7 @@
     <None Include="Final-Push-CICD.ps1" />
     <None Include="FINAL_STATUS_REPORT.md" />
     <None Include="Fix-Workflow-Versions.ps1" />
+    <None Include="Fix-ZXing-Project.ps1" />
     <None Include="FORMAT_SUPPORT_SUMMARY.md" />
     <None Include="GITHUB_RELEASE_GUIDE_v1.2.4.md" />
     <None Include="IMAGE_FORMAT_GUIDE.md" />
@@ -217,6 +218,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AztecQRGenerator.Core\icon-instructions.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="ZXing.Net">
+      <Version>0.16.11</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
