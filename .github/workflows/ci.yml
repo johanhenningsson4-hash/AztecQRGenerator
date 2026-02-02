@@ -21,15 +21,24 @@ jobs:
     - name: Setup NuGet
       uses: NuGet/setup-nuget@v2
       
-    - name: Restore NuGet packages
-      run: nuget restore AztecQRGenerator.sln
+    - name: Clear NuGet caches and restore packages
+      run: |
+        nuget locals all -clear
+        nuget restore AztecQRGenerator.sln -PackagesDirectory packages
       
     - name: Build solution
       run: msbuild AztecQRGenerator.sln /p:Configuration=Release /p:Platform="Any CPU"
+      env:
+        NUGET_PACKAGES: ${{ runner.workspace }}\packages
       
     - name: Run NUnit tests
       run: |
         nuget install NUnit.ConsoleRunner -Version 3.16.3 -OutputDirectory testrunner
         .\testrunner\NUnit.ConsoleRunner.3.16.3\tools\nunit3-console.exe AztecQRGenerator.Tests\bin\Release\AztecQRGenerator.Tests.dll --result=TestResults.xml,format=nunit3
+      continue-on-error: false
+
+    - name: Run MSTest tests (TRX results)
+      run: |
+        vstest.console.exe AztecQRGenerator.Core.Tests\bin\Release\AztecQRGenerator.Core.Tests.dll /Logger:trx /ResultsDirectory:./
       continue-on-error: false
       
