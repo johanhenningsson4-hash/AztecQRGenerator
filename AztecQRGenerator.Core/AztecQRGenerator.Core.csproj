@@ -86,21 +86,13 @@ Version 1.2.0:
     <None Include="AztecQRGenerator.Core.Tests\README.md" />
     <None Include="AztecQRGenerator.Core.Tests\SUMMARY.md" />
     <None Include="AztecQRGenerator.Core.Tests\TEST_RESULTS.md" />
-    <None Include="AztecQRGenerator.Core\Create-Icon.ps1" />
     <None Include="AztecQRGenerator.Core\create_icon.bat" />
     <None Include="AztecQRGenerator.Core\ICON_README.md" />
     <None Include="CHANGELOG.md" />
     <None Include="GIT_PUSH_STATUS.md" />
     <None Include="NUGET_PUBLISHING_CHECKLIST.md" />
-    <None Include="NUGET_README.md" Pack="true" PackagePath="\" />
     <None Include="icon.png" Pack="true" PackagePath="\" Condition="Exists('icon.png')" />
-    <None Include="PACKAGE_BUILD_SUCCESS.md" />
-    <None Include="PUBLICATION_SUCCESS.md" />
     <None Include="Publish-Package.ps1" />
-    <None Include="PUBLISHING_SUMMARY.md" />
-    <None Include="QUICK_PUBLISH_GUIDE.md" />
-    <None Include="QUICK_README_SUCCESS.md" />
-    <None Include="README_ADDED_SUCCESS.md" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

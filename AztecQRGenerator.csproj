@@ -147,27 +147,12 @@
     <None Include=".github\workflows\ci.yml" />
     <None Include=".github\workflows\code-quality.yml" />
     <None Include=".github\workflows\nuget-publish.yml" />
-    <None Include="ALL_WORKFLOW_FIXES.md" />
     <None Include="app.config" />
     <None Include="AztecQRGenerator.Core\RELEASE_V1.2.3_SUCCESS.md" />
-    <None Include="CICD_VERIFICATION_REPORT.md" />
-    <None Include="CODE_CLEANUP_SUMMARY.md" />
-    <None Include="Complete-NuGet-Publish.ps1" />
-    <None Include="COPYRIGHT_UPDATE_2026.md" />
     <None Include="Directory.Build.props" />
-    <None Include="DOCUMENTATION_REVIEW.md" />
-    <None Include="FASTEST_RELEASE.md" />
-    <None Include="Final-Push-CICD.ps1" />
-    <None Include="FINAL_STATUS_REPORT.md" />
     <None Include="Fix-Workflow-Versions.ps1" />
     <None Include="Fix-ZXing-Project.ps1" />
-    <None Include="FORMAT_SUPPORT_SUMMARY.md" />
-    <None Include="GITHUB_RELEASE_GUIDE_v1.2.4.md" />
-    <None Include="IMAGE_FORMAT_GUIDE.md" />
-    <None Include="IMAGE_FORMAT_IMPLEMENTATION_COMPLETE.md" />
-    <None Include="NUGET_QUICK_REF.md" />
     <None Include="packages.config" />
-    <None Include="PROJECT_SYNC_STATUS.md" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -178,26 +163,14 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Program.cs" />
-    <None Include="PUBLISH_TO_NUGET.md" />
     <None Include="Push-All-Workflow-Fixes.ps1" />
     <None Include="Push-Complete-CICD.ps1" />
     <None Include="Push-Workflow-Fix.ps1" />
     <None Include="Quick-Commands-v1.3.0.ps1" />
-    <None Include="QUICK_REFERENCE.md" />
-    <None Include="FIX_DUPLICATE_ERRORS.md" />
-    <None Include="QUICK_RELEASE_GUIDE.md" />
-    <None Include="QUICK_START_TESTING.md" />
-    <None Include="README_UPDATE_SUMMARY.md" />
-    <None Include="RELEASE_v1.3.0_GUIDE.md" />
     <None Include="Simple-Release-v1.3.0.ps1" />
-    <None Include="SOLUTION_SYNC_COMPLETE.md" />
-    <None Include="TESTING_CICD_SETUP.md" />
-    <None Include="TROUBLESHOOTING_RELEASE.md" />
     <None Include="Update-README-And-Push.ps1" />
     <None Include="Update-Version-And-Push.ps1" />
-    <None Include="UPDATE_VERSION_GUIDE.md" />
     <None Include="Verify-CICD-Setup.ps1" />
-    <None Include="WORKFLOW_FIX_SUMMARY.md" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">

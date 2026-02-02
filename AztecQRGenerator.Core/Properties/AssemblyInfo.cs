@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Johan Henningsson")]
 [assembly: AssemblyProduct("AztecQRGenerator.Core")]
-[assembly: AssemblyCopyright("Copyright © 2026 Johan Olof Henningsson")]
+[assembly: AssemblyCopyright("Copyright Â© 2026 Johan Olof Henningsson")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -15,5 +15,5 @@ using System.Runtime.InteropServices;
 
 [assembly: Guid("8F7A5D7E-2B3C-4E9F-A1D6-3C8E9F7B5D4A")]
 
-[assembly: AssemblyVersion("1.4.0.0")]
-[assembly: AssemblyFileVersion("1.4.0.0")]
+[assembly: AssemblyVersion("1.5.0.0")]
+[assembly: AssemblyFileVersion("1.5.0.0")]

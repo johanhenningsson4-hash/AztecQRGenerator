@@ -64,9 +64,6 @@
     <Compile Include="LoggerTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="README.md" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\AztecQRGenerator.Core.csproj">
       <Project>{8F7A5D7E-2B3C-4E9F-A1D6-3C8E9F7B5D4A}</Project>
       <Name>AztecQRGenerator.Core</Name>
