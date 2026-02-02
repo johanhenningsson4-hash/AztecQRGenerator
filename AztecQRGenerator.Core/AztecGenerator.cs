@@ -31,14 +31,15 @@ namespace AztecQR
         }
 
         /// <summary>
-        /// Generates an Aztec code and returns it as a Bitmap object.
+        /// Generates an Aztec code from the supplied Base64-encoded string and returns it
+        /// as a <see cref="Bitmap"/>.
         /// </summary>
         /// <param name="aztecstring">Base64 encoded string to encode.</param>
-        /// <param name="lCorrection">Error correction level.</param>
-        /// <param name="lPixelDensity">Size of the Aztec code in pixels.</param>
-        /// <returns>Bitmap containing the Aztec code.</returns>
-        /// <exception cref="ArgumentException">Thrown if input is invalid.</exception>
-        /// <exception cref="InvalidOperationException">Thrown if Aztec code generation fails.</exception>
+        /// <param name="lCorrection">Error correction level. If &lt; 0 a default is used.</param>
+        /// <param name="lPixelDensity">Desired pixel width/height of the generated bitmap. Must be &gt; 0.</param>
+        /// <returns>A <see cref="Bitmap"/> containing the generated Aztec code.</returns>
+        /// <exception cref="ArgumentException">Thrown when input is null/empty or pixel density is invalid.</exception>
+        /// <exception cref="InvalidOperationException">Thrown when the underlying encoder fails to produce a matrix.</exception>
         public Bitmap GenerateAztecCodeAsBitmap(string aztecstring, int lCorrection, int lPixelDensity)
         {
             logger.LogMethodEntry("AztecGenerator", "GenerateAztecCodeAsBitmap", "Base64 data", lCorrection, lPixelDensity);
@@ -107,16 +108,17 @@ namespace AztecQR
         }
 
         /// <summary>
-        /// Generates an Aztec code and saves it to a file with the specified format.
+        /// Generates an Aztec code and saves it to <paramref name="filePath"/> using the
+        /// provided <paramref name="format"/>.
         /// </summary>
         /// <param name="aztecstring">Base64 encoded string to encode.</param>
         /// <param name="lCorrection">Error correction level.</param>
         /// <param name="lPixelDensity">Size of the Aztec code in pixels.</param>
-        /// <param name="filePath">Output file path.</param>
-        /// <param name="format">Image format (PNG, JPEG, or BMP).</param>
-        /// <returns>True if successful.</returns>
-        /// <exception cref="ArgumentException">Thrown if file path is invalid.</exception>
-        /// <exception cref="ArgumentNullException">Thrown if format is null.</exception>
+        /// <param name="filePath">Output file path. If relative, the file is placed in the user's Documents/AztecQRGenerator/Output folder.</param>
+        /// <param name="format">Image format to use for saving (PNG, JPEG or BMP).</param>
+        /// <returns>True when the file was created successfully.</returns>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="filePath"/> is null or empty.</exception>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="format"/> is null.</exception>
         public bool GenerateAztecCodeToFile(string aztecstring, int lCorrection, int lPixelDensity, string filePath, ImageFormat format)
         {
             logger.LogMethodEntry("AztecGenerator", "GenerateAztecCodeToFile", "Base64 data", lCorrection, lPixelDensity, filePath, format?.ToString() ?? "null");
@@ -136,11 +138,12 @@ namespace AztecQR
 
         /// <summary>
         /// Generates an Aztec code and saves it as a PNG file with a timestamped name in the user's Documents folder.
+        /// This is a convenience wrapper around <see cref="GenerateAztecCodeToFile"/> using the PNG format.
         /// </summary>
         /// <param name="aztecstring">Base64 encoded string to encode.</param>
         /// <param name="lCorrection">Error correction level.</param>
         /// <param name="lPixelDensity">Size of the Aztec code in pixels.</param>
-        /// <returns>True if successful.</returns>
+        /// <returns>True when the file was created successfully.</returns>
         public bool GenerateAztecBitmap(string aztecstring, int lCorrection, int lPixelDensity)
         {
             logger.LogMethodEntry("AztecGenerator", "GenerateAztecBitmap", "Base64 data", lCorrection, lPixelDensity);

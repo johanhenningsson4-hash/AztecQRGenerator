@@ -22,7 +22,9 @@ namespace AztecQR
     }
 
     /// <summary>
+    /// <summary>
     /// Thread-safe singleton logger for application diagnostics and error logging.
+    /// Provides simple file-based logging with log rotation and method entry/exit helpers.
     /// </summary>
     public sealed class Logger
     {
@@ -65,13 +67,16 @@ namespace AztecQR
         }
 
         /// <summary>
+        /// <summary>
         /// Gets the singleton instance of the logger.
+        /// Accessing this property will initialize the logger and attempt to create a writable log file.
         /// </summary>
         public static Logger Instance => instance.Value;
 
         /// <summary>
-        /// Sets the minimum log level for output.
+        /// Sets the minimum log level for output. Messages below this level are ignored.
         /// </summary>
+        /// <param name="level">Minimum <see cref="LogLevel"/> to log.</param>
         public void SetMinimumLogLevel(LogLevel level) => minimumLogLevel = level;
 
         /// <summary>
@@ -79,7 +84,7 @@ namespace AztecQR
         /// </summary>
         public void Debug(string message, Exception ex = null) => Log(LogLevel.Debug, message, ex);
         /// <summary>
-        /// Logs an info message.
+        /// Logs an informational message.
         /// </summary>
         public void Info(string message, Exception ex = null) => Log(LogLevel.Info, message, ex);
         /// <summary>
@@ -140,8 +145,11 @@ namespace AztecQR
         }
 
         /// <summary>
-        /// Logs method entry with parameters.
+        /// Logs method entry with optional parameters. Useful for tracing call flow.
         /// </summary>
+        /// <param name="className">Name of the class.</param>
+        /// <param name="methodName">Name of the method.</param>
+        /// <param name="parameters">Optional parameters to include in the log entry.</param>
         public void LogMethodEntry(string className, string methodName, params object[] parameters)
         {
             var paramString = parameters != null && parameters.Length > 0 
@@ -151,15 +159,19 @@ namespace AztecQR
         }
 
         /// <summary>
-        /// Logs method exit with success status.
+        /// Logs method exit with an optional success flag.
         /// </summary>
+        /// <param name="className">Name of the class.</param>
+        /// <param name="methodName">Name of the method.</param>
+        /// <param name="success">Indicates whether the method completed successfully.</param>
         public void LogMethodExit(string className, string methodName, bool success = true)
         {
             Debug($"Exiting {className}.{methodName} - Success: {success}");
         }
 
         /// <summary>
-        /// Gets the current log file path.
+        /// Gets the current log file path being used by the logger. If logging is disabled
+        /// because no writable directory was found, a description string is returned.
         /// </summary>
         public string GetLogFilePath() => logFilePath ?? "Logging disabled (no writable location found)";
     }

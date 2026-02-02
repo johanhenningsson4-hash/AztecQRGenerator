@@ -18,6 +18,7 @@ using System.Runtime.InteropServices;
 namespace AztecQR
 {
     /// <summary>
+    /// <summary>
     /// Provides methods for generating QR codes as bitmaps or files.
     /// </summary>
     public class QRGenerator
@@ -25,14 +26,15 @@ namespace AztecQR
         private readonly Logger logger = Logger.Instance;
 
         /// <summary>
-        /// Generates a QR code and returns it as a Bitmap object.
+        /// Generates a QR code from the supplied Base64-encoded string and returns
+        /// it as a <see cref="Bitmap"/>.
         /// </summary>
         /// <param name="qrstring">Base64 encoded string to encode.</param>
-        /// <param name="lCorrection">Error correction level.</param>
-        /// <param name="lPixelDensity">Size of the QR code in pixels.</param>
-        /// <returns>Bitmap containing the QR code.</returns>
-        /// <exception cref="ArgumentException">Thrown if input is invalid.</exception>
-        /// <exception cref="InvalidOperationException">Thrown if QR code generation fails.</exception>
+        /// <param name="lCorrection">Error correction level. If &lt; 0 a default is used.</param>
+        /// <param name="lPixelDensity">Desired pixel width/height of the generated bitmap. Must be &gt; 0.</param>
+        /// <returns>A <see cref="Bitmap"/> containing the generated QR code.</returns>
+        /// <exception cref="ArgumentException">Thrown when input is null/empty or pixel density is invalid.</exception>
+        /// <exception cref="InvalidOperationException">Thrown when the underlying encoder fails to produce a matrix.</exception>
         public Bitmap GenerateQRCodeAsBitmap(string qrstring, int lCorrection, int lPixelDensity)
         {
             logger.LogMethodEntry("QRGenerator", "GenerateQRCodeAsBitmap", "Base64 data", lCorrection, lPixelDensity);
@@ -84,16 +86,17 @@ namespace AztecQR
         }
 
         /// <summary>
-        /// Generates a QR code and saves it to a file with the specified format.
+        /// Generates a QR code and saves it to <paramref name="filePath"/> using the
+        /// provided <paramref name="format"/>.
         /// </summary>
         /// <param name="qrstring">Base64 encoded string to encode.</param>
         /// <param name="lCorrection">Error correction level.</param>
         /// <param name="lPixelDensity">Size of the QR code in pixels.</param>
-        /// <param name="filePath">Output file path.</param>
-        /// <param name="format">Image format (PNG, JPEG, or BMP).</param>
-        /// <returns>True if successful.</returns>
-        /// <exception cref="ArgumentException">Thrown if file path is invalid.</exception>
-        /// <exception cref="ArgumentNullException">Thrown if format is null.</exception>
+        /// <param name="filePath">Output file path. If relative, the file is placed in the user's Documents/AztecQRGenerator/Output folder.</param>
+        /// <param name="format">Image format to use for saving (PNG, JPEG or BMP).</param>
+        /// <returns>True when the file was created successfully.</returns>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="filePath"/> is null or empty.</exception>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="format"/> is null.</exception>
         public bool GenerateQRCodeToFile(string qrstring, int lCorrection, int lPixelDensity, string filePath, ImageFormat format)
         {
             logger.LogMethodEntry("QRGenerator", "GenerateQRCodeToFile", "Base64 data", lCorrection, lPixelDensity, filePath, format?.ToString() ?? "null");
@@ -113,11 +116,12 @@ namespace AztecQR
 
         /// <summary>
         /// Generates a QR code and saves it as a PNG file with a timestamped name in the user's Documents folder.
+        /// This is a convenience wrapper around <see cref="GenerateQRCodeToFile"/> using the PNG format.
         /// </summary>
         /// <param name="qrstring">Base64 encoded string to encode.</param>
         /// <param name="lCorrection">Error correction level.</param>
         /// <param name="lPixelDensity">Size of the QR code in pixels.</param>
-        /// <returns>True if successful.</returns>
+        /// <returns>True when the file was created successfully.</returns>
         public bool GenerateQRBitmap(string qrstring, int lCorrection, int lPixelDensity)
         {
             logger.LogMethodEntry("QRGenerator", "GenerateQRBitmap", "Base64 data", lCorrection, lPixelDensity);
