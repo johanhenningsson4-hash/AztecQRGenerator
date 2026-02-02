@@ -145,6 +145,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include=".editorconfig" />
     <None Include=".github\workflows\ci.yml" />
     <None Include=".github\workflows\code-quality.yml" />
     <None Include=".github\workflows\nuget-publish.yml" />
@@ -155,6 +156,7 @@
     <None Include="CODE_CLEANUP_SUMMARY.md" />
     <None Include="Complete-NuGet-Publish.ps1" />
     <None Include="COPYRIGHT_UPDATE_2026.md" />
+    <None Include="Directory.Build.props" />
     <None Include="DOCUMENTATION_REVIEW.md" />
     <None Include="FASTEST_RELEASE.md" />
     <None Include="Final-Push-CICD.ps1" />
