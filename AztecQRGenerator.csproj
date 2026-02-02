@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
-  <Import Project="packages\MSTest.TestAdapter.2.2.10\build\net46\MSTest.TestAdapter.props" Condition="Exists('packages\MSTest.TestAdapter.2.2.10\build\net46\MSTest.TestAdapter.props')" />
-  <Import Project="packages\NUnit.3.13.3\build\NUnit.props" Condition="Exists('packages\NUnit.3.13.3\build\NUnit.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -234,9 +232,6 @@
     </PropertyGroup>
     <Error Condition="!Exists('packages\NUnit.3.13.3\build\NUnit.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\NUnit.3.13.3\build\NUnit.props'))" />
     <Error Condition="!Exists('packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets'))" />
-    <Error Condition="!Exists('packages\MSTest.TestAdapter.2.2.10\build\net46\MSTest.TestAdapter.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\MSTest.TestAdapter.2.2.10\build\net46\MSTest.TestAdapter.props'))" />
-    <Error Condition="!Exists('packages\MSTest.TestAdapter.2.2.10\build\net46\MSTest.TestAdapter.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\MSTest.TestAdapter.2.2.10\build\net46\MSTest.TestAdapter.targets'))" />
   </Target>
   <Import Project="packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets" Condition="Exists('packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets')" />
-  <Import Project="packages\MSTest.TestAdapter.2.2.10\build\net46\MSTest.TestAdapter.targets" Condition="Exists('packages\MSTest.TestAdapter.2.2.10\build\net46\MSTest.TestAdapter.targets')" />
 </Project>
