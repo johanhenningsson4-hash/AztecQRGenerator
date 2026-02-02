@@ -5,7 +5,8 @@
 
   <ItemGroup>
     <!-- Add analyzers globally so individual csproj files don't need modification -->
-    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0" PrivateAssets="all" />
+    <!-- Use stable StyleCop.Analyzers version available on nuget.org -->
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="6.0.0" PrivateAssets="all" />
   </ItemGroup>
 </Project>
