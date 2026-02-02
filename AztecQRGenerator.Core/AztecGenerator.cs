@@ -10,11 +10,9 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Text;
-#if HAS_ZXING
 using ZXing;
 using ZXing.Aztec;
 using ZXing.Common;
-#endif
 using System.Runtime.InteropServices;
 
 namespace AztecQR
@@ -46,7 +44,6 @@ namespace AztecQR
         {
             logger.LogMethodEntry("AztecGenerator", "GenerateAztecCodeAsBitmap", "Base64 data", lCorrection, lPixelDensity);
 
-#if HAS_ZXING
             try
             {
                 // Validate input parameters
@@ -108,12 +105,6 @@ namespace AztecQR
             {
                 logger.LogMethodExit("AztecGenerator", "GenerateAztecCodeAsBitmap", true);
             }
-#else
-            // ZXing not present: fail early with clear message
-            logger.Error("ZXing library not available - cannot generate Aztec code");
-            logger.LogMethodExit("AztecGenerator", "GenerateAztecCodeAsBitmap", false);
-            throw new NotSupportedException("ZXing library is not available. Install ZXing.Net or define the HAS_ZXING compilation symbol.");
-#endif
         }
 
         /// <summary>
