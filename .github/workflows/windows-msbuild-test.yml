@@ -25,7 +25,7 @@ jobs:
       id: build_and_test
       run: |
         # First try without test shims
-        powershell -NoProfile -ExecutionPolicy Bypass -File build_and_test.ps1 -Solution AztecQRGenerator.sln -Configuration Debug || exit $LASTEXITCODE
+        powershell -NoProfile -ExecutionPolicy Bypass -File build_and_test.ps1 -Solution AztecQRGenerator.sln -Configuration Debug
 
     - name: Re-run with test shims if restore failed
       if: failure()
@@ -42,13 +42,20 @@ jobs:
 
     - name: Generate coverage reports (ReportGenerator)
       if: always()
+      shell: powershell
       run: |
-        echo "Installing ReportGenerator global tool..."
+        Write-Host "Installing ReportGenerator global tool..."
         dotnet tool install -g dotnet-reportgenerator-globaltool --version 5.1.24
-        $env:PATH += ";$env:USERPROFILE\.dotnet\tools"
 
-        echo "Running ReportGenerator to produce HTML and Cobertura reports"
-        reportgenerator -reports:"TestResults/**/*.coverage" -targetdir:"CoverageReport" -reporttypes:Html;Cobertura -verbosity:Info || echo "ReportGenerator finished with errors or no coverage files found"
+        $reportGenPath = Join-Path $env:USERPROFILE ".dotnet\tools\reportgenerator.exe"
+        if (-not (Test-Path $reportGenPath)) {
+            Write-Warning "reportgenerator not found at $reportGenPath. Skipping coverage report generation."
+            exit 0
+        }
+
+        Write-Host "Running ReportGenerator to produce HTML and Cobertura reports"
+        & $reportGenPath -reports:"TestResults\**\*.coverage" -targetdir:"CoverageReport" -reporttypes:"Html;Cobertura" -verbosity:Info
+        if ($LASTEXITCODE -ne 0) { Write-Warning "ReportGenerator finished with errors or no coverage files found" }
 
     - name: Upload coverage report
       if: always()
