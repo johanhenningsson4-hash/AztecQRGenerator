@@ -14,8 +14,10 @@ if (-not (Get-Command $msbuildExe -ErrorAction SilentlyContinue)) {
     Write-Host "msbuild not found on PATH. Attempting to locate via vswhere..."
     $vswhere = Join-Path ${env:ProgramFiles(x86)} 'Microsoft Visual Studio\Installer\vswhere.exe'
     if (Test-Path $vswhere) {
-        $installPath = & $vswhere -latest -products * -requires Microsoft.Component.MSBuild -property installationPath 2>$null
+        $installPath = & $vswhere -latest -products * -requires Microsoft.Component.MSBuild -property installationPath 2>$null | Select-Object -First 1
         if ($installPath) {
+            # vswhere may return multiple lines; ensure we have a single trimmed path
+            $installPath = $installPath.ToString().Trim()
             # Try typical MSBuild locations under the installation
             $candidates = @(
                 Join-Path $installPath 'MSBuild\Current\Bin\MSBuild.exe',
@@ -61,8 +63,9 @@ if (-not (Get-Command $vstestExe -ErrorAction SilentlyContinue)) {
     Write-Host "vstest.console.exe not found in PATH. Attempting to locate via vswhere..."
     $vswhere = Join-Path ${env:ProgramFiles(x86)} 'Microsoft Visual Studio\Installer\vswhere.exe'
     if (Test-Path $vswhere) {
-        $installPath = & $vswhere -latest -products * -requires Microsoft.Component.MSBuild -property installationPath 2>$null
+        $installPath = & $vswhere -latest -products * -requires Microsoft.Component.MSBuild -property installationPath 2>$null | Select-Object -First 1
         if ($installPath) {
+            $installPath = $installPath.ToString().Trim()
             $possible = Join-Path $installPath 'Common7\IDE\Extensions\TestPlatform\vstest.console.exe'
             if (Test-Path $possible) { $vstestExe = $possible }
         }
