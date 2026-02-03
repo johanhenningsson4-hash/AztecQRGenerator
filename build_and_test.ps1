@@ -15,16 +15,20 @@ if (-not (Get-Command $msbuildExe -ErrorAction SilentlyContinue)) {
     $vswhere = Join-Path ${env:ProgramFiles(x86)} 'Microsoft Visual Studio\Installer\vswhere.exe'
     if (Test-Path $vswhere) {
         $vswhereOutput = & $vswhere -latest -products * -requires Microsoft.Component.MSBuild -property installationPath 2>$null
-        $installPath = $vswhereOutput -split "`n" | ForEach-Object { $_.Trim() } | Where-Object { $_ -ne '' } | Select-Object -First 1
-        if ($installPath) {
-            # Try typical MSBuild locations under the installation
-            $candidates = @(
-                Join-Path $installPath 'MSBuild\Current\Bin\MSBuild.exe',
-                Join-Path $installPath 'MSBuild\15.0\Bin\MSBuild.exe',
-                Join-Path $installPath 'VC\Auxiliary\Build\msbuild.exe'
-            )
-            foreach ($cand in $candidates) {
-                if (Test-Path $cand) { $msbuildExe = $cand; break }
+        if ($vswhereOutput) {
+            # Make sure we pick a single installation path and convert to string
+            $firstLine = $vswhereOutput | ForEach-Object { $_ } | Where-Object { $_ -and $_.ToString().Trim() -ne '' } | Select-Object -First 1
+            if ($firstLine) {
+                $installPath = $firstLine.ToString().Trim()
+
+                # Try typical MSBuild locations under the installation using Path.Combine
+                $cand1 = [System.IO.Path]::Combine($installPath, 'MSBuild', 'Current', 'Bin', 'MSBuild.exe')
+                $cand2 = [System.IO.Path]::Combine($installPath, 'MSBuild', '15.0', 'Bin', 'MSBuild.exe')
+                $cand3 = [System.IO.Path]::Combine($installPath, 'VC', 'Auxiliary', 'Build', 'msbuild.exe')
+                $candidates = @($cand1, $cand2, $cand3)
+                foreach ($cand in $candidates) {
+                    if (Test-Path $cand) { $msbuildExe = $cand; break }
+                }
             }
         }
     }
@@ -63,10 +67,13 @@ if (-not (Get-Command $vstestExe -ErrorAction SilentlyContinue)) {
     $vswhere = Join-Path ${env:ProgramFiles(x86)} 'Microsoft Visual Studio\Installer\vswhere.exe'
     if (Test-Path $vswhere) {
         $vswhereOutput = & $vswhere -latest -products * -requires Microsoft.Component.MSBuild -property installationPath 2>$null
-        $installPath = $vswhereOutput -split "`n" | ForEach-Object { $_.Trim() } | Where-Object { $_ -ne '' } | Select-Object -First 1
-        if ($installPath) {
-            $possible = Join-Path $installPath 'Common7\IDE\Extensions\TestPlatform\vstest.console.exe'
-            if (Test-Path $possible) { $vstestExe = $possible }
+        if ($vswhereOutput) {
+            $firstLine = $vswhereOutput | ForEach-Object { $_ } | Where-Object { $_ -and $_.ToString().Trim() -ne '' } | Select-Object -First 1
+            if ($firstLine) {
+                $installPath = $firstLine.ToString().Trim()
+                $possible = [System.IO.Path]::Combine($installPath, 'Common7', 'IDE', 'Extensions', 'TestPlatform', 'vstest.console.exe')
+                if (Test-Path $possible) { $vstestExe = $possible }
+            }
         }
     }
 }
