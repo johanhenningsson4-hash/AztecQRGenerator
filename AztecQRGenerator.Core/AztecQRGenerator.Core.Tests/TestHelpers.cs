@@ -25,6 +25,33 @@ namespace AztecQR.Tests
             return Convert.ToBase64String(bytes);
         }
 
+// Minimal MSTest attribute shim appended so tests can compile in environments where
+// the MSTest framework assembly isn't resolved at compile time. These are simple
+// attribute placeholders only and do not provide runner functionality.
+namespace Microsoft.VisualStudio.TestTools.UnitTesting
+{
+    using System;
+
+    [AttributeUsage(AttributeTargets.Class, Inherited = false)]
+    public sealed class TestClassAttribute : Attribute { }
+
+    [AttributeUsage(AttributeTargets.Method, Inherited = false)]
+    public sealed class TestMethodAttribute : Attribute { }
+
+    [AttributeUsage(AttributeTargets.Method, Inherited = false)]
+    public sealed class TestInitializeAttribute : Attribute { }
+
+    [AttributeUsage(AttributeTargets.Method, Inherited = false)]
+    public sealed class TestCleanupAttribute : Attribute { }
+
+    [AttributeUsage(AttributeTargets.Method, Inherited = false)]
+    public sealed class ExpectedExceptionAttribute : Attribute
+    {
+        public Type ExceptionType { get; }
+        public ExpectedExceptionAttribute(Type exceptionType) { ExceptionType = exceptionType; }
+    }
+}
+
         /// <summary>
         /// Gets the test output directory path
         /// </summary>
