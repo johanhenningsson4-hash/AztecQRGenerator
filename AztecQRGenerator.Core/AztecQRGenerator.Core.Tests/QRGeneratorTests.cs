@@ -15,18 +15,18 @@ namespace AztecQR.Tests
         [TestInitialize]
         public void Setup()
         {
-            generator = new QRGenerator();
-            testBase64Data = TestHelpers.GetBase64TestData("Hello World!");
+            this.generator = new QRGenerator();
+            this.testBase64Data = TestHelpers.GetBase64TestData("Hello World!");
             TestHelpers.CleanupOldTestFiles();
         }
 
-        #region GenerateQRCodeAsBitmap Tests
+        // Region: GenerateQRCodeAsBitmap Tests
 
         [TestMethod]
         public void GenerateQRCodeAsBitmap_ValidInput_ReturnsBitmap()
         {
             // Act
-            Bitmap result = generator.GenerateQRCodeAsBitmap(testBase64Data, 2, 300);
+            Bitmap result = this.generator.GenerateQRCodeAsBitmap(this.testBase64Data, 2, 300);
 
             // Assert
             Assert.IsNotNull(result, "Bitmap should not be null");
@@ -46,7 +46,7 @@ namespace AztecQR.Tests
             foreach (int size in sizes)
             {
                 // Act
-                using (Bitmap result = generator.GenerateQRCodeAsBitmap(testBase64Data, 2, size))
+                using (Bitmap result = this.generator.GenerateQRCodeAsBitmap(this.testBase64Data, 2, size))
                 {
                     // Assert
                     Assert.AreEqual(size, result.Width, $"Width should be {size}");
@@ -64,7 +64,7 @@ namespace AztecQR.Tests
             foreach (int level in correctionLevels)
             {
                 // Act
-                using (Bitmap result = generator.GenerateQRCodeAsBitmap(testBase64Data, level, 200))
+                using (Bitmap result = this.generator.GenerateQRCodeAsBitmap(this.testBase64Data, level, 200))
                 {
                     // Assert
                     Assert.IsNotNull(result, $"Bitmap should be generated with correction level {level}");
@@ -78,7 +78,7 @@ namespace AztecQR.Tests
         public void GenerateQRCodeAsBitmap_NullString_ThrowsArgumentException()
         {
             // Act
-            generator.GenerateQRCodeAsBitmap(null, 2, 300);
+            this.generator.GenerateQRCodeAsBitmap(null, 2, 300);
         }
 
         [TestMethod]
@@ -86,7 +86,7 @@ namespace AztecQR.Tests
         public void GenerateQRCodeAsBitmap_EmptyString_ThrowsArgumentException()
         {
             // Act
-            generator.GenerateQRCodeAsBitmap("", 2, 300);
+            this.generator.GenerateQRCodeAsBitmap("", 2, 300);
         }
 
         [TestMethod]
@@ -94,7 +94,7 @@ namespace AztecQR.Tests
         public void GenerateQRCodeAsBitmap_WhitespaceString_ThrowsArgumentException()
         {
             // Act
-            generator.GenerateQRCodeAsBitmap("   ", 2, 300);
+            this.generator.GenerateQRCodeAsBitmap("   ", 2, 300);
         }
 
         [TestMethod]
@@ -102,7 +102,7 @@ namespace AztecQR.Tests
         public void GenerateQRCodeAsBitmap_InvalidBase64_ThrowsArgumentException()
         {
             // Act
-            generator.GenerateQRCodeAsBitmap("NotValidBase64!@#", 2, 300);
+            this.generator.GenerateQRCodeAsBitmap("NotValidBase64!@#", 2, 300);
         }
 
         [TestMethod]
@@ -110,7 +110,7 @@ namespace AztecQR.Tests
         public void GenerateQRCodeAsBitmap_ZeroPixelDensity_ThrowsArgumentException()
         {
             // Act
-            generator.GenerateQRCodeAsBitmap(testBase64Data, 2, 0);
+            this.generator.GenerateQRCodeAsBitmap(this.testBase64Data, 2, 0);
         }
 
         [TestMethod]
@@ -118,14 +118,14 @@ namespace AztecQR.Tests
         public void GenerateQRCodeAsBitmap_NegativePixelDensity_ThrowsArgumentException()
         {
             // Act
-            generator.GenerateQRCodeAsBitmap(testBase64Data, 2, -100);
+            this.generator.GenerateQRCodeAsBitmap(this.testBase64Data, 2, -100);
         }
 
         [TestMethod]
         public void GenerateQRCodeAsBitmap_NegativeCorrectionLevel_UsesDefault()
         {
             // Act - Should not throw, should use default value
-            using (Bitmap result = generator.GenerateQRCodeAsBitmap(testBase64Data, -1, 200))
+            using (Bitmap result = this.generator.GenerateQRCodeAsBitmap(this.testBase64Data, -1, 200))
             {
                 // Assert
                 Assert.IsNotNull(result, "Bitmap should be generated with default correction level");
@@ -139,7 +139,7 @@ namespace AztecQR.Tests
             string largeData = TestHelpers.GetBase64TestData(new string('A', 1000));
 
             // Act
-            using (Bitmap result = generator.GenerateQRCodeAsBitmap(largeData, 2, 400))
+            using (Bitmap result = this.generator.GenerateQRCodeAsBitmap(largeData, 2, 400))
             {
                 // Assert
                 Assert.IsNotNull(result, "Should handle large data");
@@ -147,9 +147,9 @@ namespace AztecQR.Tests
             }
         }
 
-        #endregion
+        // End Region: GenerateQRCodeAsBitmap Tests
 
-        #region GenerateQRCodeToFile Tests
+        // Region: GenerateQRCodeToFile Tests
 
         [TestMethod]
         public void GenerateQRCodeToFile_PNG_CreatesValidFile()
@@ -160,7 +160,7 @@ namespace AztecQR.Tests
             try
             {
                 // Act
-                bool result = generator.GenerateQRCodeToFile(testBase64Data, 2, 300, filePath, ImageFormat.Png);
+                bool result = this.generator.GenerateQRCodeToFile(this.testBase64Data, 2, 300, filePath, ImageFormat.Png);
 
                 // Assert
                 Assert.IsTrue(result, "Method should return true");
@@ -186,7 +186,7 @@ namespace AztecQR.Tests
             try
             {
                 // Act
-                bool result = generator.GenerateQRCodeToFile(testBase64Data, 2, 300, filePath, ImageFormat.Jpeg);
+                bool result = this.generator.GenerateQRCodeToFile(this.testBase64Data, 2, 300, filePath, ImageFormat.Jpeg);
 
                 // Assert
                 Assert.IsTrue(result, "Method should return true");
@@ -207,7 +207,7 @@ namespace AztecQR.Tests
             try
             {
                 // Act
-                bool result = generator.GenerateQRCodeToFile(testBase64Data, 2, 300, filePath, ImageFormat.Bmp);
+                bool result = this.generator.GenerateQRCodeToFile(this.testBase64Data, 2, 300, filePath, ImageFormat.Bmp);
 
                 // Assert
                 Assert.IsTrue(result, "Method should return true");
@@ -224,7 +224,7 @@ namespace AztecQR.Tests
         public void GenerateQRCodeToFile_NullFilePath_ThrowsArgumentException()
         {
             // Act
-            generator.GenerateQRCodeToFile(testBase64Data, 2, 300, null, ImageFormat.Png);
+            this.generator.GenerateQRCodeToFile(this.testBase64Data, 2, 300, null, ImageFormat.Png);
         }
 
         [TestMethod]
@@ -232,7 +232,7 @@ namespace AztecQR.Tests
         public void GenerateQRCodeToFile_EmptyFilePath_ThrowsArgumentException()
         {
             // Act
-            generator.GenerateQRCodeToFile(testBase64Data, 2, 300, "", ImageFormat.Png);
+            this.generator.GenerateQRCodeToFile(this.testBase64Data, 2, 300, "", ImageFormat.Png);
         }
 
         [TestMethod]
@@ -262,7 +262,7 @@ namespace AztecQR.Tests
             try
             {
                 // Act
-                bool result = generator.GenerateQRCodeToFile(testBase64Data, 2, 300, relativePath, ImageFormat.Png);
+                bool result = this.generator.GenerateQRCodeToFile(this.testBase64Data, 2, 300, relativePath, ImageFormat.Png);
 
                 // Assert
                 Assert.IsTrue(result, "Method should return true");
@@ -277,15 +277,15 @@ namespace AztecQR.Tests
             }
         }
 
-        #endregion
+        // End Region
 
-        #region GenerateQRBitmap Tests (Legacy Method)
+        // Region: GenerateQRBitmap Tests (Legacy Method)
 
         [TestMethod]
         public void GenerateQRBitmap_ValidInput_CreatesTimestampedFiles()
         {
             // Act
-            bool result = generator.GenerateQRBitmap(testBase64Data, 2, 300);
+            bool result = this.generator.GenerateQRBitmap(this.testBase64Data, 2, 300);
 
             // Assert
             Assert.IsTrue(result, "Method should return true");
@@ -298,12 +298,12 @@ namespace AztecQR.Tests
         public void GenerateQRBitmap_InvalidData_ThrowsException()
         {
             // Act
-            generator.GenerateQRBitmap("InvalidBase64", 2, 300);
+            this.generator.GenerateQRBitmap("InvalidBase64", 2, 300);
         }
 
-        #endregion
+        // End Region
 
-        #region Integration Tests
+        // Region: Integration Tests
 
         [TestMethod]
         public void QRGenerator_MultipleCalls_AllSucceed()
@@ -312,7 +312,7 @@ namespace AztecQR.Tests
             for (int i = 0; i < 5; i++)
             {
                 string data = TestHelpers.GetBase64TestData($"Test {i}");
-                using (Bitmap result = generator.GenerateQRCodeAsBitmap(data, 2, 200))
+                using (Bitmap result = this.generator.GenerateQRCodeAsBitmap(data, 2, 200))
                 {
                     Assert.IsNotNull(result, $"Iteration {i} should succeed");
                 }
@@ -328,9 +328,9 @@ namespace AztecQR.Tests
             try
             {
                 // Act
-                using (Bitmap bitmapResult = generator.GenerateQRCodeAsBitmap(testBase64Data, 2, 300))
+                using (Bitmap bitmapResult = this.generator.GenerateQRCodeAsBitmap(this.testBase64Data, 2, 300))
                 {
-                    generator.GenerateQRCodeToFile(testBase64Data, 2, 300, filePath, ImageFormat.Png);
+                    this.generator.GenerateQRCodeToFile(this.testBase64Data, 2, 300, filePath, ImageFormat.Png);
 
                     using (Bitmap fileResult = new Bitmap(filePath))
                     {
@@ -353,7 +353,7 @@ namespace AztecQR.Tests
             string specialData = TestHelpers.GetBase64TestData("Special: !@#$%^&*()_+-=[]{}|;:',.<>?/");
 
             // Act
-            using (Bitmap result = generator.GenerateQRCodeAsBitmap(specialData, 2, 300))
+            using (Bitmap result = this.generator.GenerateQRCodeAsBitmap(specialData, 2, 300))
             {
                 // Assert
                 Assert.IsNotNull(result, "Should handle special characters");
@@ -361,12 +361,12 @@ namespace AztecQR.Tests
             }
         }
 
-        #endregion
+        // End Region
 
         [TestCleanup]
         public void Cleanup()
         {
-            generator = null;
+            this.generator = null;
         }
     }
 }
