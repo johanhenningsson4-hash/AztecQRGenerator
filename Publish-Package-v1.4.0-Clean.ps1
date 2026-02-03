@@ -56,7 +56,7 @@ Write-Host "[2/8] Building Release Package" -ForegroundColor Yellow
 Write-Host "  Running Release build with package generation..." -ForegroundColor Gray
 
 try {
-    .\build_and_test.ps1 -Solution AztecQRGenerator.sln -Configuration Release
+    & .\build_and_test.ps1 -Solution AztecQRGenerator.sln -Configuration Release
     
     if ($LASTEXITCODE -eq 0) {
         Write-Host "  ✓ Release build successful!" -ForegroundColor Green
@@ -64,7 +64,8 @@ try {
         Write-Host "  ✗ Build failed!" -ForegroundColor Red
         exit 1
     }
-} catch {
+}
+catch {
     Write-Host "  ✗ Build error: $_" -ForegroundColor Red
     exit 1
 }
@@ -75,16 +76,24 @@ Write-Host ""
 Write-Host "[3/8] Locating Generated Package" -ForegroundColor Yellow
 
 $packageFile = $null
-$possiblePaths = @(
+$searchPaths = @(
     "AztecQRGenerator.Core\bin\Release\AztecQRGenerator.Core.1.4.0.nupkg",
-    "packages\AztecQRGenerator.Core.1.4.0\AztecQRGenerator.Core.1.4.0.nupkg",
-    (Get-ChildItem -Recurse -Filter "AztecQRGenerator.Core.1.4.0.nupkg" -ErrorAction SilentlyContinue | Select-Object -First 1).FullName
+    "packages\AztecQRGenerator.Core.1.4.0\AztecQRGenerator.Core.1.4.0.nupkg"
 )
 
-foreach ($path in $possiblePaths) {
-    if ($path -and (Test-Path $path)) {
+# Try to find the package
+foreach ($path in $searchPaths) {
+    if (Test-Path $path) {
         $packageFile = $path
         break
+    }
+}
+
+# If not found, search recursively
+if (-not $packageFile) {
+    $found = Get-ChildItem -Recurse -Filter "AztecQRGenerator.Core.1.4.0.nupkg" -ErrorAction SilentlyContinue | Select-Object -First 1
+    if ($found) {
+        $packageFile = $found.FullName
     }
 }
 
@@ -111,9 +120,10 @@ Write-Host ""
 Write-Host "[4/8] Package Validation" -ForegroundColor Yellow
 Write-Host "  Validating package contents..." -ForegroundColor Gray
 
-# Extract and inspect package
 $tempDir = "temp_package_validation"
-if (Test-Path $tempDir) { Remove-Item $tempDir -Recurse -Force }
+if (Test-Path $tempDir) { 
+    Remove-Item $tempDir -Recurse -Force 
+}
 
 try {
     Expand-Archive $packageFile -DestinationPath $tempDir
@@ -145,8 +155,9 @@ try {
         }
     }
     
-    Remove-Item $tempDir -Recurse -Force
-} catch {
+    Remove-Item $tempDir -Recurse -Force -ErrorAction SilentlyContinue
+}
+catch {
     Write-Host "  ⚠ Could not validate package contents: $_" -ForegroundColor Yellow
 }
 
@@ -202,7 +213,7 @@ if ([string]::IsNullOrWhiteSpace($apiKey)) {
         Write-Host "  Publishing package..." -ForegroundColor Cyan
         
         try {
-            dotnet nuget push $packageFile --api-key $apiKey --source https://api.nuget.org/v3/index.json
+            & dotnet nuget push $packageFile --api-key $apiKey --source https://api.nuget.org/v3/index.json
             
             if ($LASTEXITCODE -eq 0) {
                 Write-Host "  ✓ Package published successfully!" -ForegroundColor Green
@@ -213,7 +224,8 @@ if ([string]::IsNullOrWhiteSpace($apiKey)) {
                 Write-Host "    Check your API key and network connection" -ForegroundColor Yellow
                 exit 1
             }
-        } catch {
+        }
+        catch {
             Write-Host "  ✗ Publishing error: $_" -ForegroundColor Red
             exit 1
         }
@@ -230,32 +242,32 @@ Write-Host "[8/8] Git Release Operations" -ForegroundColor Yellow
 
 # Commit version changes
 Write-Host "  Committing version updates..." -ForegroundColor Gray
-git add .
-git commit -m "v1.4.0: Release with comprehensive CI/CD and testing improvements"
+& git add .
+& git commit -m "v1.4.0: Release with comprehensive CI/CD and testing improvements"
 
 # Tag the release
 Write-Host "  Creating git tag v1.4.0..." -ForegroundColor Gray
 
-$tagExists = git tag -l "v1.4.0"
+$tagExists = & git tag -l "v1.4.0"
 if ($tagExists) {
     Write-Host "  ⚠ Tag v1.4.0 already exists" -ForegroundColor Yellow
     $recreateTag = Read-Host "    Delete and recreate tag? (Y/N)"
     
     if ($recreateTag -eq "Y" -or $recreateTag -eq "y") {
-        git tag -d v1.4.0
-        git push origin --delete v1.4.0 2>$null
+        & git tag -d v1.4.0
+        & git push origin --delete v1.4.0 2>$null
         Write-Host "    Old tag removed" -ForegroundColor Gray
     }
 }
 
 # Create new tag
-git tag -a v1.4.0 -m "Release v1.4.0 - Comprehensive CI/CD and testing improvements"
+& git tag -a v1.4.0 -m "Release v1.4.0 - Comprehensive CI/CD and testing improvements"
 Write-Host "  ✓ Tag v1.4.0 created locally" -ForegroundColor Green
 
 # Push to GitHub
 Write-Host "  Pushing to GitHub..." -ForegroundColor Cyan
-git push origin main
-git push origin v1.4.0
+& git push origin main
+& git push origin v1.4.0
 
 Write-Host "  ✓ Pushed to GitHub" -ForegroundColor Green
 Write-Host ""
@@ -266,28 +278,22 @@ Write-Host "  Complete these steps manually:" -ForegroundColor Gray
 Write-Host "  1. Go to: https://github.com/johanhenningsson4-hash/AztecQRGenerator/releases/new" -ForegroundColor Cyan
 Write-Host "  2. Select tag: v1.4.0" -ForegroundColor Cyan
 Write-Host "  3. Release title: v1.4.0 - CI/CD and Testing Improvements" -ForegroundColor Cyan
-Write-Host "  4. Description (copy this):" -ForegroundColor Cyan
+Write-Host ""
+Write-Host "  4. Description (copy this text):" -ForegroundColor Cyan
 Write-Host ""
 Write-Host "## AztecQRGenerator.Core v1.4.0" -ForegroundColor White
 Write-Host ""
-Write-Host "### 🚀 Major Improvements" -ForegroundColor White
-Write-Host "- **CI/CD Pipeline**: Comprehensive GitHub Actions workflow with MSBuild + vstest" -ForegroundColor White
-Write-Host "- **Enhanced Testing**: Proper NUnit assertions and conditional MSTest shims" -ForegroundColor White
-Write-Host "- **Build Automation**: Added ``build_and_test.ps1`` script for consistent builds" -ForegroundColor White
-Write-Host "- **Code Coverage**: Integrated ReportGenerator for HTML and Cobertura reports" -ForegroundColor White
-Write-Host "- **Code Quality**: Fixed numerous StyleCop warnings and improved consistency" -ForegroundColor White
-Write-Host "- **Documentation**: Updated README with CI information and workflows" -ForegroundColor White
+Write-Host "### Major Improvements" -ForegroundColor White
+Write-Host "- CI/CD Pipeline: Comprehensive GitHub Actions workflow with MSBuild + vstest" -ForegroundColor White
+Write-Host "- Enhanced Testing: Proper NUnit assertions and conditional MSTest shims" -ForegroundColor White
+Write-Host "- Build Automation: Added build_and_test.ps1 script for consistent builds" -ForegroundColor White
+Write-Host "- Code Coverage: Integrated ReportGenerator for HTML and Cobertura reports" -ForegroundColor White
+Write-Host "- Code Quality: Fixed numerous StyleCop warnings and improved consistency" -ForegroundColor White
+Write-Host "- Documentation: Updated README with CI information and workflows" -ForegroundColor White
 Write-Host ""
-Write-Host "### 📦 Installation" -ForegroundColor White
-Write-Host ""
-Write-Host "``````powershell" -ForegroundColor White
+Write-Host "### Installation" -ForegroundColor White
 Write-Host "Install-Package AztecQRGenerator.Core -Version 1.4.0" -ForegroundColor White
 Write-Host "dotnet add package AztecQRGenerator.Core --version 1.4.0" -ForegroundColor White
-Write-Host "``````" -ForegroundColor White
-Write-Host ""
-Write-Host "### 🔗 Links" -ForegroundColor White
-Write-Host "- NuGet Package: https://www.nuget.org/packages/AztecQRGenerator.Core/1.4.0" -ForegroundColor White
-Write-Host "- CI Status: ![Build Status](https://github.com/johanhenningsson4-hash/AztecQRGenerator/actions/workflows/windows-msbuild-test.yml/badge.svg)" -ForegroundColor White
 Write-Host ""
 Write-Host "  5. Attach file: $packageFile" -ForegroundColor Cyan
 Write-Host "  6. Click 'Publish release'" -ForegroundColor Cyan
@@ -300,11 +306,11 @@ if ($openGitHub -eq "Y" -or $openGitHub -eq "y") {
 
 Write-Host ""
 Write-Host "========================================" -ForegroundColor Cyan
-Write-Host "        🎉 PUBLISHING COMPLETE! 🎉        " -ForegroundColor Green
+Write-Host "        PUBLISHING COMPLETE!        " -ForegroundColor Green
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host ""
 
-Write-Host "📋 Summary:" -ForegroundColor Yellow
+Write-Host "Summary:" -ForegroundColor Yellow
 Write-Host "  ✓ Package: AztecQRGenerator.Core.1.4.0.nupkg" -ForegroundColor Green
 if (-not [string]::IsNullOrWhiteSpace($apiKey)) {
     Write-Host "  ✓ Published: NuGet.org" -ForegroundColor Green
@@ -313,19 +319,19 @@ Write-Host "  ✓ Git tagged: v1.4.0" -ForegroundColor Green
 Write-Host "  ⏳ TODO: Complete GitHub release" -ForegroundColor Yellow
 Write-Host ""
 
-Write-Host "🔗 Important Links:" -ForegroundColor Yellow
-Write-Host "  📦 NuGet: https://www.nuget.org/packages/AztecQRGenerator.Core/" -ForegroundColor Cyan
-Write-Host "  🐙 GitHub: https://github.com/johanhenningsson4-hash/AztecQRGenerator" -ForegroundColor Cyan
-Write-Host "  🏷️ Releases: https://github.com/johanhenningsson4-hash/AztecQRGenerator/releases" -ForegroundColor Cyan
-Write-Host "  🔧 CI/CD: https://github.com/johanhenningsson4-hash/AztecQRGenerator/actions" -ForegroundColor Cyan
+Write-Host "Important Links:" -ForegroundColor Yellow
+Write-Host "  NuGet: https://www.nuget.org/packages/AztecQRGenerator.Core/" -ForegroundColor Cyan
+Write-Host "  GitHub: https://github.com/johanhenningsson4-hash/AztecQRGenerator" -ForegroundColor Cyan
+Write-Host "  Releases: https://github.com/johanhenningsson4-hash/AztecQRGenerator/releases" -ForegroundColor Cyan
+Write-Host "  CI/CD: https://github.com/johanhenningsson4-hash/AztecQRGenerator/actions" -ForegroundColor Cyan
 Write-Host ""
 
-Write-Host "💡 For users - Installation commands:" -ForegroundColor Yellow
+Write-Host "For users - Installation commands:" -ForegroundColor Yellow
 Write-Host "  Install-Package AztecQRGenerator.Core -Version 1.4.0" -ForegroundColor Green
 Write-Host "  dotnet add package AztecQRGenerator.Core --version 1.4.0" -ForegroundColor Green
 Write-Host ""
 
-Write-Host "🔄 Next Steps:" -ForegroundColor Yellow
+Write-Host "Next Steps:" -ForegroundColor Yellow
 Write-Host "  1. Monitor NuGet.org for package availability (10-15 mins)" -ForegroundColor White
 Write-Host "  2. Complete GitHub release creation" -ForegroundColor White
 Write-Host "  3. Update documentation if needed" -ForegroundColor White

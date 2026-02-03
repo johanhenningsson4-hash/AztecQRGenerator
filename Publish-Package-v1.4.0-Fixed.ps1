@@ -145,7 +145,7 @@ try {
         }
     }
     
-    Remove-Item $tempDir -Recurse -Force
+    Remove-Item $tempDir -Recurse -Force -ErrorAction SilentlyContinue
 } catch {
     Write-Host "  ⚠ Could not validate package contents: $_" -ForegroundColor Yellow
 }
@@ -266,28 +266,22 @@ Write-Host "  Complete these steps manually:" -ForegroundColor Gray
 Write-Host "  1. Go to: https://github.com/johanhenningsson4-hash/AztecQRGenerator/releases/new" -ForegroundColor Cyan
 Write-Host "  2. Select tag: v1.4.0" -ForegroundColor Cyan
 Write-Host "  3. Release title: v1.4.0 - CI/CD and Testing Improvements" -ForegroundColor Cyan
-Write-Host "  4. Description (copy this):" -ForegroundColor Cyan
+Write-Host ""
+Write-Host "  4. Description (copy this text):" -ForegroundColor Cyan
 Write-Host ""
 Write-Host "## AztecQRGenerator.Core v1.4.0" -ForegroundColor White
 Write-Host ""
-Write-Host "### 🚀 Major Improvements" -ForegroundColor White
-Write-Host "- **CI/CD Pipeline**: Comprehensive GitHub Actions workflow with MSBuild + vstest" -ForegroundColor White
-Write-Host "- **Enhanced Testing**: Proper NUnit assertions and conditional MSTest shims" -ForegroundColor White
-Write-Host "- **Build Automation**: Added ``build_and_test.ps1`` script for consistent builds" -ForegroundColor White
-Write-Host "- **Code Coverage**: Integrated ReportGenerator for HTML and Cobertura reports" -ForegroundColor White
-Write-Host "- **Code Quality**: Fixed numerous StyleCop warnings and improved consistency" -ForegroundColor White
-Write-Host "- **Documentation**: Updated README with CI information and workflows" -ForegroundColor White
+Write-Host "### Major Improvements" -ForegroundColor White
+Write-Host "- CI/CD Pipeline: Comprehensive GitHub Actions workflow with MSBuild + vstest" -ForegroundColor White
+Write-Host "- Enhanced Testing: Proper NUnit assertions and conditional MSTest shims" -ForegroundColor White
+Write-Host "- Build Automation: Added build_and_test.ps1 script for consistent builds" -ForegroundColor White
+Write-Host "- Code Coverage: Integrated ReportGenerator for HTML and Cobertura reports" -ForegroundColor White
+Write-Host "- Code Quality: Fixed numerous StyleCop warnings and improved consistency" -ForegroundColor White
+Write-Host "- Documentation: Updated README with CI information and workflows" -ForegroundColor White
 Write-Host ""
-Write-Host "### 📦 Installation" -ForegroundColor White
-Write-Host ""
-Write-Host "``````powershell" -ForegroundColor White
+Write-Host "### Installation" -ForegroundColor White
 Write-Host "Install-Package AztecQRGenerator.Core -Version 1.4.0" -ForegroundColor White
 Write-Host "dotnet add package AztecQRGenerator.Core --version 1.4.0" -ForegroundColor White
-Write-Host "``````" -ForegroundColor White
-Write-Host ""
-Write-Host "### 🔗 Links" -ForegroundColor White
-Write-Host "- NuGet Package: https://www.nuget.org/packages/AztecQRGenerator.Core/1.4.0" -ForegroundColor White
-Write-Host "- CI Status: ![Build Status](https://github.com/johanhenningsson4-hash/AztecQRGenerator/actions/workflows/windows-msbuild-test.yml/badge.svg)" -ForegroundColor White
 Write-Host ""
 Write-Host "  5. Attach file: $packageFile" -ForegroundColor Cyan
 Write-Host "  6. Click 'Publish release'" -ForegroundColor Cyan
@@ -300,11 +294,11 @@ if ($openGitHub -eq "Y" -or $openGitHub -eq "y") {
 
 Write-Host ""
 Write-Host "========================================" -ForegroundColor Cyan
-Write-Host "        🎉 PUBLISHING COMPLETE! 🎉        " -ForegroundColor Green
+Write-Host "        PUBLISHING COMPLETE!        " -ForegroundColor Green
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host ""
 
-Write-Host "📋 Summary:" -ForegroundColor Yellow
+Write-Host "Summary:" -ForegroundColor Yellow
 Write-Host "  ✓ Package: AztecQRGenerator.Core.1.4.0.nupkg" -ForegroundColor Green
 if (-not [string]::IsNullOrWhiteSpace($apiKey)) {
     Write-Host "  ✓ Published: NuGet.org" -ForegroundColor Green
@@ -313,19 +307,19 @@ Write-Host "  ✓ Git tagged: v1.4.0" -ForegroundColor Green
 Write-Host "  ⏳ TODO: Complete GitHub release" -ForegroundColor Yellow
 Write-Host ""
 
-Write-Host "🔗 Important Links:" -ForegroundColor Yellow
-Write-Host "  📦 NuGet: https://www.nuget.org/packages/AztecQRGenerator.Core/" -ForegroundColor Cyan
-Write-Host "  🐙 GitHub: https://github.com/johanhenningsson4-hash/AztecQRGenerator" -ForegroundColor Cyan
-Write-Host "  🏷️ Releases: https://github.com/johanhenningsson4-hash/AztecQRGenerator/releases" -ForegroundColor Cyan
-Write-Host "  🔧 CI/CD: https://github.com/johanhenningsson4-hash/AztecQRGenerator/actions" -ForegroundColor Cyan
+Write-Host "Important Links:" -ForegroundColor Yellow
+Write-Host "  NuGet: https://www.nuget.org/packages/AztecQRGenerator.Core/" -ForegroundColor Cyan
+Write-Host "  GitHub: https://github.com/johanhenningsson4-hash/AztecQRGenerator" -ForegroundColor Cyan
+Write-Host "  Releases: https://github.com/johanhenningsson4-hash/AztecQRGenerator/releases" -ForegroundColor Cyan
+Write-Host "  CI/CD: https://github.com/johanhenningsson4-hash/AztecQRGenerator/actions" -ForegroundColor Cyan
 Write-Host ""
 
-Write-Host "💡 For users - Installation commands:" -ForegroundColor Yellow
+Write-Host "For users - Installation commands:" -ForegroundColor Yellow
 Write-Host "  Install-Package AztecQRGenerator.Core -Version 1.4.0" -ForegroundColor Green
 Write-Host "  dotnet add package AztecQRGenerator.Core --version 1.4.0" -ForegroundColor Green
 Write-Host ""
 
-Write-Host "🔄 Next Steps:" -ForegroundColor Yellow
+Write-Host "Next Steps:" -ForegroundColor Yellow
 Write-Host "  1. Monitor NuGet.org for package availability (10-15 mins)" -ForegroundColor White
 Write-Host "  2. Complete GitHub release creation" -ForegroundColor White
 Write-Host "  3. Update documentation if needed" -ForegroundColor White
