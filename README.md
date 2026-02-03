@@ -2,6 +2,8 @@
 
 A .NET Framework 4.7.2 library for generating QR codes and Aztec codes from Base64-encoded data, supporting PNG, JPEG, and BMP output. Includes robust error handling, logging, and a flexible API for both in-memory and file-based barcode generation.
 
+[![CI - Windows Build and Test](https://github.com/johanhenningsson4-hash/AztecQRGenerator/actions/workflows/windows-msbuild-test.yml/badge.svg)](https://github.com/johanhenningsson4-hash/AztecQRGenerator/actions/workflows/windows-msbuild-test.yml)
+
 ## Features
 - Standards-compliant QR and Aztec code generation
 - Output as Bitmap or directly to file
@@ -11,6 +13,8 @@ A .NET Framework 4.7.2 library for generating QR codes and Aztec codes from Base
 - Thread-safe logging
 - .NET Framework 4.7.2 compatible
 - **Logging activated by default**
+- **Comprehensive CI/CD with GitHub Actions**
+- **Code coverage reporting and test automation**
 
 ## Quick Start
 
@@ -61,6 +65,67 @@ bool success = generator.GenerateAztecCodeToFile(
 - Set log level: `Logger.Instance.SetMinimumLogLevel(LogLevel.Debug);`
 - **Logging is activated by default at Debug level**
 
+## Continuous Integration
+
+The project includes a robust CI/CD pipeline with GitHub Actions that automatically:
+- Builds the solution using MSBuild (compatible with classic .NET Framework projects)
+- Runs all unit tests with comprehensive reporting
+- Generates code coverage reports (HTML + Cobertura formats)  
+- Uploads test results and coverage artifacts
+- Automatically retries with test shims if dependencies are missing
+
+### Local Development
+
+Use the provided PowerShell script for consistent local builds:
+
+```powershell
+.\build_and_test.ps1 -Solution AztecQRGenerator.sln -Configuration Debug
+```
+
+The script automatically:
+- Locates MSBuild and vstest.console via Visual Studio installer
+- Restores packages and builds the solution
+- Discovers and runs all test assemblies
+- Generates TRX and coverage files under `TestResults/`
+
+### Test Shims (Optional)
+
+For environments without test framework assemblies, enable conditional test shims by defining the `USE_TEST_SHIMS` compilation symbol:
+
+```
+msbuild AztecQRGenerator.sln /t:Restore,Build /p:Configuration=Debug;DefineConstants=USE_TEST_SHIMS /m
+```
+
+Alternatively, use the script's built-in flag:
+
+```powershell
+.\build_and_test.ps1 -UseTestShims
+```
+
+The CI workflow automatically enables shims as a fallback if the initial build fails.
+
+## Version History
+
+### Version 1.4.0 (Current)
+- **CI/CD**: Added comprehensive GitHub Actions workflow with MSBuild + vstest
+- **Testing**: Enhanced test coverage with proper NUnit assertions and conditional MSTest shims
+- **Build Tools**: Added `build_and_test.ps1` script for consistent local/CI builds
+- **Code Coverage**: Integrated ReportGenerator for HTML and Cobertura coverage reports
+- **Code Quality**: Fixed numerous StyleCop warnings and improved code consistency
+- **Documentation**: Updated README with CI information and development workflows
+
+### Version 1.3.0
+- Fixed: Removed duplicate file save operations in GenerateQRBitmap() and GenerateAztecBitmap()
+- Now generates only one file instead of two identical files
+- Improved efficiency and reduced disk I/O
+
+### Version 1.2.0
+- Added support for multiple image formats (PNG, JPEG, BMP)
+- Added GenerateQRCodeToFile() and GenerateAztecCodeToFile() with format selection
+- Added GenerateQRCodeAsBitmap() and GenerateAztecCodeAsBitmap() for in-memory generation
+- Comprehensive logging support
+- Full backward compatibility maintained
+
 ## License
 MIT License
 
@@ -69,16 +134,4 @@ Johan Henningsson
 
 ---
 For more details, see the NuGet and test project READMEs in the repository.
-
-## Enabling test shims in CI
-
-Some test projects include lightweight shims for MSTest attributes to allow compilation in environments that do not have the test framework assemblies available. These shims are disabled by default to avoid conflicting with the real test framework packages when they are present.
-
-To enable the shims in CI, define the `USE_TEST_SHIMS` compilation symbol when building. Example MSBuild invocation:
-
-```
-msbuild AztecQRGenerator.sln /t:Restore,Build /p:Configuration=Debug;DefineConstants=USE_TEST_SHIMS /m
-```
-
-If you use the included `build_and_test.ps1` script, pass the `DefineConstants` property through MSBuild by editing the script or by setting an environment variable consumed by your CI pipeline. If you want, I can update the workflow to automatically enable the shims when package restore fails.
 
