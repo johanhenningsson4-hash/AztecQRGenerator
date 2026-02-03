@@ -1,3 +1,6 @@
+// This MSTest shim is only compiled when the 'USE_TEST_SHIMS' symbol is defined.
+// Define the symbol in a build environment that intentionally lacks MSTest assemblies.
+#if USE_TEST_SHIMS
 using System;
 
 namespace Microsoft.VisualStudio.TestTools.UnitTesting
@@ -35,3 +38,4 @@ namespace Microsoft.VisualStudio.TestTools.UnitTesting
         public DataRowAttribute(params object[] data) { Data = data; }
     }
 }
+#endif

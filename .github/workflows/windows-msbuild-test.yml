@@ -21,5 +21,20 @@ jobs:
       run: nuget restore AztecQRGenerator.sln
 
     - name: Run build and tests (MSBuild + vstest)
+      id: build_and_test
       run: |
-        powershell -NoProfile -ExecutionPolicy Bypass -File build_and_test.ps1 -Solution AztecQRGenerator.sln -Configuration Debug
+        # First try without test shims
+        powershell -NoProfile -ExecutionPolicy Bypass -File build_and_test.ps1 -Solution AztecQRGenerator.sln -Configuration Debug || exit $LASTEXITCODE
+
+    - name: Re-run with test shims if restore failed
+      if: failure()
+      run: |
+        echo "Previous build/test failed. Re-running with test shims enabled."
+        powershell -NoProfile -ExecutionPolicy Bypass -File build_and_test.ps1 -Solution AztecQRGenerator.sln -Configuration Debug -UseTestShims
+
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-results
+        path: TestResults/**

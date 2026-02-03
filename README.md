@@ -69,3 +69,16 @@ Johan Henningsson
 
 ---
 For more details, see the NuGet and test project READMEs in the repository.
+
+## Enabling test shims in CI
+
+Some test projects include lightweight shims for MSTest attributes to allow compilation in environments that do not have the test framework assemblies available. These shims are disabled by default to avoid conflicting with the real test framework packages when they are present.
+
+To enable the shims in CI, define the `USE_TEST_SHIMS` compilation symbol when building. Example MSBuild invocation:
+
+```
+msbuild AztecQRGenerator.sln /t:Restore,Build /p:Configuration=Debug;DefineConstants=USE_TEST_SHIMS /m
+```
+
+If you use the included `build_and_test.ps1` script, pass the `DefineConstants` property through MSBuild by editing the script or by setting an environment variable consumed by your CI pipeline. If you want, I can update the workflow to automatically enable the shims when package restore fails.
+
