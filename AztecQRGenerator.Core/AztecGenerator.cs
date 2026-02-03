@@ -13,6 +13,7 @@ using System.Text;
 using ZXing;
 using ZXing.Aztec;
 using ZXing.Common;
+using BitMatrix = ZXing.Common.BitMatrix;
 using System.Runtime.InteropServices;
 
 namespace AztecQR

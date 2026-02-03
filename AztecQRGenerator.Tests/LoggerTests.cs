@@ -15,7 +15,7 @@ namespace AztecQRGenerator.Tests
             var instance2 = Logger.Instance;
 
             // Assert
-            Assert.AreSame(instance1, instance2, "Logger should be a singleton");
+            Assert.That(instance1, Is.SameAs(instance2), "Logger should be a singleton");
         }
 
         [Test]
@@ -26,35 +26,35 @@ namespace AztecQRGenerator.Tests
 
             // Assert
             Assert.IsNotNull(logPath);
-            Assert.IsNotEmpty(logPath);
+            Assert.That(logPath, Is.Not.Empty);
         }
 
         [Test]
         public void Logger_Info_DoesNotThrow()
         {
             // Act & Assert
-            Assert.DoesNotThrow(() => Logger.Instance.Info("Test info message"));
+            Assert.That(() => Logger.Instance.Info("Test info message"), Throws.Nothing);
         }
 
         [Test]
         public void Logger_Debug_DoesNotThrow()
         {
             // Act & Assert
-            Assert.DoesNotThrow(() => Logger.Instance.Debug("Test debug message"));
+            Assert.That(() => Logger.Instance.Debug("Test debug message"), Throws.Nothing);
         }
 
         [Test]
         public void Logger_Warning_DoesNotThrow()
         {
             // Act & Assert
-            Assert.DoesNotThrow(() => Logger.Instance.Warning("Test warning message"));
+            Assert.That(() => Logger.Instance.Warning("Test warning message"), Throws.Nothing);
         }
 
         [Test]
         public void Logger_Error_DoesNotThrow()
         {
             // Act & Assert
-            Assert.DoesNotThrow(() => Logger.Instance.Error("Test error message"));
+            Assert.That(() => Logger.Instance.Error("Test error message"), Throws.Nothing);
         }
 
         [Test]
@@ -64,33 +64,33 @@ namespace AztecQRGenerator.Tests
             var exception = new Exception("Test exception");
 
             // Act & Assert
-            Assert.DoesNotThrow(() => Logger.Instance.Error("Test error with exception", exception));
+            Assert.That(() => Logger.Instance.Error("Test error with exception", exception), Throws.Nothing);
         }
 
         [Test]
         public void Logger_SetMinimumLogLevel_DoesNotThrow()
         {
             // Act & Assert
-            Assert.DoesNotThrow(() => Logger.Instance.SetMinimumLogLevel(LogLevel.Debug));
-            Assert.DoesNotThrow(() => Logger.Instance.SetMinimumLogLevel(LogLevel.Info));
-            Assert.DoesNotThrow(() => Logger.Instance.SetMinimumLogLevel(LogLevel.Warning));
-            Assert.DoesNotThrow(() => Logger.Instance.SetMinimumLogLevel(LogLevel.Error));
+            Assert.That(() => Logger.Instance.SetMinimumLogLevel(LogLevel.Debug), Throws.Nothing);
+            Assert.That(() => Logger.Instance.SetMinimumLogLevel(LogLevel.Info), Throws.Nothing);
+            Assert.That(() => Logger.Instance.SetMinimumLogLevel(LogLevel.Warning), Throws.Nothing);
+            Assert.That(() => Logger.Instance.SetMinimumLogLevel(LogLevel.Error), Throws.Nothing);
         }
 
         [Test]
         public void Logger_LogMethodEntry_DoesNotThrow()
         {
             // Act & Assert
-            Assert.DoesNotThrow(() => 
-                Logger.Instance.LogMethodEntry("TestClass", "TestMethod", "param1", 123));
+            Assert.That(() => 
+                Logger.Instance.LogMethodEntry("TestClass", "TestMethod", "param1", 123), Throws.Nothing);
         }
 
         [Test]
         public void Logger_LogMethodExit_DoesNotThrow()
         {
             // Act & Assert
-            Assert.DoesNotThrow(() => 
-                Logger.Instance.LogMethodExit("TestClass", "TestMethod", true));
+            Assert.That(() => 
+                Logger.Instance.LogMethodExit("TestClass", "TestMethod", true), Throws.Nothing);
         }
     }
 }

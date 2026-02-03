@@ -28,33 +28,7 @@ namespace AztecQR
         Error
     }
 
-// Minimal MSTest shim to allow tests to compile in environments where MSTest assemblies
-// are not resolved at compile time. These are simple attribute placeholders and do not
-// provide any test framework functionality. Real test execution still uses the test
-// runner referenced by the test project.
-namespace Microsoft.VisualStudio.TestTools.UnitTesting
-{
-    using System;
 
-    [AttributeUsage(AttributeTargets.Class, Inherited = false)]
-    public sealed class TestClassAttribute : Attribute { }
-
-    [AttributeUsage(AttributeTargets.Method, Inherited = false)]
-    public sealed class TestMethodAttribute : Attribute { }
-
-    [AttributeUsage(AttributeTargets.Method, Inherited = false)]
-    public sealed class TestInitializeAttribute : Attribute { }
-
-    [AttributeUsage(AttributeTargets.Method, Inherited = false)]
-    public sealed class TestCleanupAttribute : Attribute { }
-
-    [AttributeUsage(AttributeTargets.Method, Inherited = false)]
-    public sealed class ExpectedExceptionAttribute : Attribute
-    {
-        public Type ExceptionType { get; }
-        public ExpectedExceptionAttribute(Type exceptionType) { ExceptionType = exceptionType; }
-    }
-}
 
     /// <summary>
     /// <summary>
@@ -71,7 +45,6 @@ namespace Microsoft.VisualStudio.TestTools.UnitTesting
 
         private Logger()
         {
-            string logDirectory = null;
             // Try AppData, then Documents, then Temp
             logFilePath = TryGetLogPath(
                 () => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "AztecQRGenerator", "Logs"),
@@ -92,13 +65,26 @@ namespace Microsoft.VisualStudio.TestTools.UnitTesting
             try
             {
                 string dir = dirFunc();
-                if (!Directory.Exists(Path.GetDirectoryName(dir)))
-                    Directory.CreateDirectory(Path.GetDirectoryName(dir));
-                string path = dir.EndsWith(".log") ? dir : Path.Combine(dir, $"AztecQR_{DateTime.Now:yyyyMMdd}.log");
+
+                // If the provided path looks like a file (ends with .log), ensure its directory exists.
+                // If it's a directory path, ensure that directory exists instead.
+                bool isFilePath = dir != null && dir.EndsWith(".log", StringComparison.OrdinalIgnoreCase);
+                string directoryToEnsure = isFilePath ? Path.GetDirectoryName(dir) : dir;
+
+                if (!string.IsNullOrEmpty(directoryToEnsure) && !Directory.Exists(directoryToEnsure))
+                {
+                    Directory.CreateDirectory(directoryToEnsure);
+                }
+
+                string path = isFilePath ? dir : Path.Combine(dir, $"AztecQR_{DateTime.Now:yyyyMMdd}.log");
                 File.AppendAllText(path, $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] Logger initialized in {label}{Environment.NewLine}");
                 return path;
             }
-            catch { return null; }
+            catch
+            {
+                // If logging setup fails, return null so logging is effectively disabled.
+                return null;
+            }
         }
 
         /// <summary>
@@ -212,81 +198,4 @@ namespace Microsoft.VisualStudio.TestTools.UnitTesting
     }
 }
 
-// Minimal ZXing shim included in this file so the project can compile in environments
-// where the ZXing.Net package may not be restored. This is a lightweight test-only
-// implementation and should be removed when ZXing.Net is available in the build.
-namespace ZXing
-{
-    public enum BarcodeFormat
-    {
-        QR_CODE,
-        AZTEC
-    }
 
-    public enum EncodeHintType
-    {
-        MARGIN
-    }
-}
-
-namespace ZXing.Common
-{
-    public class BitMatrix
-    {
-        private readonly bool[,] data;
-        public int Width { get; }
-        public int Height { get; }
-
-        public BitMatrix(int width, int height)
-        {
-            Width = width;
-            Height = height;
-            data = new bool[width, height];
-        }
-
-        public bool this[int x, int y]
-        {
-            get => data[x, y];
-            set => data[x, y] = value;
-        }
-
-        public void FillTestPattern()
-        {
-            for (int x = 0; x < Width; x++)
-                for (int y = 0; y < Height; y++)
-                    data[x, y] = ((x + y) % 2 == 0);
-        }
-    }
-}
-
-namespace ZXing.Aztec
-{
-    using ZXing.Common;
-    using System.Collections.Generic;
-
-    public class AztecWriter
-    {
-        public BitMatrix encode(string contents, ZXing.BarcodeFormat format, int width, int height, IDictionary<ZXing.EncodeHintType, object> hints)
-        {
-            var m = new BitMatrix(width, height);
-            m.FillTestPattern();
-            return m;
-        }
-    }
-}
-
-namespace ZXing.QrCode
-{
-    using ZXing.Common;
-    using System.Collections.Generic;
-
-    public class QRCodeWriter
-    {
-        public BitMatrix encode(string contents, ZXing.BarcodeFormat format, int width, int height, IDictionary<ZXing.EncodeHintType, object> hints)
-        {
-            var m = new BitMatrix(width, height);
-            m.FillTestPattern();
-            return m;
-        }
-    }
-}

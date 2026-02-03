@@ -11,6 +11,7 @@ using System.IO;
 using System.Windows.Forms;
 using ZXing;
 using ZXing.Common;
+using BitMatrix = ZXing.Common.BitMatrix;
 
 namespace AztecQR
 {

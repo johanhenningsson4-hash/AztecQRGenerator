@@ -82,10 +82,6 @@ Version 1.2.0:
   </ItemGroup>
   <ItemGroup>
     <None Include="AztecQRGenerator.Core.nuspec" />
-    <None Include="AztecQRGenerator.Core.Tests\AztecQRGenerator.Core.Tests.csproj" />
-    <None Include="AztecQRGenerator.Core.Tests\README.md" />
-    <None Include="AztecQRGenerator.Core.Tests\SUMMARY.md" />
-    <None Include="AztecQRGenerator.Core.Tests\TEST_RESULTS.md" />
     <None Include="AztecQRGenerator.Core\create_icon.bat" />
     <None Include="AztecQRGenerator.Core\ICON_README.md" />
     <None Include="CHANGELOG.md" />

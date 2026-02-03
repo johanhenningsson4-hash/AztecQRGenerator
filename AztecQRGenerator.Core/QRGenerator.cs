@@ -12,6 +12,7 @@ using System.IO;
 using ZXing;
 using ZXing.QrCode;
 using ZXing.Common;
+using BitMatrix = ZXing.Common.BitMatrix;
 using System.Text;
 using System.Runtime.InteropServices;
 
