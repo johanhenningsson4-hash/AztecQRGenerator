@@ -88,6 +88,7 @@ Version 1.2.0:
     <None Include="GIT_PUSH_STATUS.md" />
     <None Include="NUGET_PUBLISHING_CHECKLIST.md" />
     <None Include="icon.png" Pack="true" PackagePath="\" Condition="Exists('icon.png')" />
+    <None Include="NUGET_README.md" />
     <None Include="Publish-Package.ps1" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
