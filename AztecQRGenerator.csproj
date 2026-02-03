@@ -152,6 +152,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Program.cs" />
+    <None Include="Publish-Package-v1.4.0.ps1" />
     <None Include="Push-All-Workflow-Fixes.ps1" />
     <None Include="Push-Complete-CICD.ps1" />
     <None Include="Push-Workflow-Fix.ps1" />
