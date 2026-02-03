@@ -133,7 +133,6 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include=".editorconfig" />
-    <None Include=".github\workflows\ci.yml" />
     <None Include=".github\workflows\code-quality.yml" />
     <None Include=".github\workflows\nuget-publish.yml" />
     <None Include=".github\workflows\windows-msbuild-test.yml" />
