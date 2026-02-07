@@ -9,6 +9,8 @@ A robust .NET Framework 4.7.2 library for generating QR codes and Aztec codes fr
 - **Standards-compliant** QR and Aztec code generation
 - **Multiple output formats**: PNG, JPEG, BMP (PNG recommended)
 - **Flexible API**: Generate as Bitmap or save directly to file
+- **Async/await support**: Modern asynchronous APIs with cancellation support
+- **Batch processing**: Generate multiple codes with progress reporting
 - **Configurable**: Size and error correction levels
 - **ISO-8859-1 encoding** for full Latin-1 character support
 - **Thread-safe logging** with configurable levels
@@ -17,12 +19,25 @@ A robust .NET Framework 4.7.2 library for generating QR codes and Aztec codes fr
 
 ## 🚀 Quick Start
 
-### Generate QR Code as Bitmap
+### Generate QR Code as Bitmap (Async Recommended)
 ```csharp
 using AztecQR;
 using System.Drawing;
+using System.Threading.Tasks;
 
 var generator = new QRGenerator();
+
+// Async version (recommended for modern applications)
+using (Bitmap qrCode = await generator.GenerateQRCodeAsBitmapAsync(
+    qrstring: "SGVsbG8gV29ybGQh",  // Base64 encoded data
+    lCorrection: 2,                 // Error correction level
+    lPixelDensity: 300,             // Size in pixels
+    cancellationToken: CancellationToken.None
+)) {
+    // Use qrCode (display, save, etc.)
+}
+
+// Synchronous version (for compatibility)
 using (Bitmap qrCode = generator.GenerateQRCodeAsBitmap(
     qrstring: "SGVsbG8gV29ybGQh",  // Base64 encoded data
     lCorrection: 2,                 // Error correction level
@@ -32,28 +47,49 @@ using (Bitmap qrCode = generator.GenerateQRCodeAsBitmap(
 }
 ```
 
-### Save Aztec Code to File
+### Save Aztec Code to File (Async)
 ```csharp
 using AztecQR;
 using System.Drawing.Imaging;
+using System.Threading.Tasks;
 
 var generator = new AztecGenerator();
-bool success = generator.GenerateAztecCodeToFile(
+bool success = await generator.GenerateAztecCodeToFileAsync(
     aztecstring: "SGVsbG8gV29ybGQh",
     lCorrection: 2,
     lPixelDensity: 300,
     filePath: "aztec.png",
-    format: ImageFormat.Png
+    format: ImageFormat.Png,
+    cancellationToken: CancellationToken.None
 );
+```
+
+### Batch Processing with Progress Reporting
+```csharp
+var requests = new[]
+{
+    new QRRequest("SGVsbG8gV29ybGQh", 2, 300),
+    new QRRequest("QWRkaXRpb25hbCBkYXRh", 2, 300),  
+    new QRRequest("TW9yZSB0ZXN0IGRhdGE=", 2, 300)
+};
+
+var progress = new Progress<BatchProgress>(p => 
+    Console.WriteLine($"Progress: {p.PercentComplete:F1}%"));
+
+var bitmaps = await generator.GenerateBatchAsync(requests, progress);
+foreach (var bitmap in bitmaps)
+{
+    // Process bitmap
+    bitmap.Dispose();
+}
 ```
 
 ### Save with Timestamp (Convenience Method)
 ```csharp
 var generator = new QRGenerator();
 // Saves to Documents/AztecQRGenerator/Output/ with timestamp
-bool success = generator.GenerateQRBitmap(
-    "SGVsbG8gV29ybGQh", 2, 300
-);
+bool success = await generator.GenerateQRBitmapAsync(
+    "SGVsbG8gV29ybGQh", 2, 300, cancellationToken);
 ```
 
 ## 📋 Requirements
@@ -64,8 +100,11 @@ bool success = generator.GenerateQRBitmap(
 
 ## 🎯 Best Practices
 
+- **Use async methods** for better application responsiveness
 - **Use PNG format** for production barcodes (best quality)
-- **Always dispose Bitmaps** to prevent memory leaks
+- **Always dispose Bitmaps** to prevent memory leaks  
+- **Handle cancellation** properly in long-running operations
+- **Use batch processing** for multiple QR codes to improve performance
 - **Validate Base64 input** before generation
 - **Test scanability** with real barcode scanners
 - **Handle exceptions** appropriately in your application
@@ -105,6 +144,9 @@ string logPath = Logger.Instance.GetLogFilePath();
 - **📊 Code Coverage**: HTML + Cobertura reporting
 - **✨ Code Quality**: StyleCop cleanup + consistency improvements
 - **📖 Documentation**: Updated with CI information and workflows
+- **⚡ Async/Await Support**: Full async API with cancellation tokens
+- **📦 Batch Processing**: Generate multiple codes with progress reporting
+- **🔧 Better Error Handling**: Structured exceptions for async operations
 
 ## 🔗 Links
 

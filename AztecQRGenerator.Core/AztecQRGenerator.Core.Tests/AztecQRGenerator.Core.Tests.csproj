@@ -57,6 +57,7 @@
     <PackageReference Include="ZXing.Net" Version="0.16.11" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AsyncApiTests.cs" />
     <Compile Include="MSTestShim.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestHelpers.cs" />

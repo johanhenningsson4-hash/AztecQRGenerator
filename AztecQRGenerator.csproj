@@ -110,6 +110,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AsyncApiExamples.cs" />
     <Compile Include="AztecQR.cs">
       <SubType>Form</SubType>
     </Compile>
