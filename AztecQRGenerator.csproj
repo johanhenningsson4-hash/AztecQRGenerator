@@ -119,6 +119,7 @@
     </Compile>
     <Compile Include="Examples\FormatTestExample.cs" />
     <Compile Include="FlexibleInputExamples.cs" />
+    <Compile Include="PerformanceBenchmarks.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="AztecQR.resx">
       <DependentUpon>AztecQR.cs</DependentUpon>

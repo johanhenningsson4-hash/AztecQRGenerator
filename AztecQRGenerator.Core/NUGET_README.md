@@ -8,14 +8,17 @@ A robust .NET Framework 4.7.2 library for generating QR codes and Aztec codes fr
 
 - **Standards-compliant** QR and Aztec code generation
 - **Multiple input types**: Direct text, byte arrays, and Base64 strings
+- **High-performance**: Intelligent caching, parallel processing, and optimized memory handling
 - **Multiple output formats**: PNG, JPEG, BMP (PNG recommended)
 - **Flexible API**: Generate as Bitmap or save directly to file
 - **Async/await support**: Modern asynchronous APIs with cancellation support
 - **Batch processing**: Generate multiple codes with progress reporting
+- **Smart caching**: Automatic caching with expiration for repeated operations
 - **Configurable**: Size and error correction levels
 - **Multiple encodings**: UTF-8, Unicode, ISO-8859-1, and custom encodings
 - **Thread-safe logging** with configurable levels
 - **Production-ready** with comprehensive error handling
+- **Memory efficient**: Optimized bitmap processing and automatic cleanup
 - **CI/CD tested** with automated test coverage
 
 ## 🚀 Quick Start
@@ -94,6 +97,37 @@ foreach (var bitmap in bitmaps)
 {
     // Process bitmap
     bitmap.Dispose();
+}
+```
+
+### Performance Monitoring and Cache Management
+```csharp
+// Get cache statistics
+var stats = QRGenerator.GetCacheStatistics();
+Console.WriteLine($"Cache utilization: {stats.UtilizationPercentage:F1}%");
+Console.WriteLine($"Hit ratio: {stats.CacheHitRatio:P1}");
+
+// Clear cache if needed
+QRGenerator.ClearCache();
+```
+
+### High-Performance Scenarios
+```csharp
+// Repeated QR codes benefit from automatic caching
+for (int i = 0; i < 100; i++)
+{
+    using (var qr = generator.GenerateQRCodeFromText("Frequently used text"))
+    {
+        // First call generates and caches, subsequent calls use cache
+        // Significant performance improvement for repeated operations
+    }
+}
+
+// Large QR codes use parallel processing automatically
+using (var largeQR = await generator.GenerateQRCodeFromTextAsync(
+    "Large QR code data", lPixelDensity: 2000))
+{
+    // Automatically uses parallel processing for better performance
 }
 ```
 
