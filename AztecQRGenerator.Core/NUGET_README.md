@@ -7,61 +7,74 @@ A robust .NET Framework 4.7.2 library for generating QR codes and Aztec codes fr
 ## ✨ Features
 
 - **Standards-compliant** QR and Aztec code generation
+- **Multiple input types**: Direct text, byte arrays, and Base64 strings
 - **Multiple output formats**: PNG, JPEG, BMP (PNG recommended)
 - **Flexible API**: Generate as Bitmap or save directly to file
 - **Async/await support**: Modern asynchronous APIs with cancellation support
 - **Batch processing**: Generate multiple codes with progress reporting
 - **Configurable**: Size and error correction levels
-- **ISO-8859-1 encoding** for full Latin-1 character support
+- **Multiple encodings**: UTF-8, Unicode, ISO-8859-1, and custom encodings
 - **Thread-safe logging** with configurable levels
 - **Production-ready** with comprehensive error handling
 - **CI/CD tested** with automated test coverage
 
 ## 🚀 Quick Start
 
-### Generate QR Code as Bitmap (Async Recommended)
+### Generate QR Code from Text (New & Recommended)
 ```csharp
 using AztecQR;
 using System.Drawing;
-using System.Threading.Tasks;
 
 var generator = new QRGenerator();
 
-// Async version (recommended for modern applications)
-using (Bitmap qrCode = await generator.GenerateQRCodeAsBitmapAsync(
-    qrstring: "SGVsbG8gV29ybGQh",  // Base64 encoded data
-    lCorrection: 2,                 // Error correction level
-    lPixelDensity: 300,             // Size in pixels
-    cancellationToken: CancellationToken.None
-)) {
+// Direct text input (new!)
+using (Bitmap qrCode = generator.GenerateQRCodeFromText("Hello, World!"))
+{
     // Use qrCode (display, save, etc.)
 }
 
-// Synchronous version (for compatibility)
-using (Bitmap qrCode = generator.GenerateQRCodeAsBitmap(
-    qrstring: "SGVsbG8gV29ybGQh",  // Base64 encoded data
-    lCorrection: 2,                 // Error correction level
-    lPixelDensity: 300              // Size in pixels
-)) {
+// Async version
+using (Bitmap qrCode = await generator.GenerateQRCodeFromTextAsync("Hello, World!"))
+{
     // Use qrCode (display, save, etc.)
 }
 ```
 
-### Save Aztec Code to File (Async)
+### Generate QR Code from Byte Array (New)
 ```csharp
-using AztecQR;
-using System.Drawing.Imaging;
-using System.Threading.Tasks;
+// Binary data input
+byte[] data = System.IO.File.ReadAllBytes("myfile.pdf");
+using (Bitmap qrCode = generator.GenerateQRCodeFromBytes(data))
+{
+    // Use qrCode
+}
 
-var generator = new AztecGenerator();
-bool success = await generator.GenerateAztecCodeToFileAsync(
-    aztecstring: "SGVsbG8gV29ybGQh",
-    lCorrection: 2,
-    lPixelDensity: 300,
-    filePath: "aztec.png",
-    format: ImageFormat.Png,
-    cancellationToken: CancellationToken.None
-);
+// Async version
+using (Bitmap qrCode = await generator.GenerateQRCodeFromBytesAsync(data))
+{
+    // Use qrCode
+}
+```
+
+### Generate QR Code from Base64 (Original API)
+```csharp
+// Base64 encoded data (backwards compatible)
+string base64Data = Convert.ToBase64String(Encoding.UTF8.GetBytes("Hello, World!"));
+using (Bitmap qrCode = generator.GenerateQRCodeAsBitmap(base64Data, 2, 300))
+{
+    // Use qrCode
+}
+```
+
+### Save Directly to File (All Input Types)
+```csharp
+// Text to file
+bool success = await generator.GenerateQRCodeFromTextToFileAsync(
+    "Hello, World!", "output.png", ImageFormat.Png);
+
+// Bytes to file
+bool success = await generator.GenerateQRCodeFromBytesToFileAsync(
+    data, "output.png", ImageFormat.Png);
 ```
 
 ### Batch Processing with Progress Reporting
@@ -82,14 +95,6 @@ foreach (var bitmap in bitmaps)
     // Process bitmap
     bitmap.Dispose();
 }
-```
-
-### Save with Timestamp (Convenience Method)
-```csharp
-var generator = new QRGenerator();
-// Saves to Documents/AztecQRGenerator/Output/ with timestamp
-bool success = await generator.GenerateQRBitmapAsync(
-    "SGVsbG8gV29ybGQh", 2, 300, cancellationToken);
 ```
 
 ## 📋 Requirements

@@ -220,6 +220,141 @@ namespace AztecQR
             bitmap.Save(filePath, format);
         }
 
+        #region Flexible Input Methods
+
+        /// <summary>
+        /// Generates a QR code from the supplied text string and returns it as a <see cref="Bitmap"/>.
+        /// </summary>
+        /// <param name="text">Text string to encode.</param>
+        /// <param name="lCorrection">Error correction level. If &lt; 0 a default is used.</param>
+        /// <param name="lPixelDensity">Desired pixel width/height of the generated bitmap. Must be &gt; 0.</param>
+        /// <param name="encoding">Text encoding to use. If null, UTF-8 is used.</param>
+        /// <returns>A <see cref="Bitmap"/> containing the generated QR code.</returns>
+        /// <exception cref="ArgumentException">Thrown when input is null/empty or pixel density is invalid.</exception>
+        /// <exception cref="InvalidOperationException">Thrown when the underlying encoder fails to produce a matrix.</exception>
+        public Bitmap GenerateQRCodeFromText(string text, int lCorrection = 2, int lPixelDensity = 300, Encoding encoding = null)
+        {
+            if (string.IsNullOrEmpty(text))
+                throw new ArgumentException("Text cannot be null or empty", nameof(text));
+
+            logger.LogMethodEntry("QRGenerator", "GenerateQRCodeFromText", text.Substring(0, Math.Min(50, text.Length)) + "...", lCorrection, lPixelDensity);
+
+            try
+            {
+                // Convert text to bytes using specified encoding (default: UTF-8)
+                encoding = encoding ?? Encoding.UTF8;
+                byte[] textBytes = encoding.GetBytes(text);
+                
+                return GenerateQRCodeFromBytes(textBytes, lCorrection, lPixelDensity);
+            }
+            finally
+            {
+                logger.LogMethodExit("QRGenerator", "GenerateQRCodeFromText", true);
+            }
+        }
+
+        /// <summary>
+        /// Generates a QR code from the supplied byte array and returns it as a <see cref="Bitmap"/>.
+        /// </summary>
+        /// <param name="data">Byte array to encode.</param>
+        /// <param name="lCorrection">Error correction level. If &lt; 0 a default is used.</param>
+        /// <param name="lPixelDensity">Desired pixel width/height of the generated bitmap. Must be &gt; 0.</param>
+        /// <returns>A <see cref="Bitmap"/> containing the generated QR code.</returns>
+        /// <exception cref="ArgumentException">Thrown when data is null/empty or pixel density is invalid.</exception>
+        /// <exception cref="InvalidOperationException">Thrown when the underlying encoder fails to produce a matrix.</exception>
+        public Bitmap GenerateQRCodeFromBytes(byte[] data, int lCorrection = 2, int lPixelDensity = 300)
+        {
+            if (data == null || data.Length == 0)
+                throw new ArgumentException("Data cannot be null or empty", nameof(data));
+            if (lPixelDensity <= 0)
+                throw new ArgumentException("Pixel density must be greater than zero", nameof(lPixelDensity));
+            if (lCorrection < 0)
+                lCorrection = 2;
+
+            logger.LogMethodEntry("QRGenerator", "GenerateQRCodeFromBytes", $"{data.Length} bytes", lCorrection, lPixelDensity);
+
+            try
+            {
+                var writer = new QRCodeWriter();
+                var hints = new Dictionary<EncodeHintType, object> { { EncodeHintType.MARGIN, 0 } };
+                BitMatrix matrix;
+                
+                try
+                {
+                    // Use ISO-8859-1 encoding to preserve byte values
+                    string dataString = Encoding.GetEncoding("ISO-8859-1").GetString(data);
+                    matrix = writer.encode(
+                        dataString,
+                        BarcodeFormat.QR_CODE,
+                        lPixelDensity,
+                        lPixelDensity,
+                        hints
+                    );
+                }
+                catch (Exception ex)
+                {
+                    throw new InvalidOperationException("Failed to generate QR code matrix", ex);
+                }
+
+                return ConvertBitMatrixToBitmap(matrix);
+            }
+            finally
+            {
+                logger.LogMethodExit("QRGenerator", "GenerateQRCodeFromBytes", true);
+            }
+        }
+
+        /// <summary>
+        /// Generates a QR code from text and saves it to the specified file path using the provided format.
+        /// </summary>
+        /// <param name="text">Text string to encode.</param>
+        /// <param name="filePath">Output file path. If relative, the file is placed in the user's Documents/AztecQRGenerator/Output folder.</param>
+        /// <param name="format">Image format to use for saving (PNG, JPEG or BMP).</param>
+        /// <param name="lCorrection">Error correction level. If &lt; 0 a default is used.</param>
+        /// <param name="lPixelDensity">Size of the QR code in pixels.</param>
+        /// <param name="encoding">Text encoding to use. If null, UTF-8 is used.</param>
+        /// <returns>True when the file was created successfully.</returns>
+        /// <exception cref="ArgumentException">Thrown when text or filePath is null/empty.</exception>
+        /// <exception cref="ArgumentNullException">Thrown when format is null.</exception>
+        public bool GenerateQRCodeFromTextToFile(string text, string filePath, ImageFormat format, int lCorrection = 2, int lPixelDensity = 300, Encoding encoding = null)
+        {
+            logger.LogMethodEntry("QRGenerator", "GenerateQRCodeFromTextToFile", text?.Substring(0, Math.Min(50, text?.Length ?? 0)) + "...", lCorrection, lPixelDensity, filePath, format?.ToString() ?? "null");
+
+            using (Bitmap bitmap = GenerateQRCodeFromText(text, lCorrection, lPixelDensity, encoding))
+            {
+                SaveBitmap(bitmap, filePath, format);
+            }
+            
+            logger.LogMethodExit("QRGenerator", "GenerateQRCodeFromTextToFile", true);
+            return true;
+        }
+
+        /// <summary>
+        /// Generates a QR code from byte data and saves it to the specified file path using the provided format.
+        /// </summary>
+        /// <param name="data">Byte array to encode.</param>
+        /// <param name="filePath">Output file path. If relative, the file is placed in the user's Documents/AztecQRGenerator/Output folder.</param>
+        /// <param name="format">Image format to use for saving (PNG, JPEG or BMP).</param>
+        /// <param name="lCorrection">Error correction level. If &lt; 0 a default is used.</param>
+        /// <param name="lPixelDensity">Size of the QR code in pixels.</param>
+        /// <returns>True when the file was created successfully.</returns>
+        /// <exception cref="ArgumentException">Thrown when data is null/empty or filePath is null/empty.</exception>
+        /// <exception cref="ArgumentNullException">Thrown when format is null.</exception>
+        public bool GenerateQRCodeFromBytesToFile(byte[] data, string filePath, ImageFormat format, int lCorrection = 2, int lPixelDensity = 300)
+        {
+            logger.LogMethodEntry("QRGenerator", "GenerateQRCodeFromBytesToFile", $"{data?.Length ?? 0} bytes", lCorrection, lPixelDensity, filePath, format?.ToString() ?? "null");
+
+            using (Bitmap bitmap = GenerateQRCodeFromBytes(data, lCorrection, lPixelDensity))
+            {
+                SaveBitmap(bitmap, filePath, format);
+            }
+            
+            logger.LogMethodExit("QRGenerator", "GenerateQRCodeFromBytesToFile", true);
+            return true;
+        }
+
+        #endregion
+
         #region Async Methods
 
         /// <summary>
@@ -380,6 +515,152 @@ namespace AztecQR
                 throw;
             }
         }
+
+        #region Flexible Input Async Methods
+
+        /// <summary>
+        /// Asynchronously generates a QR code from the supplied text string and returns it as a <see cref="Bitmap"/>.
+        /// </summary>
+        /// <param name="text">Text string to encode.</param>
+        /// <param name="lCorrection">Error correction level. If &lt; 0 a default is used.</param>
+        /// <param name="lPixelDensity">Desired pixel width/height of the generated bitmap. Must be &gt; 0.</param>
+        /// <param name="encoding">Text encoding to use. If null, UTF-8 is used.</param>
+        /// <param name="cancellationToken">Token to monitor for cancellation requests.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains a <see cref="Bitmap"/> with the generated QR code.</returns>
+        /// <exception cref="ArgumentException">Thrown when input is null/empty or pixel density is invalid.</exception>
+        /// <exception cref="InvalidOperationException">Thrown when the underlying encoder fails to produce a matrix.</exception>
+        /// <exception cref="OperationCanceledException">Thrown when the operation is cancelled.</exception>
+        public async Task<Bitmap> GenerateQRCodeFromTextAsync(string text, int lCorrection = 2, int lPixelDensity = 300, Encoding encoding = null, CancellationToken cancellationToken = default)
+        {
+            if (string.IsNullOrEmpty(text))
+                throw new ArgumentException("Text cannot be null or empty", nameof(text));
+
+            logger.LogMethodEntry("QRGenerator", "GenerateQRCodeFromTextAsync", text.Substring(0, Math.Min(50, text.Length)) + "...", lCorrection, lPixelDensity);
+
+            try
+            {
+                return await Task.Run(() =>
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    return GenerateQRCodeFromText(text, lCorrection, lPixelDensity, encoding);
+                }, cancellationToken).ConfigureAwait(false);
+            }
+            finally
+            {
+                logger.LogMethodExit("QRGenerator", "GenerateQRCodeFromTextAsync", true);
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously generates a QR code from the supplied byte array and returns it as a <see cref="Bitmap"/>.
+        /// </summary>
+        /// <param name="data">Byte array to encode.</param>
+        /// <param name="lCorrection">Error correction level. If &lt; 0 a default is used.</param>
+        /// <param name="lPixelDensity">Desired pixel width/height of the generated bitmap. Must be &gt; 0.</param>
+        /// <param name="cancellationToken">Token to monitor for cancellation requests.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains a <see cref="Bitmap"/> with the generated QR code.</returns>
+        /// <exception cref="ArgumentException">Thrown when data is null/empty or pixel density is invalid.</exception>
+        /// <exception cref="InvalidOperationException">Thrown when the underlying encoder fails to produce a matrix.</exception>
+        /// <exception cref="OperationCanceledException">Thrown when the operation is cancelled.</exception>
+        public async Task<Bitmap> GenerateQRCodeFromBytesAsync(byte[] data, int lCorrection = 2, int lPixelDensity = 300, CancellationToken cancellationToken = default)
+        {
+            if (data == null || data.Length == 0)
+                throw new ArgumentException("Data cannot be null or empty", nameof(data));
+
+            logger.LogMethodEntry("QRGenerator", "GenerateQRCodeFromBytesAsync", $"{data.Length} bytes", lCorrection, lPixelDensity);
+
+            try
+            {
+                return await Task.Run(() =>
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    return GenerateQRCodeFromBytes(data, lCorrection, lPixelDensity);
+                }, cancellationToken).ConfigureAwait(false);
+            }
+            finally
+            {
+                logger.LogMethodExit("QRGenerator", "GenerateQRCodeFromBytesAsync", true);
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously generates a QR code from text and saves it to the specified file path using the provided format.
+        /// </summary>
+        /// <param name="text">Text string to encode.</param>
+        /// <param name="filePath">Output file path. If relative, the file is placed in the user's Documents/AztecQRGenerator/Output folder.</param>
+        /// <param name="format">Image format to use for saving (PNG, JPEG or BMP).</param>
+        /// <param name="lCorrection">Error correction level. If &lt; 0 a default is used.</param>
+        /// <param name="lPixelDensity">Size of the QR code in pixels.</param>
+        /// <param name="encoding">Text encoding to use. If null, UTF-8 is used.</param>
+        /// <param name="cancellationToken">Token to monitor for cancellation requests.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result indicates whether the file was created successfully.</returns>
+        /// <exception cref="ArgumentException">Thrown when text or filePath is null/empty.</exception>
+        /// <exception cref="ArgumentNullException">Thrown when format is null.</exception>
+        /// <exception cref="OperationCanceledException">Thrown when the operation is cancelled.</exception>
+        public async Task<bool> GenerateQRCodeFromTextToFileAsync(string text, string filePath, ImageFormat format, int lCorrection = 2, int lPixelDensity = 300, Encoding encoding = null, CancellationToken cancellationToken = default)
+        {
+            logger.LogMethodEntry("QRGenerator", "GenerateQRCodeFromTextToFileAsync", text?.Substring(0, Math.Min(50, text?.Length ?? 0)) + "...", lCorrection, lPixelDensity, filePath, format?.ToString() ?? "null");
+
+            try
+            {
+                using (Bitmap bitmap = await GenerateQRCodeFromTextAsync(text, lCorrection, lPixelDensity, encoding, cancellationToken).ConfigureAwait(false))
+                {
+                    await Task.Run(() =>
+                    {
+                        cancellationToken.ThrowIfCancellationRequested();
+                        SaveBitmap(bitmap, filePath, format);
+                    }, cancellationToken).ConfigureAwait(false);
+                }
+                
+                logger.LogMethodExit("QRGenerator", "GenerateQRCodeFromTextToFileAsync", true);
+                return true;
+            }
+            catch
+            {
+                logger.LogMethodExit("QRGenerator", "GenerateQRCodeFromTextToFileAsync", false);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously generates a QR code from byte data and saves it to the specified file path using the provided format.
+        /// </summary>
+        /// <param name="data">Byte array to encode.</param>
+        /// <param name="filePath">Output file path. If relative, the file is placed in the user's Documents/AztecQRGenerator/Output folder.</param>
+        /// <param name="format">Image format to use for saving (PNG, JPEG or BMP).</param>
+        /// <param name="lCorrection">Error correction level. If &lt; 0 a default is used.</param>
+        /// <param name="lPixelDensity">Size of the QR code in pixels.</param>
+        /// <param name="cancellationToken">Token to monitor for cancellation requests.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result indicates whether the file was created successfully.</returns>
+        /// <exception cref="ArgumentException">Thrown when data is null/empty or filePath is null/empty.</exception>
+        /// <exception cref="ArgumentNullException">Thrown when format is null.</exception>
+        /// <exception cref="OperationCanceledException">Thrown when the operation is cancelled.</exception>
+        public async Task<bool> GenerateQRCodeFromBytesToFileAsync(byte[] data, string filePath, ImageFormat format, int lCorrection = 2, int lPixelDensity = 300, CancellationToken cancellationToken = default)
+        {
+            logger.LogMethodEntry("QRGenerator", "GenerateQRCodeFromBytesToFileAsync", $"{data?.Length ?? 0} bytes", lCorrection, lPixelDensity, filePath, format?.ToString() ?? "null");
+
+            try
+            {
+                using (Bitmap bitmap = await GenerateQRCodeFromBytesAsync(data, lCorrection, lPixelDensity, cancellationToken).ConfigureAwait(false))
+                {
+                    await Task.Run(() =>
+                    {
+                        cancellationToken.ThrowIfCancellationRequested();
+                        SaveBitmap(bitmap, filePath, format);
+                    }, cancellationToken).ConfigureAwait(false);
+                }
+                
+                logger.LogMethodExit("QRGenerator", "GenerateQRCodeFromBytesToFileAsync", true);
+                return true;
+            }
+            catch
+            {
+                logger.LogMethodExit("QRGenerator", "GenerateQRCodeFromBytesToFileAsync", false);
+                throw;
+            }
+        }
+
+        #endregion
 
         #endregion
     }

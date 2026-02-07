@@ -118,6 +118,7 @@
       <DependentUpon>AztecQR.cs</DependentUpon>
     </Compile>
     <Compile Include="Examples\FormatTestExample.cs" />
+    <Compile Include="FlexibleInputExamples.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="AztecQR.resx">
       <DependentUpon>AztecQR.cs</DependentUpon>
@@ -138,6 +139,7 @@
     <None Include=".github\workflows\nuget-publish.yml" />
     <None Include=".github\workflows\windows-msbuild-test.yml" />
     <None Include="app.config" />
+    <None Include="ASYNC_IMPLEMENTATION_SUMMARY.md" />
     <None Include="build_and_test.ps1" />
     <None Include="Directory.Build.props" />
     <None Include="Fix-Workflow-Versions.ps1" />
